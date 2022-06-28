@@ -1,0 +1,128 @@
+.popupMedium {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 9;
+    color: #262A35;
+    font-family: 'SF-Pro';
+    font-weight: 500;
+    font-size: 12px;
+}
+
+.container-popup {
+    position: absolute;
+    max-height: 40vh;
+    z-index: 0;
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 480px;
+    padding: 15px;
+    border-radius: 15px 15px 0px 0px;
+}
+
+.popupMedium .container-popup .wrapper-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 17px;
+}
+
+.opacityModal {
+    height: 99999999vh;
+    width: 100%;
+    z-index: 1;
+    position: absolute;
+    background-color: #262626ad !important;
+}
+
+.popupMedium #PopupFilter .wrapper-popup .content-filter .container-filter {
+    margin: 21px 0px 9px 0px;
+}
+
+.popupMedium #PopupFilter .wrapper-popup .content-filter .container-filter label {
+    margin: 19px 0px 9px 0px;
+}
+
+.popupMedium #PopupFilter .wrapper-popup .content-filter .container-filter .wrapper-filter {
+    display: flex;
+}
+
+.popupMedium #PopupFilter .wrapper-popup .content-filter .container-filter .wrapper-filter .point-filter {
+    display: flex;
+    padding: 8px 12px;
+    border: 1px solid #94A3B8;
+    color: #94A3B8;
+    margin-right: 8px;
+}
+
+.popupMedium #PopupFilter .wrapper-popup .content-filter .container-filter .wrapper-filter .active {
+    background-color: #FDF0C8;
+    color: #141824;
+    border: 1px solid #141824;
+}
+
+.popupMedium #PopupFilter .wrapper-popup .content-filter .container-filter .wrapper-filter .point-filter input {
+    border: none;
+}
+
+.popupMedium #PopupFilter .wrapper-popup .content-filter .container-filter .wrapper-filter span {
+    align-self: center;
+    margin-right: 8px;
+}
+
+.popupMedium #PopupFilter .wrapper-popup .content-filter .container-filter .button-terapkan {
+    width: 100%;
+    border: 0;
+    background-color: #FCD34D;
+    padding: 11px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-family: 'SF-Pro';
+    margin-top: 15px;
+}
+
+.popupMedium #PopupFilter .wrapper-popup .content-filter .container-filter .wrapper-filter input:focus {
+    outline: none;
+}
+
+
+/* START MODAL DETAIL PENYIMPANAN */
+
+.popupMedium #PopupDetail .wrapper-popup .content-detail .container-detail {
+    /* margin: 21px 0px 9px 0px; */
+    /* margin: 9px 0px; */
+}
+
+.popupMedium #PopupDetail .wrapper-title .labelPopup {
+    font-weight: 600;
+}
+
+.popupMedium #PopupDetail .wrapper-popup .content-detail .container-detail label {
+    font-weight: 600;
+    padding: 5px 0px;
+    margin: 21px 0px 12px 0px;
+}
+
+.popupMedium #PopupDetail .wrapper-popup .content-detail .container-detail table {
+    width: 100%;
+}
+
+.popupMedium #PopupDetail .wrapper-popup .content-detail .container-detail table tr td {
+    padding: 9px 0px;
+    margin-bottom: 8px;
+}
+
+.popupMedium #PopupDetail .wrapper-popup .content-detail .container-detail table tr td:nth-child(1) {
+    width: 50%;
+}
+
+.popupMedium #PopupDetail .wrapper-popup .content-detail .container-detail table tr td:nth-child(2) {
+    width: 5%;
+}
+
+.popupMedium #PopupDetail .wrapper-popup .content-detail .container-detail table tr td:last-child {
+    text-align: right;
+}
+
+
+/* END MODAL DETAIL PENYIMPANAN */
