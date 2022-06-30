@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\ScannerController;
 use App\Models\Ticket;
 use App\Rules\ExceptSymbol;
 use Illuminate\Http\Request;
@@ -15,9 +16,11 @@ class TicketController extends Controller
     {
         request()->validate([
             'ticket_type' => [new ExceptSymbol()],
-            'barcode_no' => [new ExceptSymbol()]
+            'barcode_no' => [new ExceptSymbol()],
+            'gate' => ['required', 'in:checkin,checkout']
         ]);
         $now = date('Y-m-d H:i:s');
+        $gate = $request->gate;
 
         $ticket = Ticket::where('barcode_no', $request->barcode_no)
             ->first();
@@ -27,23 +30,42 @@ class TicketController extends Controller
         if ($ticket->ticket_type != $request->ticket_type) {
             return ResponseFormatter::error(null, 'Ticket Salah Pintu', 400);
         }
-        if ($ticket->checkout) {
-            $ticket->checkout = null;
-            if ($ticket->save()) {
-                return ResponseFormatter::success(null, 'Anda Boleh Masuk');
-            } else {
-                return ResponseFormatter::error(null, 'Terjadi kesalahan');
-            }
-        }
-        if ($ticket->checkin) {
+
+        $ticket->checkout = $gate == 'checkout' ? $now : null;
+        if ($ticket->checkin && $gate == 'checkin') {
             return ResponseFormatter::error(null, 'Ticket Sudah Digunakan', 400);
         }
-        $ticket->checkin = $now;
+        $ticket->checkin = $gate == 'checkin' ? $now : null;
+
+
+
         if ($ticket->save()) {
-            return ResponseFormatter::success(null, 'Anda Boleh Masuk');
+            $section_selected = $this->count_gate($ticket->event_id, $ticket->ticket_type)->getData();
+            return ResponseFormatter::success($section_selected->data, 'Anda Boleh Masuk');
         } else {
             return ResponseFormatter::error(null, 'Terjadi kesalahan');
         }
+    }
+    private function count_gate($event_id, $type)
+    {
+        $type = $type;
+        $ticket = Ticket::where('event_id', $event_id);
+        if ($type != 'all_section') :
+            $ticket = $ticket->where('ticket_type', $type);
+        endif;
+        $ticket = $ticket->get();
+        $pending = 0;
+        $checkin = 0;
+        foreach ($ticket as $key => $value) {
+            if ($value->checkin) {
+                $checkin++;
+            } else {
+                $pending++;
+            }
+        }
+        $data['pending'] = $pending;
+        $data['checkin'] = $checkin;
+        return ResponseFormatter::success($data);
     }
     public function checkout(Request $request)
     {

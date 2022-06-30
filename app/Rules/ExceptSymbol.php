@@ -25,8 +25,8 @@ class ExceptSymbol implements Rule
      */
     public function passes($attribute, $value)
     {
-        return !preg_match("/([@\#\$\%\^\_\=\<\>\{\}]+)/", $value);
-        // return !preg_match("/([{\}]+)/", $value);
+        // return !preg_match("/([@\#\$\%\^\_\=\<\>\{\}]+)/", $value);
+        return !preg_match("/([{\}]+)/", $value);
     }
 
     /**
@@ -36,7 +36,7 @@ class ExceptSymbol implements Rule
      */
     public function message()
     {
-        return ':attribute tidak boleh mengandung simbol @#%^$_=<>{}.';
-        // return ':attribute tidak boleh mengandung simbol {}.';
+        // return ':attribute tidak boleh mengandung simbol @#%^$_=<>{}.';
+        return ':attribute tidak boleh mengandung simbol {}.';
     }
 }

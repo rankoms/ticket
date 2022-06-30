@@ -1,7 +1,7 @@
 @extends('layouts.app_mobile')
 
 @section('content')
-
+{{-- <link rel="stylesheet" href="{{url('css/custom-select.css')}}"> --}}
 <main>
     <div class="header">
         <a href="javascript:history.back()">
@@ -12,7 +12,36 @@
         <span>Checkin Ticket</span>
     </div>
     <div class="content">
+        <select class="custom-select" name="events" id="events">
+            <option value="">Pilih Event</option>
+            @foreach($events as $key => $value)
+                <option value="{{ $value->id }}">{{ $value->name }}</option>
+            @endforeach
+        </select>
+        <select class="custom-select" name="section" id="section">
+            <option value="">Pilih Section</option>
+        </select>
+    
+        <select class="custom-select" name="gate" id="gate">
+            <option value="">Pilih Gate</option>
+            <option value="checkin">Checkin</option>
+            <option value="checkout">Checkout</option>
+        </select>
         <div id="reader" width="100%" max-width="480px"></div>
+        <div class="wrapper-keterangan">
+            <div class="wrapper-box">
+                Pending
+                <div id="jumlah_pending">
+                    0
+                </div>
+            </div>
+            <div class="wrapper-box">
+                Checkin
+                <div id="jumlah_checkin">
+                    0
+                </div>
+            </div>
+        </div>
     </div>
     <div class="container-btn-manual">
         <button class="btn-manual">Input Manual</button>
@@ -69,22 +98,33 @@
 @section('script')
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://unpkg.com/html5-qrcode">
+
 </script>
 <script>
     var scan = 0;
 
+
     function onScanSuccess(decodedText, decodedResult) {
         if (scan == 0) {
-            var data = getJSON("", {
-                _token: '{{ csrf_token() }}',
-                ticket: decodedText
+            if(!$('#events').val()){
+                return gagal_pilih_event('scan');
+            }
+            if(!$('#section').val()){
+                return gagal_pilih_section('scan');
+            }
+            if(!$('#gate').val()){
+                return gagal_pilih_gate('scan');
+            }
+            var data = getJSON("{{ \config('scanner.base_url').\config('scanner.checkin') }}", {
+                'barcode_no' : decodedText,
+                'ticket_type' : $('#section').val(),
+                'gate' : $('#gate').val()
             });
             if (data.meta.code != 200) {
                 alert(data.meta.message);
             } else {
-                $('#spinner-loading').show();
-                scan = scan + 1;
-                window.location = "";
+                $('#jumlah_checkin').html(data.data['checkin'])
+                $('#jumlah_pending').html(data.data['pending'])
             }
         }
     }
@@ -120,14 +160,49 @@
             }
         }).responseText);
     }
-</script>
-<script>
+
+    $('#events').on('change', function(e){
+        var data = getJSON("{{ route('scanner.section_select') }}", {
+            _token : '{{ csrf_token() }}',
+            id : $(this).val()
+        });
+        $('#jumlah_checkin').html(data.data['checkin'])
+        $('#jumlah_pending').html(data.data['pending'])
+        $('#section').find('option').not(':first').remove();
+        $.each(data.data['event_gate'], function(key, value){
+            $('#section').append(`
+                <option value="${value['type']}">${value['name']}</option>
+            `);
+        });
+    });
+
+    $('#section').on('change', function(e){
+        var data = getJSON("{{ route('scanner.section_selected') }}",{
+            _token : '{{ csrf_token() }}',
+            type : $(this).val(),
+            id: $('#events').val()
+        })
+        $('#jumlah_checkin').html(data.data['checkin'])
+        $('#jumlah_pending').html(data.data['pending'])
+    });
+
+
     $('.btn-submit').on('click', function(e){
         e.preventDefault();
+        if(!$('#events').val()){
+            return gagal_pilih_event();
+        }
+        if(!$('#section').val()){
+            return gagal_pilih_section();
+        }
+        if(!$('#gate').val()){
+            return gagal_pilih_gate();
+        }
         
         var data = getJSON("{{ \config('scanner.base_url').\config('scanner.checkin') }}", {
-            'ticket_type' : 'reguler',
-            'barcode_no' : $('#ticket').val()
+            'barcode_no' : $('#ticket').val(),
+            'ticket_type' : $('#section').val(),
+            'gate' : $('#gate').val()
         });
         if (data.meta.code != 200) { 
             Swal.fire(
@@ -144,7 +219,9 @@
                 'success'
             )
             $('#ticket').val('');
-            // window.location = "";
+            
+            $('#jumlah_checkin').html(data.data['checkin'])
+            $('#jumlah_pending').html(data.data['pending'])
         }
     })
     $('.btn-manual').on('click', function(e){
@@ -166,7 +243,40 @@
         $('#PopupDetail').css('max-height', maxModalHeight(40))
         $("body").css("overflow", "hidden");
     }
-
+    function gagal_pilih_event(scan=false)
+    {
+        let text = 'Pilih Event terlebih dahulu';
+        if(scan){
+            return alert(text)
+        }
+        return Swal.fire(
+                'Gagal',
+                text,
+                'error'
+            )
+    }
+    function gagal_pilih_section(scan=false){
+        let text = 'Pilih Section terlebih dahulu';
+        if(scan){
+            return alert(text)
+        }
+        return Swal.fire(
+                'Gagal',
+                text,
+                'error'
+            )
+    }
+    function gagal_pilih_gate(scan=false){
+        let text = 'Pilih Gate terlebih dahulu';
+        if(scan){
+            return alert(text)
+        }
+        return Swal.fire(
+                'Gagal',
+                text,
+                'error'
+            )
+    }
     function close_detail() {
         $('#PopupDetail').animate({
             bottom: -$('#PopupDetail').height()

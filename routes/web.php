@@ -31,6 +31,9 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'scanner'], function () {
     Route::get('/checkin', [ScannerController::class, 'checkin'])->name('scanner.checkin');
     Route::get('/checkout', [ScannerController::class, 'checkout'])->name('scanner.checkout');
+
+    Route::post('/section_select', [ScannerController::class, 'section_select'])->name('scanner.section_select');
+    Route::post('/section_selected', [ScannerController::class, 'section_selected'])->name('scanner.section_selected');
 });
 
 

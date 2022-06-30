@@ -68,16 +68,16 @@
 
 @section('script')
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://unpkg.com/html5-qrcode">
-</script>
+<script src="https://unpkg.com/html5-qrcode"></script>
 <script>
     var scan = 0;
+    const url = "{{ \config('scanner.base_url').\config('scanner.checkout') }}";
 
     function onScanSuccess(decodedText, decodedResult) {
         if (scan == 0) {
-            var data = getJSON("", {
-                _token: '{{ csrf_token() }}',
-                ticket: decodedText
+            var data = getJSON(url, {
+                'ticket_type' : 'reguler',
+                'barcode_no' : decodedText
             });
             if (data.meta.code != 200) {
                 alert(data.meta.message);
@@ -120,11 +120,10 @@
             }
         }).responseText);
     }
-</script>
-<script>
+
     $('.btn-submit').on('click', function(e){
         e.preventDefault();
-        var data = getJSON("{{ \config('scanner.base_url').\config('scanner.checkout') }}", {
+        var data = getJSON(url, {
             'ticket_type' : 'reguler',
             'barcode_no' : $('#ticket').val()
         });
