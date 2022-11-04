@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EventController;
@@ -43,6 +44,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin'], function () {
     Route::resource('event', EventController::class);
     Route::resource('ticket', TicketController::class);
 });
+Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
