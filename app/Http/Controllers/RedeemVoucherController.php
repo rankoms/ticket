@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ResponseFormatter;
 use App\Models\RedeemVoucher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RedeemVoucherController extends Controller
 {
@@ -15,6 +17,46 @@ class RedeemVoucherController extends Controller
     public function index()
     {
         return view('redeem_voucher');
+    }
+
+    public function cek_redeem_voucher(Request $request)
+    {
+        $voucher = $request->voucher;
+
+        $redeem_voucher = RedeemVoucher::where('kode', $voucher)->first();
+        if (!$redeem_voucher) {
+            return ResponseFormatter::error(null, 'Kode tidak ditemukan');
+        } else {
+            if ($redeem_voucher->status == 1) {
+                return ResponseFormatter::success($redeem_voucher, 'Data Sudah Digunakan');
+            } else {
+                return ResponseFormatter::success($redeem_voucher, 'Data Berhasil ada');
+            }
+        }
+    }
+
+    public function redeem_voucher_update(Request $request)
+    {
+        $request->validate([
+            'id' => ['required', 'numeric']
+        ]);
+
+        $redeem_voucher = RedeemVoucher::find($request->id);
+        $redeem_voucher->redeem_by = Auth::user()->id;
+        $redeem_voucher->redeem_date = date('Y-m-d H:i:s');
+        $redeem_voucher->status = 1;
+        $redeem_voucher->save();
+        return ResponseFormatter::success(null, 'Berhasil di update');
+    }
+
+    public function detail($kode)
+    {
+        $redeem_voucher = RedeemVoucher::where('kode', $kode)->first();
+        if (!$redeem_voucher) {
+            return redirect()->route('redeem_voucher.index');
+        }
+
+        return view('redeem_detail', compact('redeem_voucher'));
     }
 
     /**

@@ -4,6 +4,7 @@ use App\Http\Controllers\TicketController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\RedeemVoucherController;
 use App\Http\Controllers\ScannerController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,17 +19,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', [HomeController::class, 'splash_screen'])->name('splash_screen');
-
-// Route::get('/welcome', [HomeController::class, 'welcome'])->name('welcome');
-
-// Route::group(['middleware' => ['is_logged']], function () {
-//     Route::get('/login', [AuthController::class, 'index'])->name('login');
-//     Route::get('/welcome', [HomeController::class, 'welcome'])->name('welcome');
-//     Route::post('/user/login', [AuthController::class, 'auth_login'])->name('auth.auth_login');
-//     Route::get('/forgot_password', [AuthController::class, 'forgot_password'])->name('auth.forgot_password');
-//     Route::get('/change_password', [AuthController::class, 'change_password'])->name('auth.change_password');
-// });
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
 Route::group(['prefix' => 'scanner'], function () {
@@ -39,10 +29,20 @@ Route::group(['prefix' => 'scanner'], function () {
     Route::post('/section_selected', [ScannerController::class, 'section_selected'])->name('scanner.section_selected');
 });
 
+Route::group(['middleware' => ['auth']], function () {
+
+    Route::get('/redeem_voucher', [RedeemVoucherController::class, 'index'])->name('redeem_voucher.index');
+    Route::post('/redeem_voucher_update', [RedeemVoucherController::class, 'redeem_voucher_update'])->name('redeem_voucher.redeem_voucher_update');
+    Route::post('/cek_redeem_vouceher', [RedeemVoucherController::class, 'cek_redeem_voucher'])->name('redeem_voucher.cek_redeem_voucher');
+});
+
+Route::get('/redeem_voucher/{kode}', [RedeemVoucherController::class, 'detail'])->name('redeem_voucher.detail');
+
 
 Route::group(['middleware' => ['auth'], 'prefix' => 'admin'], function () {
     Route::resource('event', EventController::class);
     Route::resource('ticket', TicketController::class);
 });
+Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
