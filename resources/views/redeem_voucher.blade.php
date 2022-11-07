@@ -64,7 +64,10 @@
 					</div>
 				</div>
 			</div>
-			<a href="{{ route('logout') }}" class="btn btn-success position-absolute" style="bottom: 10px; right:10px">Logout</a>
+			<a href="{{ route('user.logout') }}" class="btn btn-success position-absolute"
+				style="bottom: 10px; right:10px">Logout</a>
+			<a href="{{ route('redeem_voucher.summary_redeem') }}" class="btn btn-info position-absolute"
+				style="bottom: 10px; left:10px">Dashboard Redeem</a>
 		</div>
 	</form>
 	<!-- CoreUI and necessary plugins-->

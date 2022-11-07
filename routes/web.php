@@ -33,6 +33,7 @@ Route::group(['prefix' => 'scanner'], function () {
 Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/redeem_voucher', [RedeemVoucherController::class, 'index'])->name('redeem_voucher.index');
+    Route::get('/summary_redeem', [RedeemVoucherController::class, 'summary_redeem'])->name('redeem_voucher.summary_redeem');
     Route::post('/redeem_voucher_update', [RedeemVoucherController::class, 'redeem_voucher_update'])->name('redeem_voucher.redeem_voucher_update');
     Route::post('/cek_redeem_vouceher', [RedeemVoucherController::class, 'cek_redeem_voucher'])->name('redeem_voucher.cek_redeem_voucher');
 });
@@ -44,7 +45,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin'], function () {
     Route::resource('event', EventController::class);
     Route::resource('ticket', TicketController::class);
 });
-Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 Auth::routes();
+Route::get('user_logout', [LoginController::class, 'logout'])->name('user.logout');
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
