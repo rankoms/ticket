@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ResponseFormatter;
+use App\Models\RedeemHistory;
 use App\Models\RedeemVoucher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -35,7 +36,7 @@ class RedeemVoucherController extends Controller
                 isset($kategory_aset[$value->kategory]['sudah']) ? $kategory_aset[$value->kategory]['sudah']++ : $kategory_aset[$value->kategory]['sudah'] = 1;
             endif;
         endforeach;
-        return view('summary_redeem', compact('kategory_aset', 'jumlah_belum', 'jumlah_sudah'));
+        return view('summary_redeem', compact('kategory_aset', 'jumlah_belum', 'jumlah_sudah', 'redeem_voucher'));
     }
 
     public function cek_redeem_voucher(Request $request)
@@ -65,6 +66,11 @@ class RedeemVoucherController extends Controller
         $redeem_voucher->redeem_date = date('Y-m-d H:i:s');
         $redeem_voucher->status = 1;
         $redeem_voucher->save();
+
+        $redeem_history = new RedeemHistory();
+        $redeem_history->redeem_by = Auth::user()->id;
+        $redeem_history->kode = $redeem_voucher->kode;
+        $redeem_history->save();
         return ResponseFormatter::success(null, 'Berhasil di update');
     }
 

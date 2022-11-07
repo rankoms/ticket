@@ -24,11 +24,11 @@
 			font-size: 126px;
 		}
 	</style>
+	<link rel="stylesheet" href="{{ url('css/jquery.dataTables.min.css') }}">
 </head>
 
 <body>
 	<div class="container">
-
 		<div class="row">
 			<div class="col-sm-12 mb-3 mt-3">
 				<h1 class="bd-title text-center">Summary Redeem Voucher</h1>
@@ -48,37 +48,44 @@
 					<div class="card-body">
 						<h1 class="card-title text-center summary-font-h1">{{ $jumlah_belum }}</h1>
 						<h3 class="card-text text-center">Belum Redeem Voucher</h3>
-						{{-- <p class="card-text"></p> --}}
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-sm-12 mb-3 mt-3">
-				<h1 class="bd-title text-center">List Kategory</h1>
+				<h1 class="bd-title text-center">List Voucher</h1>
 			</div>
 		</div>
 		<div class="row">
-			@foreach ($kategory_aset as $key => $value)
-				<div class="col-sm-6">
-					<div class="card mb-3" style="width: 30rem; ">
-						<div class="card-body">
-							<h2 class="card-title text-center">{{ $key }}</h2>
-							<div class="card-body row text-center">
-								<div class="col">
-									<h3 class="fs-5 fw-semibold">{{ isset($value['sudah']) ? $value['sudah'] : 0 }}</h3>
-									<div class="text-uppercase text-medium-emphasis small">Sudah Redeem</div>
-								</div>
-								<div class="vr"></div>
-								<div class="col">
-									<h3 class="fs-5 fw-semibold">{{ isset($value['belum']) ? $value['belum'] : 0 }}</h3>
-									<div class="text-uppercase text-medium-emphasis small">Belum Redeem</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			@endforeach
+			<div class="col-sm-12">
+				<table id="example" class="display" style="width:100%">
+					<thead>
+						<tr>
+							<th>Nama</th>
+							<th>Email</th>
+							<th>Kategory</th>
+							<th>Kode Voucher</th>
+							<th>Status</th>
+							<th>Waktu Redeem</th>
+							<th>Admin Redeem</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach ($redeem_voucher as $key => $value)
+							<tr>
+								<th>{{ $value->name }}</th>
+								<th>{{ $value->email }}</th>
+								<th>{{ $value->kategory }}</th>
+								<th>{{ $value->kode }}</th>
+								<th>{{ $value->status == 0 ? 'Belum Redeem' : 'Sudah Redeem' }}</th>
+								<th>{{ $value->redeem_date }}</th>
+								<th>{{ $value->user ? $value->user->name : '' }}</th>
+							</tr>
+						@endforeach
+					</tbody>
+				</table>
+			</div>
 		</div>
 	</div>
 
@@ -89,11 +96,17 @@
 	<!-- Optional JavaScript; choose one of the two! -->
 
 	<!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
-	<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
-		integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
-	</script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous">
+	<script src="{{ url('js/bootstrap.bundle.min.js') }}"></script>
+	<script src="{{ url('js/jquery-3.5.1.js') }}"></script>
+	<script src="{{ url('js/jquery.dataTables.min.js') }}"></script>
+	<script>
+		$(document).ready(function() {
+			$('#example').DataTable({
+				order: [
+					[3, 'desc']
+				],
+			});
+		});
 	</script>
 
 	<!-- Option 2: Separate Popper and Bootstrap JS -->
