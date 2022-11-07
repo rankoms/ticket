@@ -64,7 +64,7 @@
 					</div>
 				</div>
 			</div>
-			<a href="{{ route('user.logout') }}" class="btn btn-success position-absolute"
+			<a href="{{ route('user.logout') }}" class="btn btn-danger position-absolute"
 				style="bottom: 10px; right:10px">Logout</a>
 			<a href="{{ route('redeem_voucher.summary_redeem') }}" class="btn btn-info position-absolute"
 				style="bottom: 10px; left:10px">Dashboard Redeem</a>
@@ -100,10 +100,14 @@
 						html: `<p>${data.data.email}</p>
 								<p>${data.data.kategory}</p>
 								<p>Di Gunakan ${data.data.redeem_date}</p>
+								<button disabled class="btn btn-danger">Ticket Sudah Di gunakan</button>
 						`,
-						showCancelButton: true,
+						showCancelButton: false,
 						showConfirmButton: false,
+						cancelButtonColor: '#d33',
 						cancelButtonText: 'Ticket Sudah Di gunakan',
+						showCloseButton: true,
+						allowOutsideClick: false
 					}).then((result) => {
 						$('#voucher').val('');
 						$('#voucher').focus();
