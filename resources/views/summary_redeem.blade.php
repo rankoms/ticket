@@ -7,8 +7,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 	<!-- Bootstrap CSS -->
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
-		integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+	<link rel="stylesheet" href="{{ url('css/bootstrap.min.css') }}">
 
 	<title>Redeem Voucher Summary</title>
 	<style>
@@ -54,7 +53,7 @@
 		</div>
 		<div class="row">
 			<div class="col-sm-12 mb-3 mt-3">
-				<h1 class="bd-title text-center">List Voucher</h1>
+				<h1 class="bd-title text-center">List Kategory</h1>
 			</div>
 		</div>
 		<div class="row">
@@ -62,25 +61,17 @@
 				<table id="example" class="display" style="width:100%">
 					<thead>
 						<tr>
-							<th>Nama</th>
-							<th>Email</th>
 							<th>Kategory</th>
-							<th>Kode Voucher</th>
-							<th>Status</th>
-							<th>Waktu Redeem</th>
-							<th>Admin Redeem</th>
+							<th>Sudah</th>
+							<th>Belum</th>
 						</tr>
 					</thead>
 					<tbody>
-						@foreach ($redeem_voucher as $key => $value)
+						@foreach ($kategory_aset as $key => $value)
 							<tr>
-								<th>{{ $value->name }}</th>
-								<th>{{ $value->email }}</th>
-								<th>{{ $value->kategory }}</th>
-								<th>{{ $value->kode }}</th>
-								<th>{{ $value->status == 0 ? 'Belum Redeem' : 'Sudah Redeem' }}</th>
-								<th>{{ $value->redeem_date }}</th>
-								<th>{{ $value->user ? $value->user->name : '' }}</th>
+								<th>{{ $key }}</th>
+								<th>{{ isset($value['sudah']) ? $value['sudah'] : 0 }}</th>
+								<th>{{ isset($value['belum']) ? $value['belum'] : 0 }}</th>
 							</tr>
 						@endforeach
 					</tbody>
@@ -103,7 +94,7 @@
 		$(document).ready(function() {
 			$('#example').DataTable({
 				order: [
-					[3, 'desc']
+					[0, 'desc']
 				],
 			});
 		});
