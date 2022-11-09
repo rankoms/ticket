@@ -42,6 +42,17 @@
 	<!-- We use those styles to show code examples, you should remove them in your application.-->
 	<link rel="stylesheet" href="{{ url('css/prism.css') }}">
 	<link href="{{ url('css/examples.css') }}" rel="stylesheet">
+	<style>
+		.swal2-popup {
+			font-size: 1.4rem !important;
+			font-family: cursive !important;
+		}
+
+		.swal2-popup .btn,
+		.swal2-popup .swal2-confirm {
+			width: 100%;
+		}
+	</style>
 </head>
 
 <body style="background-image:url('images/bg.png');">
@@ -107,7 +118,13 @@
 						cancelButtonColor: '#d33',
 						cancelButtonText: 'Ticket Sudah Di gunakan',
 						showCloseButton: true,
-						allowOutsideClick: false
+						allowOutsideClick: false,
+						background: 'rgba(255,255,255,0.4)',
+						backdrop: `
+    rgba(0,0,123,0.4)
+    url("/images/bg.png")
+  `,
+						color: '#000'
 					}).then((result) => {
 						$('#voucher').val('');
 						$('#voucher').focus();
@@ -119,6 +136,12 @@
 					Swal.fire({
 						title: data.data.name,
 						icon: 'success',
+						background: 'rgba(255,255,255,0.4)',
+						backdrop: `
+    rgba(0,0,123,0.4)
+    url("/images/bg.png")
+  `,
+						color: '#000',
 						html: `<p>${data.data.email}</p>
 								<p>${data.data.kategory}</p>
 						`,
@@ -147,6 +170,8 @@
 			$('#voucher').val('');
 		});
 
+		$(".swal2-modal").css('background-color', '#000'); //Optional changes the color of the sweetalert 
+		$(".swal2-container.in").css('background-color', 'rgba(43, 165, 137, 0.45)'); //changes the color of the overlay
 		function getJSON(url, data, type = 'POST') {
 			return JSON.parse($.ajax({
 				type: type,
