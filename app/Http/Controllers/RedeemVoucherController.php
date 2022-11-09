@@ -26,8 +26,6 @@ class RedeemVoucherController extends Controller
         $redeem_voucher = RedeemVoucher::orderBy('kategory', 'asc')->get();
         $jumlah_belum = 0;
         $jumlah_sudah = 0;
-        // $kategory_aset['sudah'] = [];
-        // $kategory_aset['belum'] = [];
         foreach ($redeem_voucher as $key => $value) :
             if ($value->status == 0) :
                 $jumlah_belum++;
@@ -65,6 +63,11 @@ class RedeemVoucherController extends Controller
         $voucher = $request->voucher;
 
         $redeem_voucher = RedeemVoucher::where('kode', $voucher)->first();
+
+        $redeem_history = new RedeemHistory();
+        $redeem_history->redeem_by = Auth::user()->id;
+        $redeem_history->kode = $redeem_voucher->kode;
+        $redeem_history->save();
         if (!$redeem_voucher) {
             return ResponseFormatter::error(null, 'Kode tidak ditemukan');
         } else {
@@ -88,10 +91,6 @@ class RedeemVoucherController extends Controller
         $redeem_voucher->status = 1;
         $redeem_voucher->save();
 
-        $redeem_history = new RedeemHistory();
-        $redeem_history->redeem_by = Auth::user()->id;
-        $redeem_history->kode = $redeem_voucher->kode;
-        $redeem_history->save();
         return ResponseFormatter::success(null, 'Berhasil di update');
     }
 
