@@ -42,10 +42,13 @@ Route::get('/redeem_voucher/{kode}', [RedeemVoucherController::class, 'detail'])
 
 
 Route::group(['middleware' => ['auth'], 'prefix' => 'admin'], function () {
+    Route::get('/dashboard', [RedeemVoucherController::class, 'dashboard'])->name('redeem_voucher.dashboard');
     Route::resource('event', EventController::class);
     Route::resource('ticket', TicketController::class);
 });
-Auth::routes();
+Auth::routes([
+    'register' => false
+]);
 Route::get('user_logout', [LoginController::class, 'logout'])->name('user.logout');
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');

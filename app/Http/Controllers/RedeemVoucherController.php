@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ResponseFormatter;
+use App\Models\Event;
 use App\Models\RedeemHistory;
 use App\Models\RedeemVoucher;
 use Illuminate\Http\Request;
@@ -37,6 +38,26 @@ class RedeemVoucherController extends Controller
             endif;
         endforeach;
         return view('summary_redeem', compact('kategory_aset', 'jumlah_belum', 'jumlah_sudah', 'redeem_voucher'));
+    }
+
+    public function dashboard(Request $request)
+    {
+        $redeem_voucher = RedeemVoucher::orderBy('kategory', 'asc')->get();
+
+        $jumlah_belum = 0;
+        $jumlah_sudah = 0;
+        // $kategory_aset['sudah'] = [];
+        // $kategory_aset['belum'] = [];
+        foreach ($redeem_voucher as $key => $value) :
+            if ($value->status == 0) :
+                $jumlah_belum++;
+                isset($kategory_aset[$value->kategory]['belum']) ? $kategory_aset[$value->kategory]['belum']++ : $kategory_aset[$value->kategory]['belum'] = 1;
+            else :
+                $jumlah_sudah++;
+                isset($kategory_aset[$value->kategory]['sudah']) ? $kategory_aset[$value->kategory]['sudah']++ : $kategory_aset[$value->kategory]['sudah'] = 1;
+            endif;
+        endforeach;
+        return view('admin.dashboard', compact('kategory_aset', 'jumlah_belum', 'jumlah_sudah', 'redeem_voucher'));
     }
 
     public function cek_redeem_voucher(Request $request)
