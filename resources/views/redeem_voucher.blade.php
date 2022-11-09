@@ -156,7 +156,13 @@
 							timer: 2000,
 							icon: 'success',
 							title: data.meta.message,
-							showConfirmButton: false
+							showConfirmButton: false,
+							background: 'rgba(255,255,255,0.4)',
+							backdrop: `
+    rgba(0,0,123,0.4)
+    url("/images/bg.png")
+  `,
+							color: '#000'
 						})
 						$('#voucher').val('');
 						$('#voucher').focus();
