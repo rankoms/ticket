@@ -87,7 +87,7 @@
 							<br>
 						</div>
 						<input class="form-control mb-3" id="voucher" name="voucher" size="16" type="text" placeholder=""
-							autofocus autocomplete="false">
+							autofocus autocomplete="off">
 						<button class="btn btn-info" style="width:100%" type="submit" autofocus="false">Search</button>
 					</div>
 				</div>
@@ -106,6 +106,9 @@
 <script type="text/javascript" src="{{ url('js/jquery.min.js') }}"></script>
 
 <script>
+	setInterval(() => {
+		document.getElementById("voucher").focus();
+	}, 500);
 	$('#form-voucher').on('submit', function(e) {
 		e.preventDefault();
 		var data = getJSON("{{ route('redeem_voucher.cek_redeem_voucher') }}", {
@@ -128,9 +131,9 @@
 
 				background: 'rgba(255,255,255,0.4)',
 				backdrop: `
-    rgba(0,0,123,0.4)
-    url("/images/bg.png")
-  `,
+					rgba(0,0,123,0.4)
+					url("/images/bg.png")
+				`,
 				color: '#000',
 				showCloseButton: true,
 			})
@@ -154,9 +157,9 @@
 					allowOutsideClick: false,
 					background: 'rgba(255,255,255,0.4)',
 					backdrop: `
-    rgba(0,0,123,0.4)
-    url("/images/bg2.png")
-  `,
+						rgba(0,0,123,0.4)
+						url("/images/bg2.png")
+					`,
 					color: '#000'
 				}).then((result) => {
 					$('#voucher').val('');
@@ -172,9 +175,9 @@
 					icon: 'success',
 					background: 'rgba(255,255,255,0.4)',
 					backdrop: `
-    rgba(0,0,123,0.4)
-    url("/images/bg2.png")
-  `,
+						rgba(0,0,123,0.4)
+						url("/images/bg2.png")
+					`,
 					color: '#000',
 					html: `<p>${data.data.email}</p>
 								<p>${data.data.kategory}</p>
@@ -194,9 +197,9 @@
 							showConfirmButton: false,
 							background: 'rgba(255,255,255,0.4)',
 							backdrop: `
-    rgba(0,0,123,0.4)
-    url("/images/bg2.png")
-  `,
+							rgba(0,0,123,0.4)
+							url("/images/bg2.png")
+						`,
 							color: '#000'
 						})
 					}
@@ -207,7 +210,9 @@
 		}
 		$('#voucher').focus();
 		$('#voucher').val('');
+		document.getElementById("voucher").focus();
 	});
+	document.getElementById("voucher").focus();
 
 	$(".swal2-modal").css('background-color', '#000'); //Optional changes the color of the sweetalert 
 	$(".swal2-container.in").css('background-color', 'rgba(43, 165, 137, 0.45)'); //changes the color of the overlay
