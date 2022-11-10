@@ -86,8 +86,8 @@
 							<h1 class="text-center">Scan E-Ticket</h1>
 							<br>
 						</div>
-						<input class="form-control mb-3" id="voucher" name="voucher" size="16" type="text" placeholder=""
-							autofocus autocomplete="false">
+						<input class="form-control mb-3" id="voucher" name="voucher" size="16" type="text"
+							placeholder="" autofocus autocomplete="false">
 						<button class="btn btn-info" style="width:100%" type="submit" autofocus="false">Search</button>
 					</div>
 				</div>
@@ -106,7 +106,7 @@
 <script type="text/javascript" src="{{ url('js/jquery.min.js') }}"></script>
 
 <script>
-	$('#form-voucher').on('submit', function(e) {
+	$('#form-voucher').on('submit', function (e) {
 		e.preventDefault();
 		var data = getJSON("{{ route('redeem_voucher.cek_redeem_voucher') }}", {
 			_token: '{{ csrf_token() }}',
@@ -120,7 +120,7 @@
 				'error'
 			)
 			Swal.fire({
-				title: 'Gagal',
+				title: 'E-Ticket Tidak Terdaftar',
 				text: data.meta.message,
 				icon: 'error',
 				showConfirmButton: false,
@@ -129,7 +129,7 @@
 				background: 'rgba(255,255,255,0.4)',
 				backdrop: `
     rgba(0,0,123,0.4)
-    url("/images/bg.png")
+    url("/images/bg3.png")
   `,
 				color: '#000',
 				showCloseButton: true,
@@ -155,7 +155,7 @@
 					background: 'rgba(255,255,255,0.4)',
 					backdrop: `
     rgba(0,0,123,0.4)
-    url("/images/bg2.png")
+    url("/images/bg3.png")
   `,
 					color: '#000'
 				}).then((result) => {
@@ -173,7 +173,7 @@
 					background: 'rgba(255,255,255,0.4)',
 					backdrop: `
     rgba(0,0,123,0.4)
-    url("/images/bg2.png")
+    url("/images/bg3.png")
   `,
 					color: '#000',
 					html: `<p>${data.data.email}</p>
@@ -193,10 +193,7 @@
 							title: data.meta.message,
 							showConfirmButton: false,
 							background: 'rgba(255,255,255,0.4)',
-							backdrop: `
-    rgba(0,0,123,0.4)
-    url("/images/bg2.png")
-  `,
+							backdrop: `rgba(0,0,123,0.4)url("/images/bg2.png")`,
 							color: '#000'
 						})
 					}
@@ -219,7 +216,7 @@
 			dataType: 'json',
 			global: false,
 			async: false,
-			success: function(msg) {
+			success: function (msg) {
 
 			}
 		}).responseText);
