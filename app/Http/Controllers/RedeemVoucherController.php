@@ -66,7 +66,7 @@ class RedeemVoucherController extends Controller
 
         $redeem_history = new RedeemHistory();
         $redeem_history->redeem_by = Auth::user()->id;
-        $redeem_history->kode = $redeem_voucher->kode;
+        $redeem_history->kode = $redeem_voucher ? $redeem_voucher->kode : $voucher;
         $redeem_history->save();
         if (!$redeem_voucher) {
             return ResponseFormatter::error(null, 'Kode tidak ditemukan');

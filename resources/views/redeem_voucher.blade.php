@@ -101,6 +101,21 @@
 					data.meta.message,
 					'error'
 				)
+				Swal.fire({
+					title: 'Gagal',
+					text: data.meta.message,
+					icon: 'error',
+					showConfirmButton: false,
+					showCloseButton: true,
+
+					background: 'rgba(255,255,255,0.4)',
+					backdrop: `
+    rgba(0,0,123,0.4)
+    url("/images/bg.png")
+  `,
+					color: '#000',
+					showCloseButton: true,
+				})
 
 			} else {
 				if (data.data.status == 1) {
@@ -135,6 +150,7 @@
 					id = data.data.id;
 					Swal.fire({
 						title: data.data.name,
+						showCloseButton: true,
 						icon: 'success',
 						background: 'rgba(255,255,255,0.4)',
 						backdrop: `
