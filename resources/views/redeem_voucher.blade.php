@@ -123,7 +123,7 @@
 				'error'
 			)
 			Swal.fire({
-				title: 'Gagal',
+				title: 'E-Ticket Tidak Terdaftar',
 				text: data.meta.message,
 				icon: 'error',
 				showConfirmButton: false,
@@ -132,7 +132,7 @@
 				background: 'rgba(255,255,255,0.4)',
 				backdrop: `
 					rgba(0,0,123,0.4)
-					url("/images/bg.png")
+					url("/images/bg3.png")
 				`,
 				color: '#000',
 				showCloseButton: true,
@@ -158,7 +158,7 @@
 					background: 'rgba(255,255,255,0.4)',
 					backdrop: `
 						rgba(0,0,123,0.4)
-						url("/images/bg2.png")
+						url("/images/bg3.png")
 					`,
 					color: '#000'
 				}).then((result) => {

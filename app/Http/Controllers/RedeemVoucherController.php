@@ -69,7 +69,7 @@ class RedeemVoucherController extends Controller
         $redeem_history->kode = $redeem_voucher ? $redeem_voucher->kode : $voucher;
         $redeem_history->save();
         if (!$redeem_voucher) {
-            return ResponseFormatter::error(null, 'Kode tidak ditemukan');
+            return ResponseFormatter::error(null, '');
         } else {
             if ($redeem_voucher->status == 1) {
                 return ResponseFormatter::success($redeem_voucher, 'Data Sudah Digunakan');
