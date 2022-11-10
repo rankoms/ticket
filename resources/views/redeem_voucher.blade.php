@@ -52,10 +52,19 @@
 		.swal2-popup .swal2-confirm {
 			width: 100%;
 		}
+
+	body {
+  		width: 100%;
+  		height: 120vh;
+ 		background: url('images/bg.png'); center top no-repeat;
+  		background-size: cover;
+  		position: relative;
+		}
 	</style>
 </head>
 
-<body style="background-image:url('images/bg.png');">
+<!-- <body style="background-image:url('images/bg.png');"> -->
+
 	<form action="" id="form-voucher">
 		<div class="min-vh-100 d-flex flex-row align-items-center">
 			<div class="container">
@@ -66,10 +75,12 @@
 
 							</div>
 							<div class="clearfix">
-								<h1 class="text-center">Scan QR Code</h1>
+							<!-- <img src="images/logosabang.png" class="img-fluid" alt=""> -->
+								<h1 class="text-center">Scan E-Ticket</h1>
+								<br>
 							</div>
 							<input class="form-control mb-3" id="voucher" name="voucher" size="16" type="text"
-								placeholder="What are you looking for?" autofocus autocomplete="false">
+								placeholder="" autofocus autocomplete="false">
 							<button class="btn btn-info" style="width:100%" type="submit" autofocus="false">Search</button>
 						</div>
 					</div>
@@ -110,8 +121,8 @@
 						icon: 'error',
 						html: `<p>${data.data.email}</p>
 								<p>${data.data.kategory}</p>
-								<p>Di Gunakan ${data.data.redeem_date}</p>
-								<button disabled class="btn btn-danger">Ticket Sudah Di gunakan</button>
+								<p>E-Ticket Sudah di Redeem Pada ${data.data.redeem_date}</p>
+								<button disabled class="btn btn-danger">E-Ticket Sudah Di Redeem</button>
 						`,
 						showCancelButton: false,
 						showConfirmButton: false,
@@ -122,7 +133,7 @@
 						background: 'rgba(255,255,255,0.4)',
 						backdrop: `
     rgba(0,0,123,0.4)
-    url("/images/bg.png")
+    url("/images/bg2.png")
   `,
 						color: '#000'
 					}).then((result) => {
@@ -139,7 +150,7 @@
 						background: 'rgba(255,255,255,0.4)',
 						backdrop: `
     rgba(0,0,123,0.4)
-    url("/images/bg.png")
+    url("/images/bg2.png")
   `,
 						color: '#000',
 						html: `<p>${data.data.email}</p>
@@ -160,7 +171,7 @@
 							background: 'rgba(255,255,255,0.4)',
 							backdrop: `
     rgba(0,0,123,0.4)
-    url("/images/bg.png")
+    url("/images/bg2.png")
   `,
 							color: '#000'
 						})
