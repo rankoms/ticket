@@ -14,7 +14,7 @@ class AddFotoKtpToRedeemVouchersTable extends Migration
     public function up()
     {
         Schema::table('redeem_vouchers', function (Blueprint $table) {
-            $table->string('foto_ktp', 255)->after('no_ktp');
+            $table->string('foto_ktp', 255)->after('no_ktp')->nullable();
         });
     }
 
