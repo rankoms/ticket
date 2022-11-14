@@ -8,6 +8,7 @@ use App\Models\RedeemHistory;
 use App\Models\RedeemVoucher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class RedeemVoucherController extends Controller
 {
@@ -19,6 +20,11 @@ class RedeemVoucherController extends Controller
     public function index()
     {
         return view('redeem_voucher');
+    }
+
+    public function index_v2()
+    {
+        return view('redeem_voucher_v2');
     }
 
     public function summary_redeem()
@@ -92,6 +98,36 @@ class RedeemVoucherController extends Controller
         $redeem_voucher->save();
 
         return ResponseFormatter::success(null, 'Redeem E-Ticket Berhasil');
+    }
+
+
+    public function redeem_voucher_update_v2(Request $request)
+    {
+        $request->validate([
+            'id' => ['required', 'numeric']
+        ]);
+
+        $img = $request->image;
+        $folderPath = "uploads/";
+
+        $image_parts = explode(";base64,", $img);
+        $image_type_aux = explode("image/", $image_parts[0]);
+        $image_type = $image_type_aux[1];
+
+        $image_base64 = base64_decode($image_parts[1]);
+        $fileName = uniqid() . '.png';
+
+        $file = $folderPath . $fileName;
+        Storage::disk('public')->put($file, $image_base64);
+
+        $redeem_voucher = RedeemVoucher::find($request->id);
+        $redeem_voucher->foto_ktp = $fileName;
+        $redeem_voucher->redeem_by = Auth::user()->id;
+        $redeem_voucher->redeem_date = date('Y-m-d H:i:s');
+        $redeem_voucher->status = 1;
+        $redeem_voucher->save();
+
+        return ResponseFormatter::success(null, 'Berhasil di update');
     }
 
     public function detail($kode)

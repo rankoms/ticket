@@ -32,11 +32,22 @@ Route::group(['prefix' => 'scanner'], function () {
 
 Route::group(['middleware' => ['auth']], function () {
 
-    Route::get('/redeem_voucher', [RedeemVoucherController::class, 'index'])->name('redeem_voucher.index');
+    Route::group(['prefix' => 'redeem_voucher'], function () {
+        Route::get('/', [RedeemVoucherController::class, 'index'])->name('redeem_voucher.index');
+        Route::get('/v2', [RedeemVoucherController::class, 'index_v2'])->name('redeem_voucher.index_v2');
+    });
+
+
+
+
     Route::get('/summary_redeem', [RedeemVoucherController::class, 'summary_redeem'])->name('redeem_voucher.summary_redeem');
     Route::post('/redeem_voucher_update', [RedeemVoucherController::class, 'redeem_voucher_update'])->name('redeem_voucher.redeem_voucher_update');
+    Route::post('/redeem_voucher_update_v2', [RedeemVoucherController::class, 'redeem_voucher_update_v2'])->name('redeem_voucher.redeem_voucher_update_v2');
     Route::post('/cek_redeem_vouceher', [RedeemVoucherController::class, 'cek_redeem_voucher'])->name('redeem_voucher.cek_redeem_voucher');
 });
+
+
+
 
 Route::get('/redeem_voucher/{kode}', [RedeemVoucherController::class, 'detail'])->name('redeem_voucher.detail');
 
