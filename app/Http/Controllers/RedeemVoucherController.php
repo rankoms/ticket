@@ -97,7 +97,7 @@ class RedeemVoucherController extends Controller
         $redeem_voucher->status = 1;
         $redeem_voucher->save();
 
-        return ResponseFormatter::success(null, 'Berhasil di update');
+        return ResponseFormatter::success(null, 'Redeem E-Ticket Berhasil');
     }
 
 

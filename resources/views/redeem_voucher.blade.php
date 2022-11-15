@@ -182,7 +182,7 @@
 					html: `<p>${data.data.email}</p>
 								<p>${data.data.kategory}</p>
 						`,
-					confirmButtonText: 'Tukarkan E-Ticket',
+					confirmButtonText: 'Redeem E-Ticket',
 				}).then((result) => {
 					if (result.isConfirmed) {
 						var data = getJSON("{{ route('redeem_voucher.redeem_voucher_update') }}", {
