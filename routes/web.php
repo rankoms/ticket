@@ -7,6 +7,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RedeemVoucherController;
 use App\Http\Controllers\ScannerController;
+use App\Http\Controllers\ScannerDesktopController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,15 +23,23 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
-Route::group(['prefix' => 'scanner'], function () {
-    Route::get('/checkin', [ScannerController::class, 'checkin'])->name('scanner.checkin');
-    Route::get('/checkout', [ScannerController::class, 'checkout'])->name('scanner.checkout');
-
-    Route::post('/section_select', [ScannerController::class, 'section_select'])->name('scanner.section_select');
-    Route::post('/section_selected', [ScannerController::class, 'section_selected'])->name('scanner.section_selected');
-});
 
 Route::group(['middleware' => ['auth']], function () {
+    Route::group(['prefix' => 'scanner'], function () {
+        Route::get('/checkin', [ScannerController::class, 'checkin'])->name('scanner.checkin');
+        Route::get('/checkout', [ScannerController::class, 'checkout'])->name('scanner.checkout');
+
+
+        Route::group(['prefix' => 'desktop'], function () {
+            Route::get('/checkin', [ScannerDesktopController::class, 'checkin'])->name('scanner.desktop.checkin');
+            Route::get('/checkout', [ScannerDesktopController::class, 'checkout'])->name('scanner.desktop.checkout');
+        });
+
+
+
+        Route::post('/section_select', [ScannerController::class, 'section_select'])->name('scanner.section_select');
+        Route::post('/section_selected', [ScannerController::class, 'section_selected'])->name('scanner.section_selected');
+    });
 
     Route::group(['prefix' => 'redeem_voucher'], function () {
         Route::get('/', [RedeemVoucherController::class, 'index'])->name('redeem_voucher.index');
@@ -39,15 +48,13 @@ Route::group(['middleware' => ['auth']], function () {
 
 
 
+    // Route::group(['prefix'=>])
 
     Route::get('/summary_redeem', [RedeemVoucherController::class, 'summary_redeem'])->name('redeem_voucher.summary_redeem');
     Route::post('/redeem_voucher_update', [RedeemVoucherController::class, 'redeem_voucher_update'])->name('redeem_voucher.redeem_voucher_update');
     Route::post('/redeem_voucher_update_v2', [RedeemVoucherController::class, 'redeem_voucher_update_v2'])->name('redeem_voucher.redeem_voucher_update_v2');
     Route::post('/cek_redeem_vouceher', [RedeemVoucherController::class, 'cek_redeem_voucher'])->name('redeem_voucher.cek_redeem_voucher');
 });
-
-
-
 
 Route::get('/redeem_voucher/{kode}', [RedeemVoucherController::class, 'detail'])->name('redeem_voucher.detail');
 

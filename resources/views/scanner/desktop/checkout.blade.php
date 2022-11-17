@@ -61,8 +61,8 @@
 
 		body {
 			width: 100%;
-			height: 100%;
-			background: url('../images/bg.png');
+			height: 120vh;
+			background: url('images/bg.png');
 			center top no-repeat;
 			background-size: cover;
 			position: relative;
@@ -93,11 +93,10 @@
 				</div>
 			</div>
 		</div>
-
 		<a href="{{ route('user.logout') }}" class="btn btn-danger position-absolute"
 			style="bottom: 10px; right:10px">Logout</a>
 		<a href="{{ route('redeem_voucher.dashboard') }}" class="btn btn-info position-absolute"
-			style="bottom: 10px; left:10px">Report</a>
+			style="bottom: 10px; left:10px">Dashboard Redeem</a>
 	</div>
 </form>
 <!-- CoreUI and necessary plugins-->
@@ -105,13 +104,11 @@
 <script src="{{ url('js/simplebar.min.js') }}"></script>
 <script src="{{ url('js/sweetalert2@11.js') }}"></script>
 <script type="text/javascript" src="{{ url('js/jquery.min.js') }}"></script>
-<script src="{{ url('js/webcam.min.js') }}"></script>
 
 <script>
 	setInterval(() => {
 		document.getElementById("voucher").focus();
 	}, 500);
-
 	$('#form-voucher').on('submit', function(e) {
 		e.preventDefault();
 		var data = getJSON("{{ route('redeem_voucher.cek_redeem_voucher') }}", {
@@ -131,7 +128,7 @@
 				icon: 'error',
 				showConfirmButton: false,
 				showCloseButton: true,
-				allowEscapeKey: true,
+
 				background: 'rgba(255,255,255,0.4)',
 				backdrop: `
 					rgba(0,0,123,0.4)
@@ -150,16 +147,14 @@
 					html: `<p>${data.data.email}</p>
 								<p>${data.data.kategory}</p>
 								<p>E-Ticket Sudah di Redeem Pada ${data.data.redeem_date}</p>
-								<img src="{{ asset('storage/uploads') }}/${data.data.foto_ktp}">
 								<button disabled class="btn btn-danger">E-Ticket Sudah Di Redeem</button>
 						`,
 					showCancelButton: false,
 					showConfirmButton: false,
-					allowEscapeKey: false,
 					cancelButtonColor: '#d33',
 					cancelButtonText: 'Ticket Sudah Di gunakan',
 					showCloseButton: true,
-					allowOutsideClick: true,
+					allowOutsideClick: false,
 					background: 'rgba(255,255,255,0.4)',
 					backdrop: `
 						rgba(0,0,123,0.4)
@@ -177,7 +172,6 @@
 				Swal.fire({
 					title: data.data.name,
 					showCloseButton: true,
-					allowEscapeKey: true,
 					icon: 'success',
 					background: 'rgba(255,255,255,0.4)',
 					backdrop: `
@@ -187,38 +181,13 @@
 					color: '#000',
 					html: `<p>${data.data.email}</p>
 								<p>${data.data.kategory}</p>
-				<div class="d-flex">
-
-				<button class="btn btn-primary m-sm-5" id="ambil-gambar">Ambil Gambar KTP</button>
-				<button class="btn btn-danger m-sm-5" id="reset-gambar">Reset Gambar KTP</button>
-				</div>
-				<div id="my_camera" class="m-sm-auto"></div>
-					<input type="hidden" name="image" class="image-tag" id="image-tag">
-				<div class="pt-3">
-					<label for="results">Hasil Gambar</label>
-					<div id="results" class="mt-4">
-				</div>
-				</div>
-					
-					`,
-					confirmButtonText: 'Tukarkan E-Ticket',
-					preConfirm: () => {
-						if ($('#image-tag').val() == '') {
-
-							// alert('oke')
-							return Swal.showValidationMessage(
-								`Ambil Foto KTP Terlebih dahulu`
-							)
-						}
-					},
+						`,
+					confirmButtonText: 'Redeem E-Ticket',
 				}).then((result) => {
 					if (result.isConfirmed) {
-
-
-						var data = getJSON("{{ route('redeem_voucher.redeem_voucher_update_v2') }}", {
+						var data = getJSON("{{ route('redeem_voucher.redeem_voucher_update') }}", {
 							_token: '{{ csrf_token() }}',
-							id: id,
-							image: $('#image-tag').val()
+							id: id
 						});
 
 						Swal.fire({
@@ -236,29 +205,7 @@
 					}
 					$('#voucher').val('');
 					$('#voucher').focus();
-					$('#image-tag').val('');
 				});
-				Webcam.set({
-					width: 490,
-					height: 350,
-					image_format: 'jpeg',
-					jpeg_quality: 90
-				});
-
-				$('#ambil-gambar').on('click', function() {
-					Webcam.snap(function(data_uri) {
-						$("#image-tag").val(data_uri);
-						document.getElementById('results').innerHTML = '<img src="' +
-							data_uri + '"/>';
-					});
-				})
-
-				$('#reset-gambar').on('click', function() {
-					$('#image-tag').val('');
-					$('#results').html('');
-				})
-
-				Webcam.attach('#my_camera');
 			}
 		}
 		$('#voucher').focus();

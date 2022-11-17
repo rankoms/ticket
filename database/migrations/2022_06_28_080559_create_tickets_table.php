@@ -16,10 +16,10 @@ class CreateTicketsTable extends Migration
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
             $table->integer('order_id')->index();
-            $table->string('barcode_no')->unique();
-            $table->string('ticket_type')->default('reguler')->nullable();
-            $table->dateTime('checkin')->nullable();
-            $table->dateTime('checkout')->nullable();
+            $table->string('barcode_no')->unique()->index();
+            $table->string('ticket_type')->default('reguler')->nullable()->index();
+            $table->dateTime('checkin')->nullable()->index();
+            $table->dateTime('checkout')->nullable()->index();
             $table->timestamps();
         });
     }
