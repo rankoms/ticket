@@ -61,7 +61,7 @@
 
 		body {
 			width: 100%;
-			height: 120vh;
+			height: 100%;
 			background: url('images/bg.png');
 			center top no-repeat;
 			background-size: cover;
@@ -96,7 +96,7 @@
 		<a href="{{ route('user.logout') }}" class="btn btn-danger position-absolute"
 			style="bottom: 10px; right:10px">Logout</a>
 		<a href="{{ route('redeem_voucher.dashboard') }}" class="btn btn-info position-absolute"
-			style="bottom: 10px; left:10px">Dashboard Redeem</a>
+			style="bottom: 10px; left:10px">Report</a>
 	</div>
 </form>
 <!-- CoreUI and necessary plugins-->
@@ -175,8 +175,8 @@
 					icon: 'success',
 					background: 'rgba(255,255,255,0.4)',
 					backdrop: `
-						rgba(0,0,123,0.4)
-						url("/images/bg2.png")
+					rgba(0,0,123,0.4)
+						url("/images/bg3.png")
 					`,
 					color: '#000',
 					html: `<p>${data.data.email}</p>
@@ -198,7 +198,7 @@
 							background: 'rgba(255,255,255,0.4)',
 							backdrop: `
 							rgba(0,0,123,0.4)
-							url("/images/bg2.png")
+						url("/images/bg3.png")
 						`,
 							color: '#000'
 						})
