@@ -61,9 +61,9 @@
 				<table id="example" class="display" style="width:100%">
 					<thead>
 						<tr>
-							<th>Kategory</th>
-							<th>Sudah</th>
-							<th>Belum</th>
+							<th>Category</th>
+							<th>Redeem</th>
+							<th>Pending</th>
 						</tr>
 					</thead>
 					<tbody>
