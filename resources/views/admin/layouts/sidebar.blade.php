@@ -19,6 +19,14 @@
 						</p>
 					</a>
 				</li>
+				<li class="nav-item">
+					<a href="{{ route('dashboard_ticket') }}" class="nav-link {{ areActiveRoutes(['dashboard_ticket']) }}">
+						<i class="nav-icon fas fa-tachometer-alt"></i>
+						<p>
+							Dashboard Ticket
+						</p>
+					</a>
+				</li>
 				{{-- 
 				<li class="nav-item">
 					<a href="{{ route('event.index') }}"
@@ -54,6 +62,15 @@
 						<i class="nav-icon fas fa-edit"></i>
 						<p>
 							Voucher Redeem
+						</p>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a href="{{ route('scanner.pilih_event') }}"
+						class="nav-link {{ areActiveRoutes(['ticket.index', 'ticket.create', 'ticket.edit']) }}">
+						<i class="nav-icon fas fa-edit"></i>
+						<p>
+							Scanner Ticket
 						</p>
 					</a>
 				</li>

@@ -13,32 +13,27 @@
 		</div>
 		<div class="content">
 			<select class="custom-select" name="events" id="events">
-				<option value="">Pilih Event</option>
-				@foreach ($events as $key => $value)
-					<option value="{{ $value->id }}">{{ $value->name }}</option>
-				@endforeach
+				<option value="{{ $event->event }}">{{ $event->event }}</option>
 			</select>
 			<select class="custom-select" name="section" id="section">
-				<option value="">Pilih Section</option>
+				<option value="{{ $event->category }}">{{ $event->category }}</option>
 			</select>
 
 			<select class="custom-select" name="gate" id="gate">
-				<option value="">Pilih Gate</option>
 				<option value="checkin">Checkin</option>
-				<option value="checkout">Checkout</option>
 			</select>
 			<div id="reader" width="100%" max-width="480px"></div>
 			<div class="wrapper-keterangan">
 				<div class="wrapper-box">
-					Pending
+					Total Pending
 					<div id="jumlah_pending">
-						0
+						{{ $total_pending }}
 					</div>
 				</div>
 				<div class="wrapper-box">
-					Checkin
+					Total Checkin
 					<div id="jumlah_checkin">
-						0
+						{{ $total_checkin }}
 					</div>
 				</div>
 			</div>
@@ -98,8 +93,8 @@
 @endsection
 
 @section('script')
-	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-	<script src="https://unpkg.com/html5-qrcode"></script>
+	<script src="{{ url('js/sweetalert2@11.js') }}"></script>
+	<script src="{{ url('js/html5-qrcode.min.js') }}"></script>
 	<script>
 		var scan = 0;
 
@@ -115,14 +110,28 @@
 				if (!$('#gate').val()) {
 					return gagal_pilih_gate('scan');
 				}
-				var data = getJSON("{{ \config('scanner.base_url') . \config('scanner.checkin') }}", {
+				var data = getJSON("{{ route('ticket.checkin') }}", {
 					'barcode_no': decodedText,
-					'ticket_type': $('#section').val(),
-					'gate': $('#gate').val()
+					'category': $('#section').val(),
+					'gate': $('#gate').val(),
+					'_token': '{{ csrf_token() }}'
 				});
 				if (data.meta.code != 200) {
+					Swal.fire({
+						timer: 5000,
+						icon: 'error',
+						title: data.meta.message,
+						showConfirmButton: false
+					});
 					alert(data.meta.message);
 				} else {
+					Swal.fire({
+						timer: 5000,
+						icon: 'success',
+						title: data.meta.message,
+						showConfirmButton: false
+					});
+					alert(data.meta.message);
 					$('#jumlah_checkin').html(data.data['checkin'])
 					$('#jumlah_pending').html(data.data['pending'])
 				}
@@ -199,9 +208,9 @@
 				return gagal_pilih_gate();
 			}
 
-			var data = getJSON("{{ \config('scanner.base_url') . \config('scanner.checkin') }}", {
+			var data = getJSON("{{ route('ticket.checkin') }}", {
 				'barcode_no': $('#ticket').val(),
-				'ticket_type': $('#section').val(),
+				'category': $('#section').val(),
 				'gate': $('#gate').val()
 			});
 			if (data.meta.code != 200) {

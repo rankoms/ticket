@@ -27,12 +27,3 @@
 		</div>
 	</main>
 @endsection
-
-@section('script')
-	<script>
-		$('#spinner-loading').show();
-		setTimeout(() => {
-			window.location = "{{ route('welcome') }}"
-		}, 2000);
-	</script>
-@endsection

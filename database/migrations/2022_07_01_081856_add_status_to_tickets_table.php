@@ -14,7 +14,7 @@ class AddStatusToTicketsTable extends Migration
     public function up()
     {
         Schema::table('tickets', function (Blueprint $table) {
-            $table->boolean('status')->after('checkout');
+            $table->boolean('status')->after('checkout')->nullable();
         });
     }
 

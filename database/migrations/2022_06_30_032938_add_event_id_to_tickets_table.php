@@ -14,7 +14,7 @@ class AddEventIdToTicketsTable extends Migration
     public function up()
     {
         Schema::table('tickets', function (Blueprint $table) {
-            $table->integer('event_id')->after('id');
+            $table->integer('event_id')->after('id')->nullable();
         });
     }
 

@@ -26,6 +26,9 @@ Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
 Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'scanner'], function () {
+        Route::get('/store_pilih_event', [ScannerController::class, 'store_pilih_event'])->name('scanner.store_pilih_event');
+        Route::get('/pilih_event', [ScannerController::class, 'pilih_event'])->name('scanner.pilih_event');
+
         Route::get('/checkin', [ScannerController::class, 'checkin'])->name('scanner.checkin');
         Route::get('/checkout', [ScannerController::class, 'checkout'])->name('scanner.checkout');
 
@@ -39,6 +42,9 @@ Route::group(['middleware' => ['auth']], function () {
 
         Route::post('/section_select', [ScannerController::class, 'section_select'])->name('scanner.section_select');
         Route::post('/section_selected', [ScannerController::class, 'section_selected'])->name('scanner.section_selected');
+
+
+        Route::post('/ticket/checkin', [TicketController::class, 'checkin'])->name('ticket.checkin');
     });
 
     Route::group(['prefix' => 'redeem_voucher'], function () {
@@ -61,6 +67,7 @@ Route::get('/redeem_voucher/{kode}', [RedeemVoucherController::class, 'detail'])
 
 Route::group(['middleware' => ['auth'], 'prefix' => 'admin'], function () {
     Route::get('/dashboard', [RedeemVoucherController::class, 'dashboard'])->name('redeem_voucher.dashboard');
+    Route::get('/dashboard_ticket', [TicketController::class, 'dashboard_ticket'])->name('dashboard_ticket');
     Route::resource('event', EventController::class);
     Route::resource('ticket', TicketController::class);
 });

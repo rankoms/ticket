@@ -50,6 +50,7 @@ class RedeemVoucherController extends Controller
 
         $jumlah_belum = 0;
         $jumlah_sudah = 0;
+        $kategory_aset = [];
         // $kategory_aset['sudah'] = [];
         // $kategory_aset['belum'] = [];
         foreach ($redeem_voucher as $key => $value) :

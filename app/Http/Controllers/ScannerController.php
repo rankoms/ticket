@@ -14,27 +14,73 @@ class ScannerController extends Controller
     //
     public function checkin(Request $request)
     {
-        $events = Event::where('is_active', 1)->get();
+        $event = Ticket::select('event', 'category')->where('category', $request->section)->first();
+        if (!$event) {
+            return redirect()->route('scanner.pilih_event');
+        }
+        $events = Ticket::where('category', $request->section)->get();
 
-        return view('scanner.checkin', compact('events'));
+        $total_pending = 0;
+        $total_checkin = 0;
+        foreach ($events as $key => $value) :
+            if ($value->checkin == null) {
+                $total_pending++;
+            } else {
+                $total_checkin++;
+            }
+        endforeach;
+
+
+        return view('scanner.checkin', compact('event', 'total_pending', 'total_checkin'));
+    }
+
+    public function pilih_event(Request $request)
+    {
+        $events = Ticket::select('event')->groupBy('event')->get();
+        return view('scanner.pilih_event', compact('events'));
+    }
+    public function store_pilih_event(Request $request)
+    {
+        if ($request->gate == 'checkin') {
+            return redirect()->route('scanner.checkin', ['section' => $request->section]);
+        } else {
+            return redirect()->route('scanner.checkout', ['section' => $request->section]);
+        }
     }
     public function checkout(Request $request)
     {
-        return view('scanner.checkout');
+        $event = Ticket::select('event', 'category')->where('category', $request->section)->first();
+        if (!$event) {
+            return redirect()->route('scanner.pilih_event');
+        }
+        $events = Ticket::where('category', $request->section)->get();
+
+        $total_checkin = 0;
+        $total_checkout = 0;
+        foreach ($events as $key => $value) :
+            if ($value->checkin && $value->checkout == null) {
+                $total_checkin++;
+            }
+
+            if ($value->checkout) {
+                $total_checkout++;
+            }
+        endforeach;
+
+
+        return view('scanner.checkout', compact('event', 'total_checkin', 'total_checkout'));
     }
 
     public function section_select(Request $request)
     {
         request()->validate([
-            'id' => ['required', 'numeric']
+            'event' => ['required']
         ]);
 
-        $event_id = $request->id;
-        $event_gate = EventGate::select('type', 'name')
-            ->where('event_id', $event_id)
-            ->get();
+        $event = $request->event;
+        $category = Ticket::select('category')->where('event', $event)->groupBy('category')->get();
 
-        $ticket = Ticket::where('event_id', $event_id)
+        $ticket = Ticket::where('event', $event)
             ->get();
         $pending = 0;
         $checkin = 0;
@@ -47,7 +93,7 @@ class ScannerController extends Controller
                 $pending++;
             }
         }
-        $data['event_gate'] = $event_gate;
+        $data['event_gate'] = $category;
         $data['pending'] = $pending;
         $data['checkin'] = $checkin;
         $data['total_ticket'] = $total_ticket;

@@ -9,34 +9,24 @@
 				Back
 			</a>
 
-			<span>Checkout Ticket</span>
+			<span>Checkin Ticket</span>
 		</div>
 		<div class="content">
 			<select class="custom-select" name="events" id="events">
-				<option value="{{ $event->event }}">{{ $event->event }}</option>
+				<option value="{{ $events->id }}">{{ $events->name }}</option>
 			</select>
 			<select class="custom-select" name="section" id="section">
-				<option value="{{ $event->category }}">{{ $event->category }}</option>
+				<option value="">Pilih Section</option>
+				@foreach ($gate as $key => $value)
+					<option value="{{ $value->id }}">{{ $value->name }}</option>
+				@endforeach
 			</select>
 
 			<select class="custom-select" name="gate" id="gate">
+				<option value="">Pilih Gate</option>
+				<option value="checkin">Checkin</option>
 				<option value="checkout">Checkout</option>
 			</select>
-			<div id="reader" width="100%" max-width="480px"></div>
-			<div class="wrapper-keterangan">
-				<div class="wrapper-box">
-					Total Checkin
-					<div id="jumlah_checkin">
-						{{ $total_checkin }}
-					</div>
-				</div>
-				<div class="wrapper-box">
-					Total Checkout
-					<div id="jumlah_checkout">
-						{{ $total_checkout }}
-					</div>
-				</div>
-			</div>
 		</div>
 		<div class="container-btn-manual" style="display: none">
 			<button class="btn-manual">Input Manual</button>
@@ -46,7 +36,7 @@
 				<div id="PopupDetail" class="container-popup ">
 					<div class="wrapper-title">
 						<div class="labelPopup">
-							Checkout Ticket
+							Checkin Ticket
 						</div>
 						<div class="boxClose">
 							<img src="{{ url('images/mobile/icons/close.svg') }}" alt="close" width="24px" height="24px"
@@ -93,10 +83,11 @@
 @endsection
 
 @section('script')
-	<script src="{{ url('js/sweetalert2@11.js') }}"></script>
-	<script src="{{ url('js/html5-qrcode.min.js') }}"></script>
+	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script src="https://unpkg.com/html5-qrcode"></script>
 	<script>
 		var scan = 0;
+
 
 		function onScanSuccess(decodedText, decodedResult) {
 			if (scan == 0) {
@@ -109,28 +100,16 @@
 				if (!$('#gate').val()) {
 					return gagal_pilih_gate('scan');
 				}
-				var data = getJSON("{{ route('ticket.checkin') }}", {
+				var data = getJSON("{{ \config('scanner.base_url') . \config('scanner.checkin') }}", {
 					'barcode_no': decodedText,
-					'category': $('#section').val(),
-					'gate': $('#gate').val(),
-					'_token': '{{ csrf_token() }}'
+					'ticket_type': $('#section').val(),
+					'gate': $('#gate').val()
 				});
 				if (data.meta.code != 200) {
-					Swal.fire(
-						'Gagal',
-						data.meta.message,
-						'error'
-					)
 					alert(data.meta.message);
 				} else {
-					Swal.fire(
-						'Berhasil',
-						data.meta.message,
-						'success'
-					)
-					alert(data.meta.message);
 					$('#jumlah_checkin').html(data.data['checkin'])
-					$('#jumlah_checkout').html(data.data['pending'])
+					$('#jumlah_pending').html(data.data['pending'])
 				}
 			}
 		}
@@ -165,6 +144,136 @@
 
 				}
 			}).responseText);
+		}
+
+		$('#events').on('change', function(e) {
+			var data = getJSON("{{ route('scanner.section_select') }}", {
+				_token: '{{ csrf_token() }}',
+				id: $(this).val()
+			});
+			$('#jumlah_checkin').html(data.data['checkin'])
+			$('#jumlah_pending').html(data.data['pending'])
+			$('#section').find('option').not(':first').remove();
+			$.each(data.data['event_gate'], function(key, value) {
+				$('#section').append(`
+                <option value="${value['type']}">${value['name']}</option>
+            `);
+			});
+		});
+
+		$('#section').on('change', function(e) {
+			var data = getJSON("{{ route('scanner.section_selected') }}", {
+				_token: '{{ csrf_token() }}',
+				type: $(this).val(),
+				id: $('#events').val()
+			})
+			$('#jumlah_checkin').html(data.data['checkin'])
+			$('#jumlah_pending').html(data.data['pending'])
+		});
+
+
+		$('.btn-submit').on('click', function(e) {
+			e.preventDefault();
+			if (!$('#events').val()) {
+				return gagal_pilih_event();
+			}
+			if (!$('#section').val()) {
+				return gagal_pilih_section();
+			}
+			if (!$('#gate').val()) {
+				return gagal_pilih_gate();
+			}
+
+			var data = getJSON("{{ \config('scanner.base_url') . \config('scanner.checkin') }}", {
+				'barcode_no': $('#ticket').val(),
+				'ticket_type': $('#section').val(),
+				'gate': $('#gate').val()
+			});
+			if (data.meta.code != 200) {
+				Swal.fire(
+					'Gagal',
+					data.meta.message,
+					'error'
+				)
+			} else {
+				$('#spinner-loading').show();
+				scan = scan + 1;
+				Swal.fire(
+					'Berhasil',
+					data.meta.message,
+					'success'
+				)
+				$('#ticket').val('');
+
+				$('#jumlah_checkin').html(data.data['checkin'])
+				$('#jumlah_pending').html(data.data['pending'])
+			}
+		})
+		$('.btn-manual').on('click', function(e) {
+			e.preventDefault();
+			pop_up_detail();
+		})
+		$('.close-detail').on('click', function(e) {
+			close_detail();
+		})
+		// pop_up_detail();
+
+		function pop_up_detail() {
+			$('#ticket').focus();
+			setTimeout(function() {
+				bgModalAdd()
+			}, 400);
+			$('#PopupDetail').animate({
+				bottom: 0
+			});
+			$('#PopupDetail').css('max-height', maxModalHeight(40))
+			$("body").css("overflow", "hidden");
+		}
+
+		function gagal_pilih_event(scan = false) {
+			let text = 'Pilih Event terlebih dahulu';
+			if (scan) {
+				return alert(text)
+			}
+			return Swal.fire(
+				'Gagal',
+				text,
+				'error'
+			)
+		}
+
+		function gagal_pilih_section(scan = false) {
+			let text = 'Pilih Section terlebih dahulu';
+			if (scan) {
+				return alert(text)
+			}
+			return Swal.fire(
+				'Gagal',
+				text,
+				'error'
+			)
+		}
+
+		function gagal_pilih_gate(scan = false) {
+			let text = 'Pilih Gate terlebih dahulu';
+			if (scan) {
+				return alert(text)
+			}
+			return Swal.fire(
+				'Gagal',
+				text,
+				'error'
+			)
+		}
+
+		function close_detail() {
+			$('#PopupDetail').animate({
+				bottom: -$('#PopupDetail').height()
+			}, 350, function() {
+				$('#PopupDetail').css('bottom', 'unset')
+			});
+			bgModalRemove()
+			$("body").css("overflow", "inherit");
 		}
 	</script>
 @endsection

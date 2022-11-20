@@ -2,84 +2,175 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ResponseFormatter;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\ScannerController;
 use App\Models\Ticket;
+use App\Rules\ExceptSymbol;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class TicketController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+
+    public function dashboard_ticket(Request $request)
     {
-        //
+        $ticket = Ticket::orderBy('category', 'asc')->get();
+
+        $jumlah_pending = 0;
+        $jumlah_checkin = 0;
+        $jumlah_checkout = 0;
+        $kategory_aset = [];
+        // $kategory_aset['sudah'] = [];
+        // $kategory_aset['belum'] = [];
+        foreach ($ticket as $key => $value) :
+            if ($value->checkin == null && $value->checkout == null) :
+                $jumlah_pending++;
+                isset($kategory_aset[$value->category]['checkin']) ? $kategory_aset[$value->category]['checkin']++ : $kategory_aset[$value->category]['checkin'] = 1;
+            endif;
+            if ($value->checkin && $value->checkout == null) :
+                $jumlah_checkin++;
+                isset($kategory_aset[$value->category]['checkin']) ? $kategory_aset[$value->category]['checkin']++ : $kategory_aset[$value->category]['checkin'] = 1;
+            endif;
+            if ($value->checkout) :
+                $jumlah_checkout++;
+                isset($kategory_aset[$value->category]['checkout']) ? $kategory_aset[$value->category]['checkout']++ : $kategory_aset[$value->category]['checkout'] = 1;
+            endif;
+        endforeach;
+        return view('admin.dashboard_ticket', compact('kategory_aset', 'jumlah_pending', 'jumlah_checkin', 'jumlah_checkout', 'ticket'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function checkin(Request $request)
     {
-        //
+        request()->validate([
+            'category' => [new ExceptSymbol()],
+            'barcode_no' => [new ExceptSymbol()],
+            'gate' => ['required', 'in:checkin,checkout']
+        ]);
+        $now = date('Y-m-d H:i:s');
+        $gate = $request->gate;
+
+        $ticket = Ticket::where('barcode_no', $request->barcode_no)
+            ->first();
+        if (!$ticket) {
+            return ResponseFormatter::error(null, 'Ticket Not Found', 400);
+        }
+        if ($ticket->category != $request->category) {
+            return ResponseFormatter::error(null, 'Ticket Salah Pintu', 400);
+        }
+
+        if ($ticket->checkin && $gate == 'checkin' && $ticket->checkout == null) {
+            return ResponseFormatter::error(null, 'Ticket Sudah Digunakan', 400);
+        }
+        $ticket->checkout = $gate == 'checkout' ? $now : null;
+        $ticket->checkin = $gate == 'checkin' ? $now : $ticket->checkin;
+
+
+
+        if ($ticket->save()) {
+            $section_selected = $this->count_gate($ticket->event_id, $ticket->category)->getData();
+            if ($gate == 'checkin') :
+                return ResponseFormatter::success($section_selected->data, $ticket->name ? $ticket->name . ' Boleh Masuk' : 'Pengunjung' . ' Boleh Masuk');
+            else :
+                return ResponseFormatter::success($section_selected->data, $ticket->name ? $ticket->name . ' Boleh Checkout' : 'Pengunjung' . ' Boleh Checkout');
+            endif;
+        } else {
+            return ResponseFormatter::error(null, 'Terjadi kesalahan');
+        }
+    }
+    private function count_gate($event_id, $type)
+    {
+        $type = $type;
+        $ticket = Ticket::where('event_id', $event_id);
+        if ($type != 'all_section') :
+            $ticket = $ticket->where('category', $type);
+        endif;
+        $ticket = $ticket->get();
+        $pending = 0;
+        $checkin = 0;
+        foreach ($ticket as $key => $value) {
+            if ($value->checkin) {
+                $checkin++;
+            } else {
+                $pending++;
+            }
+        }
+        $data['pending'] = $pending;
+        $data['checkin'] = $checkin;
+        return ResponseFormatter::success($data);
+    }
+    public function checkout(Request $request)
+    {
+        request()->validate([
+            'category' => [new ExceptSymbol()],
+            'barcode_no' => [new ExceptSymbol()]
+        ]);
+        $now = date('Y-m-d H:i:s');
+
+        $ticket = Ticket::where('barcode_no', $request->barcode_no)
+            ->first();
+        if (!$ticket) {
+            return ResponseFormatter::error(null, 'Ticket Not Found', 400);
+        }
+        if ($ticket->category != $request->category) {
+            return ResponseFormatter::error(null, 'Ticket Salah Pintu', 400);
+        }
+        if ($ticket->checkout) {
+            if ($ticket->save()) {
+                return ResponseFormatter::success(null, $ticket->name ? $ticket->name . ' Boleh Checkout' : 'Pengunjung' . ' Boleh Checkout');
+            } else {
+                return ResponseFormatter::error(null, 'Terjadi kesalahan');
+            }
+        }
+        $ticket->checkout = $now;
+        if ($ticket->save()) {
+            return ResponseFormatter::success(null, $ticket->name ? $ticket->name . ' Berhasil Checkout' : 'Pengunjung' . ' Berhasil Checkout');
+        } else {
+            return ResponseFormatter::error(null, 'Terjadi kesalahan');
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function checkin_bulk(Request $request)
     {
-        //
-    }
+        $request = $request->json()->all();
+        $data = [];
+        $rules = [
+            'barcode_no' => ['required'],
+            'category' => ['required']
+        ];
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Ticket  $ticket
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Ticket $ticket)
-    {
-        //
-    }
+        $validator = Validator::make($request, $rules);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Ticket  $ticket
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Ticket $ticket)
-    {
-        //
-    }
+        if ($validator->passes()) {
+            $now = date('Y-m-d H:i:s');
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Ticket  $ticket
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Ticket $ticket)
-    {
-        //
-    }
+            $ticket = Ticket::where('barcode_no', $request['barcode_no'])
+                ->first();
+            if (!$ticket) {
+                return ResponseFormatter::error(null, 'Ticket Not Found', 400);
+            }
+            if ($ticket->category != $request['category']) {
+                return ResponseFormatter::error(null, 'Ticket Salah Pintu', 400);
+            }
+            if ($ticket->checkout) {
+                $ticket->checkin = $now;
+                if ($ticket->save()) {
+                    return ResponseFormatter::success(null, $ticket->name ? $ticket->name . ' Boleh Masuk' : 'Pengunjung' . ' Boleh Masuk');
+                } else {
+                    return ResponseFormatter::error(null, 'Terjadi kesalahan');
+                }
+            }
+            if ($ticket->checkin) {
+                return ResponseFormatter::error(null, 'Ticket Sudah Digunakan', 400);
+            }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Ticket  $ticket
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Ticket $ticket)
-    {
-        //
+            $ticket->checkin = $now;
+            if ($ticket->save()) {
+                return ResponseFormatter::success(null, $ticket->name ? $ticket->name . ' Boleh Masuk' : 'Pengunjung' . ' Boleh Masuk');
+            }
+        } else {
+            //TODO Handle your error
+            return ResponseFormatter::error(null, $validator->errors()->all(), 400);
+        }
     }
 }
