@@ -23,6 +23,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
+Route::get('/home_new', [HomeController::class, 'home_new'])->name('home_new');
+
 
 Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'scanner'], function () {
@@ -68,6 +70,7 @@ Route::get('/redeem_voucher/{kode}', [RedeemVoucherController::class, 'detail'])
 Route::group(['middleware' => ['auth'], 'prefix' => 'admin'], function () {
     Route::get('/dashboard', [RedeemVoucherController::class, 'dashboard'])->name('redeem_voucher.dashboard');
     Route::get('/dashboard_ticket', [TicketController::class, 'dashboard_ticket'])->name('dashboard_ticket');
+    Route::get('/dashboard_new', [HomeController::class, 'dashboard_new'])->name('dashboard_new');
     Route::resource('event', EventController::class);
     Route::resource('ticket', TicketController::class);
 });

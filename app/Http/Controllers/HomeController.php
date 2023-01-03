@@ -24,7 +24,7 @@ class HomeController extends Controller
     public function index()
     {
         return redirect()->route('redeem_voucher.index');
-        return view('home');
+        return view('home_new');
     }
     public function splash_screen()
     {
@@ -53,5 +53,10 @@ class HomeController extends Controller
             'subtitle' => "<p>Never a better time than now to start thinking about how you manage all your stuff with ease.</p>"
         ];
         return view('welcome', compact('asset'));
+    }
+
+    public function dashboard_new()
+    {
+        return view('home_new');
     }
 }
