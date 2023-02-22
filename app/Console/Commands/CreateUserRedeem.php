@@ -43,7 +43,7 @@ class CreateUserRedeem extends Command
         for ($i = 1; $i <= 10; $i++) :
             $insertUser = new User();
             $insertUser->name = 'admin ' . $i;
-            $insertUser->email = 'admin_redeem' . $i . '@admin.com';
+            $insertUser->email = 'admin' . $i . '@admin.com';
             $insertUser->password = Hash::make($randomPass);
             $insertUser->save();
         endfor;

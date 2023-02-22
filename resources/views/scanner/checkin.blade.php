@@ -99,6 +99,20 @@
 		var scan = 0;
 
 
+		let html5QrcodeScanner = new Html5QrcodeScanner(
+			"reader", {
+				fps: 10,
+				qrbox: {
+					width: 250,
+					height: 250
+				}
+			},
+			/* verbose= */
+			false);
+		html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+
+
+
 		function onScanSuccess(decodedText, decodedResult) {
 			if (scan == 0) {
 				if (!$('#events').val()) {
@@ -117,21 +131,39 @@
 					'_token': '{{ csrf_token() }}'
 				});
 				if (data.meta.code != 200) {
+					// html5QrCode.stop().then((ignore) => {
+					// 	// QR Code scanning is stopped.
+					// }).catch((err) => {
+					// 	// Stop failed, handle it.
+					// });
+					html5QrcodeScanner.clear();
 					Swal.fire({
-						timer: 5000,
+						timer: 3000,
 						icon: 'error',
 						title: data.meta.message,
 						showConfirmButton: false
-					});
-					alert(data.meta.message);
+					}).then((result) => {
+
+						html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+					})
+					// alert(data.meta.message);
 				} else {
+					// html5QrCode.stop().then((ignore) => {
+					// 	// QR Code scanning is stopped.
+					// }).catch((err) => {
+					// 	// Stop failed, handle it.
+					// });
+					html5QrcodeScanner.clear();
 					Swal.fire({
-						timer: 5000,
+						timer: 3000,
 						icon: 'success',
 						title: data.meta.message,
 						showConfirmButton: false
-					});
-					alert(data.meta.message);
+					}).then((result) => {
+
+						html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+					})
+					// alert(data.meta.message);
 					$('#jumlah_checkin').html(data.data['checkin'])
 					$('#jumlah_pending').html(data.data['pending'])
 				}
@@ -143,18 +175,6 @@
 			// for example:
 			// console.warn(`Code scan error = ${error}`);
 		}
-
-		let html5QrcodeScanner = new Html5QrcodeScanner(
-			"reader", {
-				fps: 10,
-				qrbox: {
-					width: 250,
-					height: 250
-				}
-			},
-			/* verbose= */
-			false);
-		html5QrcodeScanner.render(onScanSuccess, onScanFailure);
 
 		function getJSON(url, data, type = 'POST') {
 			return JSON.parse($.ajax({

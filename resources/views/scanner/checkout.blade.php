@@ -98,6 +98,19 @@
 	<script>
 		var scan = 0;
 
+
+		let html5QrcodeScanner = new Html5QrcodeScanner(
+			"reader", {
+				fps: 10,
+				qrbox: {
+					width: 250,
+					height: 250
+				}
+			},
+			/* verbose= */
+			false);
+		html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+
 		function onScanSuccess(decodedText, decodedResult) {
 			if (scan == 0) {
 				if (!$('#events').val()) {
@@ -116,19 +129,27 @@
 					'_token': '{{ csrf_token() }}'
 				});
 				if (data.meta.code != 200) {
-					Swal.fire(
-						'Gagal',
-						data.meta.message,
-						'error'
-					)
-					alert(data.meta.message);
+					html5QrcodeScanner.clear();
+					Swal.fire({
+						timer: 3000,
+						icon: 'error',
+						title: data.meta.message,
+						showConfirmButton: false
+					}).then((result) => {
+
+						html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+					})
 				} else {
-					Swal.fire(
-						'Berhasil',
-						data.meta.message,
-						'success'
-					)
-					alert(data.meta.message);
+					html5QrcodeScanner.clear();
+					Swal.fire({
+						timer: 3000,
+						icon: 'success',
+						title: data.meta.message,
+						showConfirmButton: false
+					}).then((result) => {
+
+						html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+					})
 					$('#jumlah_checkin').html(data.data['checkin'])
 					$('#jumlah_checkout').html(data.data['pending'])
 				}
@@ -140,18 +161,6 @@
 			// for example:
 			// console.warn(`Code scan error = ${error}`);
 		}
-
-		let html5QrcodeScanner = new Html5QrcodeScanner(
-			"reader", {
-				fps: 10,
-				qrbox: {
-					width: 250,
-					height: 250
-				}
-			},
-			/* verbose= */
-			false);
-		html5QrcodeScanner.render(onScanSuccess, onScanFailure);
 
 		function getJSON(url, data, type = 'POST') {
 			return JSON.parse($.ajax({

@@ -14,7 +14,8 @@ class AddEventIdToTicketsTable extends Migration
     public function up()
     {
         Schema::table('tickets', function (Blueprint $table) {
-            $table->integer('event_id')->after('id')->nullable();
+            $table->unsignedBigInteger('event_id')->after('id')->nullable();
+            $table->foreign('event_id')->references('id')->on('events');
         });
     }
 
