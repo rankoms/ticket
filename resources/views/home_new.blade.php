@@ -166,7 +166,7 @@
 						</a>
 					</div>
 					<div class="col-6 col-xl-12 col-sm-6 half p-2 m-0 position-relative">
-						<a href="{{ route('user_logout') }}">
+						<a href="{{ route('user.logout') }}">
 							<div class="half bg-yellow wrapper">
 								<div class="">
 

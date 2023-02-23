@@ -26,6 +26,12 @@ class HomeController extends Controller
         return redirect()->route('redeem_voucher.index');
         return view('home_new');
     }
+
+    public function home_new()
+    {
+
+        return view('home_new');
+    }
     public function splash_screen()
     {
         return view('splash_screen');
