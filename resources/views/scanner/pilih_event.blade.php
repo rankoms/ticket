@@ -1,7 +1,61 @@
 @extends('layouts.app_mobile')
 
 @section('content')
-	{{-- <link rel="stylesheet" href="{{url('css/custom-select.css')}}"> --}}
+	{{-- <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" rel="stylesheet"
+		type='text/css'> --}}
+	<style>
+		body main .content {
+			padding-bottom: 100px;
+			padding-top: 116px;
+			padding-right: 20%;
+			padding-left: 20%;
+		}
+
+		.form-floating {
+			position: relative;
+			margin-bottom: 20px;
+		}
+
+		.form-floating select {
+
+			height: 60px;
+			padding-top: 20px;
+		}
+
+		.form-floating label {
+
+			position: absolute;
+			top: 7px;
+			color: gray;
+			left: 13px;
+		}
+
+		.wrapper-radio {
+			padding-left: 0;
+			border: 1px solid #d4d8dd;
+			border-radius: 0.25rem;
+			display: block;
+			min-height: 1.378125rem;
+			margin-bottom: 0.125rem;
+		}
+
+		.active {
+			background-color: orange;
+		}
+
+		.wrapper-radio label {
+			padding: 1em;
+		}
+
+		.me-10 {
+			margin-right: 10px;
+		}
+
+		.wrapper-radio input[type=radio] {
+			position: absolute;
+			opacity: 0;
+		}
+	</style>
 	<main>
 		<div class="header">
 			<a href="javascript:history.back()">
@@ -13,21 +67,42 @@
 		</div>
 		<form action="{{ route('scanner.store_pilih_event') }}" method="GET">
 			<div class="content">
-				<select class="custom-select" name="events" id="events">
-					<option value="">Pilih Event</option>
-					@foreach ($events as $key => $value)
-						<option value="{{ $value->event }}">{{ $value->event }}</option>
-					@endforeach
-				</select>
-				<select class="custom-select" name="section" id="section" required>
-					<option value="">Pilih Section</option>
-				</select>
+				<div class="wrapping-input form-floating">
+					<select class="form-control" name="events" id="events">
+						<option value="">Pilih Event</option>
+						@foreach ($events as $key => $value)
+							<option value="{{ $value->event }}">{{ $value->event }}</option>
+						@endforeach
+					</select>
+					<label for="events">Event</label>
+				</div>
+				<div class="wrapping-input form-floating">
+					<select class="form-control" name="section" id="section" required>
+						<option value="">Pilih Section</option>
+					</select>
+					<label for="events">Kategory</label>
+				</div>
+				<div class="row">
+					<div class="col-6">
+						<div class="wrapper-radio" id="wrapper-checkin">
+							<label for="checkin">
+								<input type="radio" name="gate" value="checkin" id="checkin">
+								<i class="fa fa-sign-in me-10"></i>
+								<span>checkin</span>
+							</label>
+						</div>
+					</div>
+					<div class="col-6">
+						<div class="wrapper-radio" id="wrapper-checkout">
+							<label for="checkout">
+								<input type="radio" name="gate" value="checkout" id="checkout">
+								<i class="fa fa-sign-out me-10"></i>
+								<span>checkout</span>
+							</label>
+						</div>
+					</div>
+				</div>
 
-				<select class="custom-select" name="gate" id="gate">
-					<option value="">Pilih Gate</option>
-					<option value="checkin">Checkin</option>
-					<option value="checkout">Checkout</option>
-				</select>
 			</div>
 			<div class="container-btn-manual">
 				<button type="submit" class="btn-manual">Pilih Scanner</button>
@@ -53,6 +128,16 @@
 			}).responseText);
 		}
 
+		$('input[type=radio]').on('change', function() {
+			// alert($(this).val());
+			if ($(this).val() == 'checkin') {
+				$('#wrapper-checkin').addClass('active');
+				$('#wrapper-checkout').removeClass('active');
+			} else {
+				$('#wrapper-checkout').addClass('active');
+				$('#wrapper-checkin').removeClass('active');
+			}
+		})
 		$('#events').on('change', function(e) {
 			var data = getJSON("{{ route('scanner.section_select') }}", {
 				_token: '{{ csrf_token() }}',
