@@ -133,7 +133,7 @@ body {
 body main {
     width: 100%;
     max-width: 480px;
-    background-color: #171717;
+    background-color: #fff;
     display: block;
     height: 100%;
     min-height: 100vh;
@@ -445,10 +445,11 @@ body main .content {
 }
 
 body main .container-btn-manual {
-    bottom: 64px !important;
+    /* bottom: 64px !important; */
     z-index: 0;
-    position: fixed;
-    padding: 16px;
+    /* position: fixed; */
+    /* padding: 16px; */
+    margin-top: 20px;
     width: 100%;
     max-width: 480px;
     color: #fff;
@@ -955,3 +956,59 @@ body main .wrapper-keterangan .wrapper-box {
 
 
 /* END SCANNER */
+
+.form-floating {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.form-floating select {
+    height: 60px;
+    padding-top: 20px;
+}
+
+.form-floating label {
+    position: absolute;
+    top: 7px;
+    color: gray;
+    left: 13px;
+}
+
+.wrapper-radio {
+    padding-left: 0;
+    border: 1px solid #d4d8dd;
+    border-radius: 0.25rem;
+    display: block;
+    min-height: 1.378125rem;
+    margin-bottom: 0.125rem;
+    border-radius: 15px;
+    color: #000;
+}
+
+.active {
+    background-color: orange;
+}
+
+.wrapper-radio label {
+    padding: 1em;
+    display: flex;
+}
+
+.me-10 {
+    margin-right: 10px;
+}
+
+.wrapper-radio input[type=radio] {
+    position: absolute;
+    opacity: 0;
+}
+
+.content .wrapping-content {
+    padding: 20px;
+    background: #F6F6F6;
+    border-radius: 20px;
+}
+
+.mb-10 {
+    margin-bottom: 10px;
+}

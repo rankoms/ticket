@@ -1,63 +1,6 @@
 @extends('layouts.app_mobile')
 
 @section('content')
-	<style>
-		body main .content {
-			padding-bottom: 100px;
-			padding-top: 116px;
-			padding-right: 20%;
-			padding-left: 20%;
-		}
-
-		.form-floating {
-			position: relative;
-			margin-bottom: 20px;
-		}
-
-		.form-floating select {
-
-			height: 60px;
-			padding-top: 20px;
-		}
-
-		.form-floating label {
-
-			position: absolute;
-			top: 7px;
-			color: gray;
-			left: 13px;
-		}
-
-		.wrapper-radio {
-			padding-left: 0;
-			border: 1px solid #d4d8dd;
-			border-radius: 0.25rem;
-			display: block;
-			min-height: 1.378125rem;
-			margin-bottom: 0.125rem;
-		}
-
-		.active {
-			background-color: orange;
-		}
-
-		.wrapper-radio label {
-			padding: 1em;
-		}
-
-		.me-10 {
-			margin-right: 10px;
-		}
-
-		.wrapper-radio input[type=radio] {
-			position: absolute;
-			opacity: 0;
-		}
-
-		.mb-10 {
-			margin-bottom: 10px;
-		}
-	</style>
 	<main>
 		<div class="header">
 			<a href="javascript:history.back()">
@@ -68,62 +11,54 @@
 			<span>Checkout Ticket</span>
 		</div>
 		<div class="content">
-			{{-- <select class="custom-select" name="events" id="events">
-				<option value="{{ $event->event }}">{{ $event->event }}</option>
-			</select>
-			<select class="custom-select" name="section" id="section">
-				<option value="{{ $event->category }}">{{ $event->category }}</option>
-			</select>
 
-			<select class="custom-select" name="gate" id="gate">
-				<option value="checkout">Checkout</option>
-			</select> --}}
-
-			<div class="wrapping-input form-floating">
-				<select class="form-control" name="events" id="events">
-					<option value="{{ $event->event }}">{{ $event->event }}</option>
-				</select>
-				<label for="events">Event</label>
-			</div>
-			<div class="wrapping-input form-floating">
-				<select class="form-control" name="section" id="section">
-					<option value="{{ $event->category }}">{{ $event->category }}</option>
-				</select>
-				<label for="events">Kategory</label>
-			</div>
-			<div class="row mb-10">
-				<div class="col-6">
-					<div class="wrapper-radio " id="wrapper-checkin">
-						<label for="checkin">
-							<input type="radio" name="gate" value="checkin" id="checkin" disabled>
-							<i class="fa fa-sign-in me-10"></i>
-							<span>checkin</span>
-						</label>
+			<div class="wrapping-content">
+				<div class="wrapping-input form-floating">
+					<select class="form-control" name="events" id="events">
+						<option value="{{ $event->event }}">{{ $event->event }}</option>
+					</select>
+					<label for="events">Event</label>
+				</div>
+				<div class="wrapping-input form-floating">
+					<select class="form-control" name="section" id="section">
+						<option value="{{ $event->category }}">{{ $event->category }}</option>
+					</select>
+					<label for="events">Kategory</label>
+				</div>
+				<div class="row mb-10">
+					<div class="col-6">
+						<div class="wrapper-radio " id="wrapper-checkin">
+							<label for="checkin">
+								<input type="radio" name="gate" value="checkin" id="checkin" disabled>
+								<i class="fa fa-sign-in me-10"></i>
+								<span>checkin</span>
+							</label>
+						</div>
+					</div>
+					<div class="col-6">
+						<div class="wrapper-radio active" id="wrapper-checkout">
+							<label for="checkout">
+								<input type="radio" name="gate" value="checkout" id="checkout">
+								<i class="fa fa-sign-out me-10"></i>
+								<span>checkout</span>
+							</label>
+						</div>
 					</div>
 				</div>
-				<div class="col-6">
-					<div class="wrapper-radio active" id="wrapper-checkout">
-						<label for="checkout">
-							<input type="radio" name="gate" value="checkout" id="checkout">
-							<i class="fa fa-sign-out me-10"></i>
-							<span>checkout</span>
-						</label>
-					</div>
-				</div>
-			</div>
 
-			<div id="reader" width="100%" max-width="480px"></div>
-			<div class="wrapper-keterangan" style="display: none">
-				<div class="wrapper-box">
-					Total Checkin
-					<div id="jumlah_checkin">
-						{{ $total_checkin }}
+				<div id="reader" width="100%" max-width="480px"></div>
+				<div class="wrapper-keterangan" style="display: none">
+					<div class="wrapper-box">
+						Total Checkin
+						<div id="jumlah_checkin">
+							{{ $total_checkin }}
+						</div>
 					</div>
-				</div>
-				<div class="wrapper-box">
-					Total Checkout
-					<div id="jumlah_checkout">
-						{{ $total_checkout }}
+					<div class="wrapper-box">
+						Total Checkout
+						<div id="jumlah_checkout">
+							{{ $total_checkout }}
+						</div>
 					</div>
 				</div>
 			</div>

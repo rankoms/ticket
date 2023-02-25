@@ -16,19 +16,15 @@
     --border-2: #8F8F8F;
     --border-3: #C4C4C4;
     --background-color-1: #FFEEE4;
-
     --red-1: #FE0000;
-
     --black-5: #E2E2E2;
-
     --text-black-primary: #4D4D4D;
     --text-black-secondary: #404040;
-
     --primary-1: #FCD34D;
     --primary-2: #FDF0C8;
     --primary-3: #CE64A4;
     --primary-4: #DB6FAA;
-    --secondary-1: #F47D20;
+    --secondary-1: #6DD36B;
     --secondary-2: #FF9900;
     --secondary-3: #FBB040;
     --secondary-4: #FFCF87;
@@ -48,9 +44,6 @@
     --gray-5: #E0E0E0;
     --gradient-primary: linear-gradient(180deg, #90318C 0%, #DB6FAA 100%);
     --gradient-secondary: linear-gradient(180deg, #F47D20 0%, #FFCF87 100%);
-
     --biru-1: #1267BB;
-
     --information: #D6E0F9;
-
 }
