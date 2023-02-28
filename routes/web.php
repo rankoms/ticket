@@ -23,6 +23,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
+Route::get('/test', [HomeController::class, 'test'])->name('test');
+
 Route::get('/home_new', [HomeController::class, 'home_new'])->name('home_new');
 
 

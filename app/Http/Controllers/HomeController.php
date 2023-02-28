@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ResponseFormatter;
+use App\Models\Ticket;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -64,5 +66,77 @@ class HomeController extends Controller
     public function dashboard_new()
     {
         return view('home_new');
+    }
+
+    public function test()
+    {
+
+        $tickets = Ticket::get();
+        $event = [];
+        $category = [];
+        $ticket = [];
+        foreach ($tickets as $key => $value) :
+            $category[$value->category]['name'] = $value->category;
+            $category[$value->category]['event'] = $value->event;
+
+            $event[$value->event]['name'] = $value->event;
+
+            $ticket[$value->id]['barcode'] = $value->barcode_no;
+            $ticket[$value->id]['category'] = $value->category;
+            $ticket[$value->id]['event'] = $value->event;
+            $ticket[$value->id]['max_checkin'] = $value->max_checkin;
+            $ticket[$value->id]['checkin_count'] = $value->checkin_count;
+            $ticket[$value->id]['is_bypass'] = $value->is_bypass;
+        endforeach;
+        $event_final = [];
+        foreach ($event as $key => $value) :
+            $event_final[] = $value;
+        endforeach;
+
+        $category_final = [];
+        foreach ($category as $key => $value) :
+            $category_final[] = $value;
+        endforeach;
+
+        $ticket_final = [];
+        foreach ($ticket as $key => $value) :
+            $ticket_final[] = $value;
+        endforeach;
+
+        $array = [
+            "event" => $event_final,
+            "category" => $category_final,
+            "ticket" => $ticket_final
+        ];
+        $array = ResponseFormatter::success($array);
+
+        // dd($array);
+        // dd(json_encode($array));
+        // {
+        //     "event":[
+        //         {
+        //             "name" : "sepak bola"
+        //         }
+        //         ],
+        //     "category":[
+        //         {
+        //             "name": "Category 1",
+        //             "event": "sepak bola"
+        //         }],
+        //     "ticket":[
+        //             {
+        //                 "barcode" : 123,
+        //                 "category" : "Category 1",
+        //                 "event": "sepak bola"
+        //             }
+        //         ,
+        //             {
+        //                 "barcode" : 1234,
+        //                 "category" : "Category 1",
+        //                 "event": "sepak bola"
+        //             }
+        //         ]
+        // }
+        dd($ticket);
     }
 }
