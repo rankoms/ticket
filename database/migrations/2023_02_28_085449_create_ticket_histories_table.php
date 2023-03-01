@@ -16,7 +16,7 @@ class CreateTicketHistoriesTable extends Migration
         Schema::create('ticket_histories', function (Blueprint $table) {
             $table->id();
             $table->string('barcode_no')->index();
-            $table->foreign('barcode_no')->references('barcode_no')->on('tickets');
+            // $table->foreign('barcode_no')->references('barcode_no')->on('tickets');
             $table->unsignedBigInteger('scanned_by')->index();
             $table->foreign('scanned_by')->references('id')->on('users');
             $table->timestamps();

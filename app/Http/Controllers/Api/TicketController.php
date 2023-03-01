@@ -26,6 +26,11 @@ class TicketController extends Controller
 
         $ticket = Ticket::where('barcode_no', $request->barcode_no)
             ->first();
+
+        $ticket_history = $this->scan_history($request);
+        if ($ticket->checkin_count >= $ticket->max_checkin) {
+            return ResponseFormatter::error(null, 'Ticket Max Scanned!');
+        }
         if (!$ticket) {
             return ResponseFormatter::error(null, 'Ticket Not Found', 400);
         }
@@ -34,11 +39,11 @@ class TicketController extends Controller
         }
 
         $ticket->checkout = $gate == 'checkout' ? $now : null;
-        if ($ticket->checkin && $gate == 'checkin') {
+        if ($ticket->checkin && $gate == 'checkin' && $ticket->max_checkin > $ticket->checkin_count) {
             return ResponseFormatter::error(null, 'Ticket Sudah Digunakan', 400);
         }
         $ticket->checkin = $gate == 'checkin' ? $now : null;
-
+        $ticket->checkin_count = $ticket->checkin_count + 1;
         if ($ticket->save()) {
             $section_selected = $this->count_gate($ticket->event_id, $ticket->category)->getData();
             return ResponseFormatter::success($section_selected->data, 'Anda Boleh Masuk');
@@ -77,6 +82,8 @@ class TicketController extends Controller
 
         $ticket = Ticket::where('barcode_no', $request->barcode_no)
             ->first();
+        $ticket_history = $this->scan_history($request);
+
         if (!$ticket) {
             return ResponseFormatter::error(null, 'Ticket Not Found', 400);
         }
@@ -91,6 +98,7 @@ class TicketController extends Controller
             }
         }
         $ticket->checkout = $now;
+        $ticket->checkin_count = $ticket->checkin_count - 1;
         if ($ticket->save()) {
             return ResponseFormatter::success(null, 'Anda Berhasil Checkout');
         } else {
@@ -146,7 +154,7 @@ class TicketController extends Controller
     {
         $history = new TicketHistory();
         $history->barcode_no = $request->barcode_no;
-        $history->scanned_by = Auth::user()->id;
+        $history->scanned_by = Auth::user() ? Auth::user()->id : 1;
         $history->save();
     }
 
@@ -191,6 +199,8 @@ class TicketController extends Controller
             $ticket[$value->id]['max_checkin'] = $value->max_checkin;
             $ticket[$value->id]['checkin_count'] = $value->checkin_count;
             $ticket[$value->id]['is_bypass'] = $value->is_bypass;
+            $ticket[$value->id]['checkin'] = $value->checkin;
+            $ticket[$value->id]['checkout'] = $value->checkout;
         endforeach;
 
         $ticket_final = [];
