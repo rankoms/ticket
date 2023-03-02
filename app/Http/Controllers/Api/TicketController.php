@@ -19,12 +19,18 @@ class TicketController extends Controller
         request()->validate([
             'category' => [new ExceptSymbol()],
             'barcode_no' => [new ExceptSymbol()],
+            'event' => ['required'],
+            'category' => ['required'],
             'gate' => ['required', 'in:checkin,checkout']
         ]);
         $now = date('Y-m-d H:i:s');
         $gate = $request->gate;
+        $event = $request->event;
+        $category = $request->category;
 
         $ticket = Ticket::where('barcode_no', $request->barcode_no)
+            ->where('event', $event)
+            ->where('category', $category)
             ->first();
 
         $ticket_history = $this->scan_history($request);
@@ -45,8 +51,8 @@ class TicketController extends Controller
         $ticket->checkin = $gate == 'checkin' ? $now : null;
         $ticket->checkin_count = $ticket->checkin_count + 1;
         if ($ticket->save()) {
-            $section_selected = $this->count_gate($ticket->event_id, $ticket->category)->getData();
-            return ResponseFormatter::success($section_selected->data, 'Anda Boleh Masuk');
+            // $section_selected = $this->count_gate($ticket->event_id, $ticket->category)->getData();
+            return ResponseFormatter::success($ticket, 'Anda Boleh Masuk');
         } else {
             return ResponseFormatter::error(null, 'Terjadi kesalahan');
         }
