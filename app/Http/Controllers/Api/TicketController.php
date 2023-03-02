@@ -17,14 +17,11 @@ class TicketController extends Controller
     public function checkin(Request $request)
     {
         request()->validate([
-            'category' => [new ExceptSymbol()],
             'barcode_no' => [new ExceptSymbol()],
             'event' => ['required'],
             'category' => ['required'],
-            'gate' => ['required', 'in:checkin,checkout']
         ]);
         $now = date('Y-m-d H:i:s');
-        $gate = $request->gate;
         $event = $request->event;
         $category = $request->category;
 
@@ -44,11 +41,10 @@ class TicketController extends Controller
             return ResponseFormatter::error(null, 'Ticket Salah Pintu', 400);
         }
 
-        $ticket->checkout = $gate == 'checkout' ? $now : null;
-        if ($ticket->checkin && $gate == 'checkin' && $ticket->max_checkin > $ticket->checkin_count) {
+        if ($ticket->checkin && $ticket->max_checkin > $ticket->checkin_count) {
             return ResponseFormatter::error(null, 'Ticket Sudah Digunakan', 400);
         }
-        $ticket->checkin = $gate == 'checkin' ? $now : null;
+        $ticket->checkin = $now;
         $ticket->checkin_count = $ticket->checkin_count + 1;
         if ($ticket->save()) {
             // $section_selected = $this->count_gate($ticket->event_id, $ticket->category)->getData();
@@ -81,12 +77,17 @@ class TicketController extends Controller
     public function checkout(Request $request)
     {
         request()->validate([
-            'category' => [new ExceptSymbol()],
-            'barcode_no' => [new ExceptSymbol()]
+            'barcode_no' => [new ExceptSymbol()],
+            'event' => ['required'],
+            'category' => ['required'],
         ]);
         $now = date('Y-m-d H:i:s');
+        $event = $request->event;
+        $category = $request->category;
 
         $ticket = Ticket::where('barcode_no', $request->barcode_no)
+            ->where('event', $event)
+            ->where('category', $category)
             ->first();
         $ticket_history = $this->scan_history($request);
 
@@ -96,15 +97,15 @@ class TicketController extends Controller
         if ($ticket->category != $request->category) {
             return ResponseFormatter::error(null, 'Ticket Salah Pintu', 400);
         }
-        if ($ticket->checkout) {
-            if ($ticket->save()) {
-                return ResponseFormatter::success(null, 'Anda Boleh Masuk');
-            } else {
-                return ResponseFormatter::error(null, 'Terjadi kesalahan');
-            }
-        }
+        // if ($ticket->checkout) {
+        //     if ($ticket->save()) {
+        //         return ResponseFormatter::success(null, 'Anda Boleh Masuk');
+        //     } else {
+        //         return ResponseFormatter::error(null, 'Terjadi kesalahan');
+        //     }
+        // }
         $ticket->checkout = $now;
-        $ticket->checkin_count = $ticket->checkin_count - 1;
+        $ticket->checkin_count = $ticket->checkin_count  > 0 ? $ticket->checkin_count - 1 : $ticket->checkin_count;
         if ($ticket->save()) {
             return ResponseFormatter::success(null, 'Anda Berhasil Checkout');
         } else {
@@ -112,7 +113,7 @@ class TicketController extends Controller
         }
     }
 
-    public function checkin_bulk(Request $request)
+    public function sync(Request $request)
     {
         $request = $request->json()->all();
         $data = [];

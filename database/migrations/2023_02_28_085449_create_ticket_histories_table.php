@@ -18,7 +18,7 @@ class CreateTicketHistoriesTable extends Migration
             $table->string('barcode_no')->index();
             // $table->foreign('barcode_no')->references('barcode_no')->on('tickets');
             $table->unsignedBigInteger('scanned_by')->index();
-            $table->foreign('scanned_by')->references('id')->on('users');
+            // $table->foreign('scanned_by')->references('id')->on('users');
             $table->timestamps();
         });
     }

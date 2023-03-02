@@ -25,6 +25,8 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::group(['prefix' => 'scanner'], function () {
     Route::post('/checkin', [TicketController::class, 'checkin']);
     Route::post('/checkout', [TicketController::class, 'checkout']);
+
+    Route::post('/sync', [TicketController::class, 'sync']);
 });
 
 Route::group(['prefix' => 'data', 'as' => 'data.'], function () {
