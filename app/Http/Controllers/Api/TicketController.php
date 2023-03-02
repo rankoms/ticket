@@ -118,7 +118,13 @@ class TicketController extends Controller
         $data = [];
         $rules = [
             'barcode_no' => ['required'],
-            'category' => ['required']
+            'category' => ['required'],
+            'event' => ['required'],
+            'checkin' => ['nullable'],
+            'checkout' => ['nullable'],
+            'is_bypass' => ['nullable'],
+            'max_checkin' => ['nullable'],
+            'max_checkout' => ['nullable']
         ];
 
         $validator = Validator::make($request, $rules);
@@ -127,6 +133,8 @@ class TicketController extends Controller
             $now = date('Y-m-d H:i:s');
 
             $ticket = Ticket::where('barcode_no', $request['barcode_no'])
+                ->where('category', $request['category'])
+                ->where('event', $request['event'])
                 ->first();
             if (!$ticket) {
                 return ResponseFormatter::error(null, 'Ticket Not Found', 400);
@@ -199,7 +207,7 @@ class TicketController extends Controller
         $ticket = [];
         foreach ($tickets as $key => $value) :
 
-            $ticket[$value->id]['barcode'] = $value->barcode_no;
+            $ticket[$value->id]['barcode_no'] = $value->barcode_no;
             $ticket[$value->id]['category'] = $value->category;
             $ticket[$value->id]['event'] = $value->event;
             $ticket[$value->id]['max_checkin'] = $value->max_checkin;
