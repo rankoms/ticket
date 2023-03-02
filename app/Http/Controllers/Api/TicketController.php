@@ -30,12 +30,12 @@ class TicketController extends Controller
             ->where('category', $category)
             ->first();
 
+        if (!isset($ticket)) {
+            return ResponseFormatter::error(null, 'Ticket Not Found', 400);
+        }
         $ticket_history = $this->scan_history($request);
         if ($ticket->checkin_count >= $ticket->max_checkin) {
             return ResponseFormatter::error(null, 'Ticket Max Scanned!');
-        }
-        if (!$ticket) {
-            return ResponseFormatter::error(null, 'Ticket Not Found', 400);
         }
         if ($ticket->category != $request->category) {
             return ResponseFormatter::error(null, 'Ticket Salah Pintu', 400);
@@ -89,11 +89,10 @@ class TicketController extends Controller
             ->where('event', $event)
             ->where('category', $category)
             ->first();
-        $ticket_history = $this->scan_history($request);
-
         if (!$ticket) {
             return ResponseFormatter::error(null, 'Ticket Not Found', 400);
         }
+        $ticket_history = $this->scan_history($request);
         if ($ticket->category != $request->category) {
             return ResponseFormatter::error(null, 'Ticket Salah Pintu', 400);
         }
