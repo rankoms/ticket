@@ -41,7 +41,7 @@ class TicketController extends Controller
             return ResponseFormatter::error(null, 'Ticket Salah Pintu', 400);
         }
 
-        if ($ticket->checkin && $ticket->max_checkin > $ticket->checkin_count) {
+        if ($ticket->checkin && $ticket->checkin_count > $ticket->max_checkin) {
             return ResponseFormatter::error(null, 'Ticket Sudah Digunakan', 400);
         }
         $ticket->checkin = $now;
