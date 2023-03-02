@@ -97,17 +97,10 @@ class TicketController extends Controller
         if ($ticket->category != $request->category) {
             return ResponseFormatter::error(null, 'Ticket Salah Pintu', 400);
         }
-        // if ($ticket->checkout) {
-        //     if ($ticket->save()) {
-        //         return ResponseFormatter::success(null, 'Anda Boleh Masuk');
-        //     } else {
-        //         return ResponseFormatter::error(null, 'Terjadi kesalahan');
-        //     }
-        // }
         $ticket->checkout = $now;
         $ticket->checkin_count = $ticket->checkin_count  > 0 ? $ticket->checkin_count - 1 : $ticket->checkin_count;
         if ($ticket->save()) {
-            return ResponseFormatter::success(null, 'Anda Berhasil Checkout');
+            return ResponseFormatter::success($ticket, 'Anda Berhasil Checkout');
         } else {
             return ResponseFormatter::error(null, 'Terjadi kesalahan');
         }
