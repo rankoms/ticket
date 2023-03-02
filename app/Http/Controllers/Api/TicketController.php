@@ -118,47 +118,39 @@ class TicketController extends Controller
         $request = $request->json()->all();
         $data = [];
         $rules = [
-            'barcode_no' => ['required'],
-            'category' => ['required'],
-            'event' => ['required'],
-            'checkin' => ['nullable'],
-            'checkout' => ['nullable'],
-            'is_bypass' => ['nullable'],
-            'max_checkin' => ['nullable'],
-            'max_checkout' => ['nullable']
+            'barcode_no.*' => ['required'],
+            'category.*' => ['required'],
+            'event.*' => ['required'],
+            'checkin.*' => ['nullable'],
+            'checkout.*' => ['nullable'],
+            'is_bypass.*' => ['nullable'],
+            'max_checkin.*' => ['nullable'],
+            'checkin_count.*' => ['nullable']
         ];
 
         $validator = Validator::make($request, $rules);
 
+        // dd($request);
+        // return $request;
         if ($validator->passes()) {
             $now = date('Y-m-d H:i:s');
+            // return $request[0]['barcode_no'];
+            foreach ($request as $key => $value) :
+                $ticket = Ticket::where('barcode_no', $value['barcode_no'])
+                    ->where('category', $value['category'])
+                    ->where('event', $value['event'])
+                    ->first();
 
-            $ticket = Ticket::where('barcode_no', $request['barcode_no'])
-                ->where('category', $request['category'])
-                ->where('event', $request['event'])
-                ->first();
-            if (!$ticket) {
-                return ResponseFormatter::error(null, 'Ticket Not Found', 400);
-            }
-            if ($ticket->category != $request['category']) {
-                return ResponseFormatter::error(null, 'Ticket Salah Pintu', 400);
-            }
-            if ($ticket->checkout) {
-                $ticket->checkin = $now;
-                if ($ticket->save()) {
-                    return ResponseFormatter::success(null, 'Anda Boleh Masuk');
-                } else {
-                    return ResponseFormatter::error(null, 'Terjadi kesalahan');
+                if ($ticket) {
+                    $ticket->checkin = $value['checkin'];
+                    $ticket->checkout = $value['checkout'];
+                    $ticket->is_bypass = $value['is_bypass'];
+                    $ticket->max_checkin = $value['max_checkin'];
+                    $ticket->checkin_count = $value['checkin_count'];
+                    $ticket->save();
                 }
-            }
-            if ($ticket->checkin) {
-                return ResponseFormatter::error(null, 'Ticket Sudah Digunakan', 400);
-            }
-
-            $ticket->checkin = $now;
-            if ($ticket->save()) {
-                return ResponseFormatter::success(null, 'Anda Boleh Masuk');
-            }
+            endforeach;
+            return $this->ticket();
         } else {
             //TODO Handle your error
             return ResponseFormatter::error(null, $validator->errors()->all(), 400);
