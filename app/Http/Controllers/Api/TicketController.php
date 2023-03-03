@@ -34,6 +34,9 @@ class TicketController extends Controller
             return ResponseFormatter::error(null, 'Ticket Not Found', 400);
         }
         $ticket_history = $this->scan_history($request);
+        if ($ticket->is_bypass == 1) {
+            return ResponseFormatter::success(null, 'Anda Boleh Masuk');
+        }
         if ($ticket->checkin_count >= $ticket->max_checkin) {
             return ResponseFormatter::error(null, 'Ticket Max Scanned!');
         }
@@ -93,6 +96,9 @@ class TicketController extends Controller
             return ResponseFormatter::error(null, 'Ticket Not Found', 400);
         }
         $ticket_history = $this->scan_history($request);
+        if ($ticket->is_bypass == 1) {
+            return ResponseFormatter::success(null, 'Anda Berhasil Checkout');
+        }
         if ($ticket->category != $request->category) {
             return ResponseFormatter::error(null, 'Ticket Salah Pintu', 400);
         }
@@ -129,20 +135,20 @@ class TicketController extends Controller
             // return $request[0]['barcode_no'];
             foreach ($request as $key => $value) :
                 // if (isset($value['barcode_no']) && isset($value['category']) && isset($value['event']) && isset($value['checkin']) && isset($value['checkout']) && isset($value['is_bypass']) && isset($value['max_checkin']) && isset($value['checkin_count'])) :
-                    $ticket = Ticket::where('barcode_no', $value['barcode_no'])
-                        ->where('category', $value['category'])
-                        ->where('event', $value['event'])
-                        ->first();
+                $ticket = Ticket::where('barcode_no', $value['barcode_no'])
+                    ->where('category', $value['category'])
+                    ->where('event', $value['event'])
+                    ->first();
 
-                    if ($ticket) {
-                        $ticket->checkin = $value['checkin'];
-                        $ticket->checkout = $value['checkout'];
-                        $ticket->is_bypass = $value['is_bypass'];
-                        $ticket->max_checkin = $value['max_checkin'];
-                        $ticket->checkin_count = $value['checkin_count'];
-                        $ticket->save();
-                    }
-                // endif;
+                if ($ticket) {
+                    $ticket->checkin = $value['checkin'];
+                    $ticket->checkout = $value['checkout'];
+                    $ticket->is_bypass = $value['is_bypass'];
+                    $ticket->max_checkin = $value['max_checkin'];
+                    $ticket->checkin_count = $value['checkin_count'];
+                    $ticket->save();
+                }
+            // endif;
             endforeach;
             return $this->ticket();
         } else {
