@@ -128,7 +128,7 @@ class TicketController extends Controller
             $now = date('Y-m-d H:i:s');
             // return $request[0]['barcode_no'];
             foreach ($request as $key => $value) :
-                if (isset($value['barcode_no']) && isset($value['category']) && isset($value['event']) && isset($value['checkin']) && isset($value['checkout']) && isset($value['is_bypass']) && isset($value['max_checkin']) && isset($value['checkin_count'])) :
+                // if (isset($value['barcode_no']) && isset($value['category']) && isset($value['event']) && isset($value['checkin']) && isset($value['checkout']) && isset($value['is_bypass']) && isset($value['max_checkin']) && isset($value['checkin_count'])) :
                     $ticket = Ticket::where('barcode_no', $value['barcode_no'])
                         ->where('category', $value['category'])
                         ->where('event', $value['event'])
@@ -142,7 +142,7 @@ class TicketController extends Controller
                         $ticket->checkin_count = $value['checkin_count'];
                         $ticket->save();
                     }
-                endif;
+                // endif;
             endforeach;
             return $this->ticket();
         } else {
