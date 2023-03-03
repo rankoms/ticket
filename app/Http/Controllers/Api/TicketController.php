@@ -110,14 +110,14 @@ class TicketController extends Controller
         $request = $request->json()->all();
         $data = [];
         $rules = [
-            'barcode_no.*' => ['required'],
-            'category.*' => ['required'],
-            'event.*' => ['required'],
-            'checkin.*' => ['nullable'],
-            'checkout.*' => ['nullable'],
-            'is_bypass.*' => ['nullable'],
-            'max_checkin.*' => ['nullable'],
-            'checkin_count.*' => ['nullable']
+            '*.barcode_no' => ['required'],
+            '*.category' => ['required'],
+            '*.event' => ['required'],
+            '*.checkin' => ['nullable'],
+            '*.checkout' => ['nullable'],
+            '*.is_bypass' => ['nullable'],
+            '*.max_checkin' => ['nullable'],
+            '*.checkin_count' => ['nullable']
         ];
 
         $validator = Validator::make($request, $rules);
@@ -128,19 +128,21 @@ class TicketController extends Controller
             $now = date('Y-m-d H:i:s');
             // return $request[0]['barcode_no'];
             foreach ($request as $key => $value) :
-                $ticket = Ticket::where('barcode_no', $value['barcode_no'])
-                    ->where('category', $value['category'])
-                    ->where('event', $value['event'])
-                    ->first();
+                if (isset($value['barcode_no']) && isset($value['category']) && isset($value['event']) && isset($value['checkin']) && isset($value['checkout']) && isset($value['is_bypass']) && isset($value['max_checkin']) && isset($value['checkin_count'])) :
+                    $ticket = Ticket::where('barcode_no', $value['barcode_no'])
+                        ->where('category', $value['category'])
+                        ->where('event', $value['event'])
+                        ->first();
 
-                if ($ticket) {
-                    $ticket->checkin = $value['checkin'];
-                    $ticket->checkout = $value['checkout'];
-                    $ticket->is_bypass = $value['is_bypass'];
-                    $ticket->max_checkin = $value['max_checkin'];
-                    $ticket->checkin_count = $value['checkin_count'];
-                    $ticket->save();
-                }
+                    if ($ticket) {
+                        $ticket->checkin = $value['checkin'];
+                        $ticket->checkout = $value['checkout'];
+                        $ticket->is_bypass = $value['is_bypass'];
+                        $ticket->max_checkin = $value['max_checkin'];
+                        $ticket->checkin_count = $value['checkin_count'];
+                        $ticket->save();
+                    }
+                endif;
             endforeach;
             return $this->ticket();
         } else {
