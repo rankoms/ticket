@@ -31,14 +31,14 @@ class TicketController extends Controller
             ->first();
 
         if (!isset($ticket)) {
-            return ResponseFormatter::error(null, 'Ticket Not Found', 400);
+            return ResponseFormatter::error(null, 'This QR Code is Invalid', 400);
         }
         $ticket_history = $this->scan_history($request);
         if ($ticket->is_bypass == 1) {
-            return ResponseFormatter::success(null, 'Anda Boleh Masuk');
+            return ResponseFormatter::success(null, 'This QR Code is Valid');
         }
         if ($ticket->checkin_count >= $ticket->max_checkin) {
-            return ResponseFormatter::error(null, 'Ticket Max Scanned!');
+            return ResponseFormatter::error(null, 'This QR Code Already Used');
         }
         if ($ticket->category != $request->category) {
             return ResponseFormatter::error(null, 'Ticket Salah Pintu', 400);
@@ -51,7 +51,7 @@ class TicketController extends Controller
         $ticket->checkin_count = $ticket->checkin_count + 1;
         if ($ticket->save()) {
             // $section_selected = $this->count_gate($ticket->event_id, $ticket->category)->getData();
-            return ResponseFormatter::success($ticket, 'Anda Boleh Masuk');
+            return ResponseFormatter::success($ticket, 'This QR Code is Valid');
         } else {
             return ResponseFormatter::error(null, 'Terjadi kesalahan');
         }
@@ -93,7 +93,7 @@ class TicketController extends Controller
             ->where('category', $category)
             ->first();
         if (!$ticket) {
-            return ResponseFormatter::error(null, 'Ticket Not Found', 400);
+            return ResponseFormatter::error(null, 'This QR Code is Invalid', 400);
         }
         $ticket_history = $this->scan_history($request);
         if ($ticket->is_bypass == 1) {
