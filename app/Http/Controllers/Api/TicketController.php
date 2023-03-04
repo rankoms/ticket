@@ -130,15 +130,11 @@ class TicketController extends Controller
             '*.checkin_count' => ['nullable']
         ];
 
-        $validator = Validator::make($request, $rules);
+        $validator = Validator::make($request['ticket'], $rules);
 
-        // dd($request);
-        // return $request;
         if ($validator->passes()) {
             $now = date('Y-m-d H:i:s');
-            // return $request[0]['barcode_no'];
-            foreach ($request as $key => $value) :
-                // if (isset($value['barcode_no']) && isset($value['category']) && isset($value['event']) && isset($value['checkin']) && isset($value['checkout']) && isset($value['is_bypass']) && isset($value['max_checkin']) && isset($value['checkin_count'])) :
+            foreach ($request['ticket'] as $key => $value) :
                 $ticket = Ticket::where('barcode_no', $value['barcode_no'])
                     ->where('category', $value['category'])
                     ->where('event', $value['event'])
@@ -152,7 +148,15 @@ class TicketController extends Controller
                     $ticket->checkin_count = $value['checkin_count'];
                     $ticket->save();
                 }
-            // endif;
+            endforeach;
+
+            foreach ($request['ticket_history'] as $key => $value) :
+                $ticket_history = new TicketHistory();
+                $ticket_history->barcode_no = $value['barcode_no'];
+                $ticket_history->scanned_by = $value['scanned_by'];
+                $ticket_history->created_at = $value['created_at'];
+                $ticket_history->save();
+
             endforeach;
             return $this->ticket();
         } else {
