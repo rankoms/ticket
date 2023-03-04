@@ -26,14 +26,16 @@ class TicketController extends Controller
         $category = $request->category;
 
         $ticket = Ticket::where('barcode_no', $request->barcode_no)
-            ->where('event', $event)
-            ->where('category', $category)
-            ->first();
+            ->where('event', $event);
+        if ($ticket != 'All Category') :
+            $ticket = $ticket->where('category', $category);
+        endif;
+        $ticket = $ticket->first();
 
+        $ticket_history = $this->scan_history($request);
         if (!isset($ticket)) {
             return ResponseFormatter::error(null, 'This QR Code is Invalid', 400);
         }
-        $ticket_history = $this->scan_history($request);
         if ($ticket->is_bypass == 1) {
             return ResponseFormatter::success(null, 'This QR Code is Valid');
         }
@@ -89,13 +91,15 @@ class TicketController extends Controller
         $category = $request->category;
 
         $ticket = Ticket::where('barcode_no', $request->barcode_no)
-            ->where('event', $event)
-            ->where('category', $category)
-            ->first();
+            ->where('event', $event);
+        if ($ticket != 'All Category') :
+            $ticket = $ticket->where('category', $category);
+        endif;
+        $ticket = $ticket->first();
+        $ticket_history = $this->scan_history($request);
         if (!$ticket) {
             return ResponseFormatter::error(null, 'This QR Code is Invalid', 400);
         }
-        $ticket_history = $this->scan_history($request);
         if ($ticket->is_bypass == 1) {
             return ResponseFormatter::success(null, 'Anda Berhasil Checkout');
         }
@@ -178,11 +182,12 @@ class TicketController extends Controller
 
         endforeach;
         $event_final = [];
+        $category_final = [];
         foreach ($event as $key => $value) :
             $event_final[] = $value;
+            $category_final[] = ['name' => 'All Category', 'event' => $value['name']];
         endforeach;
 
-        $category_final = [];
         foreach ($category as $key => $value) :
             $category_final[] = $value;
         endforeach;
