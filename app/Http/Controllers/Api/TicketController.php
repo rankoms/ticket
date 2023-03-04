@@ -27,7 +27,7 @@ class TicketController extends Controller
 
         $ticket = Ticket::where('barcode_no', $request->barcode_no)
             ->where('event', $event);
-        if ($ticket != 'All Category') :
+        if ($category != 'All Category') :
             $ticket = $ticket->where('category', $category);
         endif;
         $ticket = $ticket->first();
@@ -42,7 +42,7 @@ class TicketController extends Controller
         if ($ticket->checkin_count >= $ticket->max_checkin) {
             return ResponseFormatter::error(null, 'This QR Code Already Used');
         }
-        if ($ticket->category != $request->category) {
+        if ($ticket->category != $request->category && $category != 'All Category') {
             return ResponseFormatter::error(null, 'Ticket Salah Pintu', 400);
         }
 
@@ -92,9 +92,9 @@ class TicketController extends Controller
 
         $ticket = Ticket::where('barcode_no', $request->barcode_no)
             ->where('event', $event);
-        if ($ticket != 'All Category') :
-            $ticket = $ticket->where('category', $category);
-        endif;
+        // if ($ticket != 'All Category') :
+        //     $ticket = $ticket->where('category', $category);
+        // endif;
         $ticket = $ticket->first();
         $ticket_history = $this->scan_history($request);
         if (!$ticket) {
@@ -103,9 +103,9 @@ class TicketController extends Controller
         if ($ticket->is_bypass == 1) {
             return ResponseFormatter::success(null, 'Anda Berhasil Checkout');
         }
-        if ($ticket->category != $request->category) {
-            return ResponseFormatter::error(null, 'Ticket Salah Pintu', 400);
-        }
+        // if ($ticket->category != $request->category) {
+        //     return ResponseFormatter::error(null, 'Ticket Salah Pintu', 400);
+        // }
         $ticket->checkout = $now;
         $ticket->checkin_count = $ticket->checkin_count  > 0 ? $ticket->checkin_count - 1 : $ticket->checkin_count;
         if ($ticket->save()) {
