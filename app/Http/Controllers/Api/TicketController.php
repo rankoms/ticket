@@ -201,6 +201,7 @@ class TicketController extends Controller
         foreach ($tickets as $key => $value) :
 
             $ticket[$value->id]['barcode_no'] = $value->barcode_no;
+            $ticket[$value->id]['name'] = $value->name;
             $ticket[$value->id]['category'] = $value->category;
             $ticket[$value->id]['event'] = $value->event;
             $ticket[$value->id]['max_checkin'] = $value->max_checkin;
