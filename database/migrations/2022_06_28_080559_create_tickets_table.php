@@ -16,11 +16,11 @@ class CreateTicketsTable extends Migration
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
             // $table->integer('order_id')->index();
-            $table->string('event', 255)->unique()->index();
+            $table->string('event', 255)->index();
             $table->string('name', 255)->index()->nullable();
             $table->string('email', 100)->index()->nullable();
             $table->string('category', 255)->index();
-            $table->string('barcode_no')->unique()->index();
+            $table->string('barcode_no')->index();
             // $table->string('ticket_type')->default('reguler')->nullable()->index();
             $table->dateTime('checkin')->nullable()->index();
             $table->dateTime('checkout')->nullable()->index();
