@@ -120,21 +120,27 @@ class TicketController extends Controller
         $request = $request->json()->all();
         $data = [];
         $rules = [
-            '*.barcode_no' => ['required'],
-            '*.category' => ['required'],
-            '*.event' => ['required'],
-            '*.checkin' => ['nullable'],
-            '*.checkout' => ['nullable'],
-            '*.is_bypass' => ['nullable'],
-            '*.max_checkin' => ['nullable'],
-            '*.checkin_count' => ['nullable']
+            'tickets.*.barcode_no' => ['required'],
+            'tickets.*.category' => ['required'],
+            'tickets.*.event' => ['required'],
+            'tickets.*.checkin' => ['nullable'],
+            'tickets.*.checkout' => ['nullable'],
+            'tickets.*.is_bypass' => ['nullable'],
+            'tickets.*.max_checkin' => ['nullable'],
+            'tickets.*.checkin_count' => ['nullable'],
+            'ticket_histories.*.barcode_no' => ['required'],
+            'ticket_histories.*.scanned_by' => ['required'],
+            'ticket_histories.*.category' => ['required'],
+            'ticket_histories.*.gate' => ['required'],
+            'ticket_histories.*.status' => ['required'],
+            'ticket_histories.*.created_at' => ['required'],
         ];
 
-        $validator = Validator::make($request['ticket'], $rules);
+        $validator = Validator::make($request, $rules);
 
         if ($validator->passes()) {
             $now = date('Y-m-d H:i:s');
-            foreach ($request['ticket'] as $key => $value) :
+            foreach ($request['tickets'] as $key => $value) :
                 $ticket = Ticket::where('barcode_no', $value['barcode_no'])
                     ->where('category', $value['category'])
                     ->where('event', $value['event'])
@@ -150,10 +156,13 @@ class TicketController extends Controller
                 }
             endforeach;
 
-            foreach ($request['ticket_history'] as $key => $value) :
+            foreach ($request['ticket_histories'] as $key => $value) :
                 $ticket_history = new TicketHistory();
                 $ticket_history->barcode_no = $value['barcode_no'];
                 $ticket_history->scanned_by = $value['scanned_by'];
+                $ticket_history->category = $value['category'];
+                $ticket_history->gate = $value['gate'];
+                $ticket_history->status = $value['status'];
                 $ticket_history->created_at = $value['created_at'];
                 $ticket_history->save();
 
@@ -170,6 +179,10 @@ class TicketController extends Controller
         $history = new TicketHistory();
         $history->barcode_no = $request->barcode_no;
         $history->scanned_by = Auth::user() ? Auth::user()->id : 1;
+        $history->category = $request->category;
+        $history->gate = $request->gate;
+        $history->status = $request->status;
+        $history->created_at = $request->created_at;
         $history->save();
     }
 
