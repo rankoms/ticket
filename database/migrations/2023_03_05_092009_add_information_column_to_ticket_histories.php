@@ -14,6 +14,7 @@ class AddInformationColumnToTicketHistories extends Migration
     public function up()
     {
         Schema::table('ticket_histories', function (Blueprint $table) {
+            $table->string('event', 255)->index();
             $table->string('category', 255)->index();
             $table->string('gate', 255)->index();
             $table->string('status', 255)->index();

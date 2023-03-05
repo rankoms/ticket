@@ -130,6 +130,7 @@ class TicketController extends Controller
             'tickets.*.checkin_count' => ['nullable'],
             'ticket_histories.*.barcode_no' => ['required'],
             'ticket_histories.*.scanned_by' => ['required'],
+            'ticket_histories.*.event' => ['required'],
             'ticket_histories.*.category' => ['required'],
             'ticket_histories.*.gate' => ['required'],
             'ticket_histories.*.status' => ['required'],
@@ -160,6 +161,7 @@ class TicketController extends Controller
                 $ticket_history = new TicketHistory();
                 $ticket_history->barcode_no = $value['barcode_no'];
                 $ticket_history->scanned_by = $value['scanned_by'];
+                $ticket_history->event = $value['event'];
                 $ticket_history->category = $value['category'];
                 $ticket_history->gate = $value['gate'];
                 $ticket_history->status = $value['status'];
@@ -179,6 +181,7 @@ class TicketController extends Controller
         $history = new TicketHistory();
         $history->barcode_no = $request->barcode_no;
         $history->scanned_by = Auth::user() ? Auth::user()->id : 1;
+        $history->event = $request->event;
         $history->category = $request->category;
         $history->gate = $request->gate;
         $history->status = $request->status;
