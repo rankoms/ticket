@@ -41,7 +41,7 @@ class TicketController extends Controller
             return ResponseFormatter::success(null, 'This QR Code is Valid');
         }
         if ($ticket->checkin_count >= $ticket->max_checkin) {
-            return ResponseFormatter::error(null, 'This QR Code Already Used');
+            return ResponseFormatter::error($ticket, 'This QR Code Already Used');
         }
         if ($ticket->category != $request->category && $category != 'All Category') {
             return ResponseFormatter::error(null, 'Ticket Salah Pintu', 400);
@@ -187,7 +187,6 @@ class TicketController extends Controller
         $history->category = $request->category;
         $history->gate = $request->gate;
         $history->status = $request->status;
-        $history->created_at = $request->created_at;
         $history->save();
     }
 
