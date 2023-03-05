@@ -21,6 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login_username', [AuthController::class, 'login_username']);
 
 Route::group(['prefix' => 'scanner'], function () {
     Route::post('/checkin', [TicketController::class, 'checkin']);

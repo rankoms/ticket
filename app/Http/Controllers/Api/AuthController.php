@@ -26,6 +26,19 @@ class AuthController extends Controller
         $token = $user->createToken('login')->plainTextToken;
         return ResponseFormatter::success(['user' => $user, 'token' => $token], 'Berhasil');
     }
+    public function login_username(Request $request)
+    {
+        $user = User::where('username', $request->username)->first();
+        if (!isset($user)) {
+            return ResponseFormatter::error(null, 'User tidak ditemukan', 400);
+        }
+        if (!Hash::check($request->password, $user->password)) {
+            return ResponseFormatter::error(null, 'Password salah', 400);
+        }
+
+        $token = $user->createToken('login')->plainTextToken;
+        return ResponseFormatter::success(['user' => $user, 'token' => $token], 'Berhasil');
+    }
 
     public function sign(Request $request)
     {
