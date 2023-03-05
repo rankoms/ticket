@@ -38,7 +38,7 @@ class TicketController extends Controller
             return ResponseFormatter::error(null, 'This QR Code is Invalid', 400);
         }
         if ($ticket->is_bypass == 1) {
-            return ResponseFormatter::success(null, 'This QR Code is Valid');
+            return ResponseFormatter::success($ticket, 'This QR Code is Valid');
         }
         if ($ticket->checkin_count >= $ticket->max_checkin) {
             return ResponseFormatter::error($ticket, 'This QR Code Already Used');
@@ -103,7 +103,7 @@ class TicketController extends Controller
             return ResponseFormatter::error(null, 'This QR Code is Invalid', 400);
         }
         if ($ticket->is_bypass == 1) {
-            return ResponseFormatter::success(null, 'Anda Berhasil Checkout');
+            return ResponseFormatter::success($ticket, 'Anda Berhasil Checkout');
         }
         // if ($ticket->category != $request->category) {
         //     return ResponseFormatter::error(null, 'Ticket Salah Pintu', 400);
