@@ -135,7 +135,7 @@ class TicketController extends Controller
             'ticket_histories.*.event' => ['required'],
             'ticket_histories.*.category' => ['required'],
             'ticket_histories.*.gate' => ['required'],
-            'ticket_histories.*.status' => ['required'],
+            'ticket_histories.*.is_valid' => ['required'],
             'ticket_histories.*.created_at' => ['required'],
         ];
 
@@ -166,6 +166,7 @@ class TicketController extends Controller
                 $ticket_history->event = $value['event'];
                 $ticket_history->category = $value['category'];
                 $ticket_history->gate = $value['gate'];
+                $ticket_history->is_valid = $value['is_valid'];
                 $ticket_history->created_at = $value['created_at'];
                 $ticket_history->save();
 
