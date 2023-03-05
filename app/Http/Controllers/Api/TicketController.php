@@ -21,6 +21,7 @@ class TicketController extends Controller
             'event' => ['required'],
             'category' => ['required'],
         ]);
+        $request->merge(['gate' => 'checkout']);
         $now = date('Y-m-d H:i:s');
         $event = $request->event;
         $category = $request->category;
@@ -32,7 +33,7 @@ class TicketController extends Controller
         endif;
         $ticket = $ticket->first();
 
-        $ticket_history = $this->scan_history($request);
+        $ticket_history = $this->scan_history($request, $ticket);
         if (!isset($ticket)) {
             return ResponseFormatter::error(null, 'This QR Code is Invalid', 400);
         }
@@ -86,6 +87,7 @@ class TicketController extends Controller
             'event' => ['required'],
             'category' => ['required'],
         ]);
+        $request->merge(['gate' => 'checkout']);
         $now = date('Y-m-d H:i:s');
         $event = $request->event;
         $category = $request->category;
@@ -96,7 +98,7 @@ class TicketController extends Controller
         //     $ticket = $ticket->where('category', $category);
         // endif;
         $ticket = $ticket->first();
-        $ticket_history = $this->scan_history($request);
+        $ticket_history = $this->scan_history($request, $ticket);
         if (!$ticket) {
             return ResponseFormatter::error(null, 'This QR Code is Invalid', 400);
         }
@@ -164,7 +166,6 @@ class TicketController extends Controller
                 $ticket_history->event = $value['event'];
                 $ticket_history->category = $value['category'];
                 $ticket_history->gate = $value['gate'];
-                $ticket_history->status = $value['status'];
                 $ticket_history->created_at = $value['created_at'];
                 $ticket_history->save();
 
@@ -176,11 +177,12 @@ class TicketController extends Controller
         }
     }
 
-    public function scan_history(Request $request)
+    public function scan_history(Request $request, $ticket)
     {
         $history = new TicketHistory();
         $history->barcode_no = $request->barcode_no;
         $history->scanned_by = Auth::user() ? Auth::user()->id : 1;
+        $history->is_valid = $ticket ? 1 : 0;
         $history->event = $request->event;
         $history->category = $request->category;
         $history->gate = $request->gate;

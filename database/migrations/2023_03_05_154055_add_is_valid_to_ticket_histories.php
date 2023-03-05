@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddInformationColumnToTicketHistories extends Migration
+class AddIsValidToTicketHistories extends Migration
 {
     /**
      * Run the migrations.
@@ -14,10 +14,7 @@ class AddInformationColumnToTicketHistories extends Migration
     public function up()
     {
         Schema::table('ticket_histories', function (Blueprint $table) {
-            $table->string('event', 255)->index();
-            $table->string('category', 255)->index();
-            $table->string('gate', 255)->index();
-            $table->string('status', 255)->index()->nullable();
+            $table->tinyInteger('is_valid')->index()->default(1)->after('scanned_by');
         });
     }
 
