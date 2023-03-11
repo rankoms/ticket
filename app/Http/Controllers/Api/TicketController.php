@@ -21,7 +21,7 @@ class TicketController extends Controller
             'event' => ['required'],
             'category' => ['required'],
         ]);
-        $request->merge(['gate' => 'checkin']);
+        $request->merge(['gate' => 'Check In']);
         $now = date('Y-m-d H:i:s');
         $event = $request->event;
         $category = $request->category;
@@ -87,7 +87,7 @@ class TicketController extends Controller
             'event' => ['required'],
             'category' => ['required'],
         ]);
-        $request->merge(['gate' => 'checkout']);
+        $request->merge(['gate' => 'Check Out']);
         $now = date('Y-m-d H:i:s');
         $event = $request->event;
         $category = $request->category;
