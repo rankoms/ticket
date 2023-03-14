@@ -22,7 +22,7 @@ class TicketController extends Controller
             'event' => ['required'],
             'category' => ['required'],
         ]);
-        $request->merge(['gate' => 'checkout']);
+        $request->merge(['gate' => 'Check In']);
         $now = date('Y-m-d H:i:s');
         $event = $request->event;
         $category = $request->category;
@@ -39,10 +39,10 @@ class TicketController extends Controller
             return ResponseFormatter::error(null, 'This QR Code is Invalid', 400);
         }
         if ($ticket->is_bypass == 1) {
-            return ResponseFormatter::success(null, 'This QR Code is Valid');
+            return ResponseFormatter::success($ticket, 'This QR Code is Valid');
         }
         if ($ticket->checkin_count >= $ticket->max_checkin) {
-            return ResponseFormatter::error(null, 'This QR Code Already Used');
+            return ResponseFormatter::error($ticket, 'This QR Code Already Used');
         }
         if ($ticket->category != $request->category && $category != 'All Category') {
             return ResponseFormatter::error(null, 'Ticket Salah Pintu', 400);
@@ -88,7 +88,7 @@ class TicketController extends Controller
             'event' => ['required'],
             'category' => ['required'],
         ]);
-        $request->merge(['gate' => 'checkout']);
+        $request->merge(['gate' => 'Check Out']);
         $now = date('Y-m-d H:i:s');
         $event = $request->event;
         $category = $request->category;
@@ -104,7 +104,7 @@ class TicketController extends Controller
             return ResponseFormatter::error(null, 'This QR Code is Invalid', 400);
         }
         if ($ticket->is_bypass == 1) {
-            return ResponseFormatter::success(null, 'Anda Berhasil Checkout');
+            return ResponseFormatter::success($ticket, 'Anda Berhasil Checkout');
         }
         // if ($ticket->category != $request->category) {
         //     return ResponseFormatter::error(null, 'Ticket Salah Pintu', 400);
@@ -182,6 +182,7 @@ class TicketController extends Controller
                     $ticket_history->event = $value['event'];
                     $ticket_history->category = $value['category'];
                     $ticket_history->gate = $value['gate'];
+                    $ticket_history->is_valid = $value['is_valid'];
                     $ticket_history->created_at = $value['created_at'];
                     $ticket_history->save();
                 endforeach;
@@ -203,7 +204,6 @@ class TicketController extends Controller
         $history->category = $request->category;
         $history->gate = $request->gate;
         $history->status = $request->status;
-        $history->created_at = $request->created_at;
         $history->save();
     }
 
