@@ -151,12 +151,18 @@ class TicketController extends Controller
             $chunkSize = 1000; // jumlah rekaman yang diproses dalam satu waktu
             $totalData = count($request['tickets']); // jumlah total data yang akan disinkronkan
             $pageCount = ceil($totalData / $chunkSize); // jumlah halaman yang dibutuhkan untuk memproses seluruh data
-
+            $offset = 0;
+            $data_offset = [];
             for ($i = 0; $i <= $pageCount; $i++) {
-                $offset = ($i + 1) * $chunkSize; // hitung offset untuk halaman saat ini
-                $data = DB::table('tickets')->offset($offset)->limit($chunkSize)->get(); // ambil data dengan offset dan limit
+                $data = DB::table('tickets')->offset($offset)->limit($chunkSize)->orderBy('id', 'asc')->get(); // ambil data dengan offset dan limit
                 // lakukan proses sinkronisasi pada data saat ini
 
+
+                array_push($data_offset, $data);
+                $offset = ($i + 1) * $chunkSize; // hitung offset untuk halaman saat ini
+            }
+            $i = 0;
+            foreach ($data_offset as $data) :
                 foreach ($data as $row) {
                     $ticket = Ticket::where('barcode_no', $request['tickets'][$i]['barcode_no'])
                         ->where('category', $request['tickets'][$i]['category'])
@@ -169,10 +175,10 @@ class TicketController extends Controller
                         $ticket->max_checkin = $request['tickets'][$i]['max_checkin'];
                         $ticket->checkin_count = $request['tickets'][$i]['checkin_count'];
                         $ticket->save();
-                        // return $ticket;
                     }
+                    $i++;
                 }
-            }
+            endforeach;
 
             if (isset($request['ticket_histories'])) :
                 foreach ($request['ticket_histories'] as $key => $value) :
