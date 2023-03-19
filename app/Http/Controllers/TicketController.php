@@ -26,7 +26,7 @@ class TicketController extends Controller
         foreach ($ticket as $key => $value) :
             if ($value->checkin == null && $value->checkout == null) :
                 $jumlah_pending++;
-                isset($kategory_aset[$value->category]['checkin']) ? $kategory_aset[$value->category]['checkin']++ : $kategory_aset[$value->category]['checkin'] = 1;
+                isset($kategory_aset[$value->category]['pending']) ? $kategory_aset[$value->category]['pending']++ : $kategory_aset[$value->category]['pending'] = 1;
             endif;
             if ($value->checkin && $value->checkout == null) :
                 $jumlah_checkin++;
