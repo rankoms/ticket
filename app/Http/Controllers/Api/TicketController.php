@@ -165,7 +165,7 @@ class TicketController extends Controller
             foreach ($data_offset as $data) :
                 foreach ($data as $row) {
                     if (isset($request['tickets'][$i])) {
-                        if ($request['tickets'][$i]['status'] == 1) :
+                        if ($request['tickets'][$i]['status'] == true) :
                             $ticket = Ticket::where('barcode_no', strval($request['tickets'][$i]['barcode_no']))
                                 ->where('category', trim($request['tickets'][$i]['category']))
                                 ->where('event', trim($request['tickets'][$i]['event']))

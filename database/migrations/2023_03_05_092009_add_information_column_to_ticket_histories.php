@@ -17,7 +17,7 @@ class AddInformationColumnToTicketHistories extends Migration
             $table->string('event', 255)->index();
             $table->string('category', 255)->index();
             $table->string('gate', 255)->index();
-            $table->string('status', 255)->index()->nullable();
+            $table->boolean('status')->index()->nullable();
         });
     }
 
