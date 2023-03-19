@@ -286,4 +286,11 @@ class TicketController extends Controller
         // endforeach;
 
     }
+
+    public function logo()
+    {
+        $logo = asset('/') . \config('logo.logo');
+
+        return ResponseFormatter::success($logo);
+    }
 }
