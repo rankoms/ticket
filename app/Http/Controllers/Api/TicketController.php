@@ -169,6 +169,7 @@ class TicketController extends Controller
                         $ticket = Ticket::where('barcode_no', strval($request['tickets'][$i]['barcode_no']))
                             ->where('category', trim($request['tickets'][$i]['category']))
                             ->where('event', trim($request['tickets'][$i]['event']))
+                            ->where('status', 1)
                             ->first(); // temukan model dengan id yang cocok
 
 
@@ -178,6 +179,7 @@ class TicketController extends Controller
                             $ticket->is_bypass = $request['tickets'][$i]['is_bypass'];
                             $ticket->max_checkin = $request['tickets'][$i]['max_checkin'];
                             $ticket->checkin_count = $request['tickets'][$i]['checkin_count'];
+                            $ticket->status = false;
                             $ticket->save();
                         }
                     }
