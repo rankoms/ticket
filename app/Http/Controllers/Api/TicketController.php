@@ -165,23 +165,24 @@ class TicketController extends Controller
             foreach ($data_offset as $data) :
                 foreach ($data as $row) {
                     if (isset($request['tickets'][$i])) {
+                        if ($request['tickets'][$i]['status'] == 1) :
+                            $ticket = Ticket::where('barcode_no', strval($request['tickets'][$i]['barcode_no']))
+                                ->where('category', trim($request['tickets'][$i]['category']))
+                                ->where('event', trim($request['tickets'][$i]['event']))
+                                // ->where('status', 1)
+                                ->first(); // temukan model dengan id yang cocok
 
-                        $ticket = Ticket::where('barcode_no', strval($request['tickets'][$i]['barcode_no']))
-                            ->where('category', trim($request['tickets'][$i]['category']))
-                            ->where('event', trim($request['tickets'][$i]['event']))
-                            ->where('status', 1)
-                            ->first(); // temukan model dengan id yang cocok
 
-
-                        if ($ticket) {
-                            $ticket->checkin = $request['tickets'][$i]['checkin'];
-                            $ticket->checkout = $request['tickets'][$i]['checkout'];
-                            $ticket->is_bypass = $request['tickets'][$i]['is_bypass'];
-                            $ticket->max_checkin = $request['tickets'][$i]['max_checkin'];
-                            $ticket->checkin_count = $request['tickets'][$i]['checkin_count'];
-                            $ticket->status = false;
-                            $ticket->save();
-                        }
+                            if ($ticket) {
+                                $ticket->checkin = $request['tickets'][$i]['checkin'];
+                                $ticket->checkout = $request['tickets'][$i]['checkout'];
+                                $ticket->is_bypass = $request['tickets'][$i]['is_bypass'];
+                                $ticket->max_checkin = $request['tickets'][$i]['max_checkin'];
+                                $ticket->checkin_count = $request['tickets'][$i]['checkin_count'];
+                                $ticket->status = false;
+                                $ticket->save();
+                            }
+                        endif;
                     }
                     $i++;
                 }
