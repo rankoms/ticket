@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\ScannerController;
 use App\Models\Ticket;
 use App\Models\TicketHistory;
+use App\Models\User;
 use App\Rules\ExceptSymbol;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -290,10 +291,19 @@ class TicketController extends Controller
 
     }
 
-    public function logo()
+    public function logo(Request $request)
     {
+        request()->validate([
+            'user_id' => ['numeric', 'required']
+        ]);
         // $logo = asset('/') . \config('logo.logo');
-        $logo = Ticket::groupBy('event', 'logo')->select('event', DB::raw("CONCAT('" . asset('/') . "',logo) AS logo"))->orderBy('event')->get();
+        // $logo = Ticket::groupBy('event', 'logo')->select('event', DB::raw("CONCAT('" . asset('/') . "',logo) AS logo"))->orderBy('event')->get();
+        $user_id = $request->user_id;
+        $user = User::find($user_id);
+        $logo = '';
+        if ($user) {
+            $logo = asset('/') . $user->logo;
+        }
 
         return ResponseFormatter::success($logo);
     }
