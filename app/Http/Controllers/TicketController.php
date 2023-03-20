@@ -15,14 +15,16 @@ class TicketController extends Controller
 
     public function dashboard_ticket(Request $request)
     {
-        $ticket = Ticket::orderBy('category', 'asc')->get();
-
+        $ticket = Ticket::orderBy('category', 'asc');
+        if ($request->event) {
+            $ticket = $ticket->where('event', $request->event);
+        }
+        $ticket = $ticket->get();
+        $event = Ticket::groupBy('event')->select('event')->orderBy('event')->get();
         $jumlah_pending = 0;
         $jumlah_checkin = 0;
         $jumlah_checkout = 0;
         $kategory_aset = [];
-        // $kategory_aset['sudah'] = [];
-        // $kategory_aset['belum'] = [];
         foreach ($ticket as $key => $value) :
             if ($value->checkin == null && $value->checkout == null) :
                 $jumlah_pending++;
@@ -37,7 +39,7 @@ class TicketController extends Controller
                 isset($kategory_aset[$value->category]['checkout']) ? $kategory_aset[$value->category]['checkout']++ : $kategory_aset[$value->category]['checkout'] = 1;
             endif;
         endforeach;
-        return view('admin.dashboard_ticket', compact('kategory_aset', 'jumlah_pending', 'jumlah_checkin', 'jumlah_checkout', 'ticket'));
+        return view('admin.dashboard_ticket', compact('kategory_aset', 'jumlah_pending', 'jumlah_checkin', 'jumlah_checkout', 'ticket', 'event', 'request'));
     }
 
     public function checkin(Request $request)

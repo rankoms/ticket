@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\ResponseFormatter;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
+use League\CommonMark\CommonMarkConverter;
 
 class HomeController extends Controller
 {
@@ -13,10 +14,10 @@ class HomeController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('auth');
+    // }
 
     /**
      * Show the application dashboard.
@@ -138,5 +139,14 @@ class HomeController extends Controller
         //         ]
         // }
         dd($ticket);
+    }
+
+    public function privacy()
+    {
+        $privacyPolicyFile = file_get_contents(resource_path('docs/privacy.md'));
+        $converter = new CommonMarkConverter();
+        $privacyPolicyHtml = $converter->convertToHtml($privacyPolicyFile);
+
+        return view('privacy', ['privacy' => $privacyPolicyHtml]);
     }
 }

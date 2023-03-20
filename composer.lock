@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a3c8239b19e33f254fa4f69e9ddc93ed",
+    "content-hash": "ee9dfcbedc81deab2cb383d2530cd523",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1724,16 +1724,16 @@
         },
         {
             "name": "league/commonmark",
-            "version": "2.3.3",
+            "version": "2.3.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "0da1dca5781dd3cfddbe328224d9a7a62571addc"
+                "reference": "c1e114f74e518daca2729ea8c4bf1167038fa4b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/0da1dca5781dd3cfddbe328224d9a7a62571addc",
-                "reference": "0da1dca5781dd3cfddbe328224d9a7a62571addc",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/c1e114f74e518daca2729ea8c4bf1167038fa4b5",
+                "reference": "c1e114f74e518daca2729ea8c4bf1167038fa4b5",
                 "shasum": ""
             },
             "require": {
@@ -1753,15 +1753,15 @@
                 "erusev/parsedown": "^1.0",
                 "ext-json": "*",
                 "github/gfm": "0.29.0",
-                "michelf/php-markdown": "^1.4",
+                "michelf/php-markdown": "^1.4 || ^2.0",
                 "nyholm/psr7": "^1.5",
-                "phpstan/phpstan": "^0.12.88 || ^1.0.0",
-                "phpunit/phpunit": "^9.5.5",
+                "phpstan/phpstan": "^1.8.2",
+                "phpunit/phpunit": "^9.5.21",
                 "scrutinizer/ocular": "^1.8.1",
-                "symfony/finder": "^5.3",
+                "symfony/finder": "^5.3 | ^6.0",
                 "symfony/yaml": "^2.3 | ^3.0 | ^4.0 | ^5.0 | ^6.0",
-                "unleashedtech/php-coding-standard": "^3.1",
-                "vimeo/psalm": "^4.7.3"
+                "unleashedtech/php-coding-standard": "^3.1.1",
+                "vimeo/psalm": "^4.24.0 || ^5.0.0"
             },
             "suggest": {
                 "symfony/yaml": "v2.3+ required if using the Front Matter extension"
@@ -1826,7 +1826,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-06-07T21:28:26+00:00"
+            "time": "2023-02-15T14:07:24+00:00"
         },
         {
             "name": "league/config",

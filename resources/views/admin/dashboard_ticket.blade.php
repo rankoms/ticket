@@ -15,6 +15,15 @@
 			<div class="container-fluid">
 
 				<div class="row">
+					<div class="col-lg-12 col-12 mb-4">
+						<select name="event" id="event" class="form-control">
+							<option value="">All Event</option>
+							@foreach ($event as $key => $value)
+								<option value="{{ $value->event }}" {{ $request->event == $value->event ? 'selected' : '' }}>{{ $value->event }}
+								</option>
+							@endforeach
+						</select>
+					</div>
 
 					<div class="col-lg-4 col-4">
 						<div class="small-box bg-info">
@@ -84,8 +93,14 @@
 		<script src="{{ url('js/bootstrap.bundle.min.js') }}"></script>
 		<script src="{{ url('js/jquery-3.5.1.js') }}"></script>
 		<script src="{{ url('js/jquery.dataTables.min.js') }}"></script>
+
 		<script>
 			$(document).ready(function() {
+				$('#event').on('change', function(e) {
+					window.location = '{{ route('dashboard_ticket') }}?event=' + $(this).val()
+				})
+
+
 				$('#example').DataTable({
 					order: [
 						[0, 'desc']
