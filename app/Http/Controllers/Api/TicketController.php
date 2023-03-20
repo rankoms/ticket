@@ -292,7 +292,8 @@ class TicketController extends Controller
 
     public function logo()
     {
-        $logo = asset('/') . \config('logo.logo');
+        // $logo = asset('/') . \config('logo.logo');
+        $logo = Ticket::groupBy('event', 'logo')->select('event', DB::raw("CONCAT('" . asset('/') . "',logo) AS logo"))->orderBy('event')->get();
 
         return ResponseFormatter::success($logo);
     }
