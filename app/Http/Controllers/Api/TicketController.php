@@ -326,6 +326,7 @@ class TicketController extends Controller
         $jumlah_checkout = 0;
         $kategory_ticket = [];
         foreach ($ticket as $key => $value) :
+            isset($kategory_ticket[$value->category]['name']) ? $kategory_ticket[$value->category] : $kategory_ticket[$value->category]['name'] = $value->category;
             isset($kategory_ticket[$value->category]['checkin']) ? $kategory_ticket[$value->category] : $kategory_ticket[$value->category]['checkin'] = 0;
             isset($kategory_ticket[$value->category]['checkout']) ? $kategory_ticket[$value->category] : $kategory_ticket[$value->category]['checkout'] = 0;
             isset($kategory_ticket[$value->category]['pending']) ? $kategory_ticket[$value->category] : $kategory_ticket[$value->category]['pending'] = 0;
@@ -342,7 +343,11 @@ class TicketController extends Controller
                 isset($kategory_ticket[$value->category]['checkout']) ? $kategory_ticket[$value->category]['checkout']++ : $kategory_ticket[$value->category]['checkout'] = 1;
             endif;
         endforeach;
-        $data = ['event' => $event_name, 'jumlah_checkin' => $jumlah_checkin, 'jumlah_checkout' => $jumlah_checkout, 'jumlah_pending' => $jumlah_pending, 'kategory_ticket' => $kategory_ticket];
+        $kategory_ticket_final = [];
+        foreach ($kategory_ticket as $key => $value) :
+            $kategory_ticket_final[] = $value;
+        endforeach;
+        $data = ['event' => $event_name, 'jumlah_checkin' => $jumlah_checkin, 'jumlah_checkout' => $jumlah_checkout, 'jumlah_pending' => $jumlah_pending, 'kategory_ticket' => $kategory_ticket_final];
         return ResponseFormatter::success($data);
     }
 }
