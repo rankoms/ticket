@@ -28,11 +28,14 @@ class DataTicketSeeder extends Seeder
                 $event = 'Event 3';
             }
 
-            if ($i % 2 == 0) {
-                $category = 'Category 1';
-            } else {
-                $category = 'Category 2';
+            for ($j=8; $j >= 1; $j--) { 
+                if ($i % $j == 0) {
+                    $category = 'Category '.$j;
+
+                    break;
+                }
             }
+
             array_push($data, [
                 'event' => $event,
                 'name' => 'Test',
