@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 class TicketController extends Controller
 {
@@ -337,12 +338,21 @@ class TicketController extends Controller
             if ($value->checkin == null && $value->checkout == null) :
                 $jumlah_pending++;
                 isset($kategory_ticket[$value->category]['pending']) ? $kategory_ticket[$value->category]['pending']++ : $kategory_ticket[$value->category]['pending'] = 1;
-            endif;
-            if ($value->checkin && $value->checkout == null) :
+            elseif ($value->checkin && $value->checkout == null) :
                 $jumlah_checkin++;
                 isset($kategory_ticket[$value->category]['checkin']) ? $kategory_ticket[$value->category]['checkin']++ : $kategory_ticket[$value->category]['checkin'] = 1;
-            endif;
-            if ($value->checkout) :
+            elseif ($value->checkin && $value->checkout) :
+                $checkIn = Carbon::createFromFormat('Y-m-d H:i:s', $value->checkin);
+                $checkOut = Carbon::createFromFormat('Y-m-d H:i:s', $value->checkout);
+
+                if ($checkIn->gt($checkOut)) {
+                    $jumlah_checkin++;
+                    isset($kategory_ticket[$value->category]['checkin']) ? $kategory_ticket[$value->category]['checkin']++ : $kategory_ticket[$value->category]['checkin'] = 1;
+                } else {
+                    $jumlah_checkout++;
+                    isset($kategory_ticket[$value->category]['checkout']) ? $kategory_ticket[$value->category]['checkout']++ : $kategory_ticket[$value->category]   ['checkout'] = 1;
+                }
+            elseif ($value->checkout) :
                 $jumlah_checkout++;
                 isset($kategory_ticket[$value->category]['checkout']) ? $kategory_ticket[$value->category]['checkout']++ : $kategory_ticket[$value->category]['checkout'] = 1;
             endif;
