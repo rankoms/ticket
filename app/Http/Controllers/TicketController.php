@@ -20,7 +20,7 @@ class TicketController extends Controller
         $ticket_not_valid = 0;
         if ($request->event) {
             $ticket = $ticket->where('event', $request->event);
-            $ticket_not_valid = TicketHistory::where('event', $request->event)->get();
+            $ticket_not_valid = TicketHistory::where('event', $request->event)->where('is_valid', 0)->get();
             $ticket_not_valid = count($ticket_not_valid);
         }
         $ticket = $ticket->get();

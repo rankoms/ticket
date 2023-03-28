@@ -95,7 +95,7 @@
 		</div>
 		<a href="{{ route('user.logout') }}" class="btn btn-danger position-absolute"
 			style="bottom: 10px; right:10px">Logout</a>
-		<a href="{{ route('redeem_voucher.dashboard') }}" class="btn btn-info position-absolute"
+		<a href="{{ route('admin.dashboard') }}" class="btn btn-info position-absolute"
 			style="bottom: 10px; left:10px">Report</a>
 	</div>
 </form>
