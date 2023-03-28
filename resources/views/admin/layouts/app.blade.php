@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>E-Ticket</title>
+	<title>Event Bersama @yield('title')</title>
 
 	<!-- Google Font: Source Sans Pro -->
 	{{-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback"> --}}
@@ -16,6 +16,7 @@
 	<link rel="stylesheet" href="{{ url('adminlte') }}/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 	<!-- Theme style -->
 	<link rel="stylesheet" href="{{ url('adminlte') }}/dist/css/adminlte.min.css">
+	<link rel="stylesheet" href="{{ url('css') }}/custom-admin.css">
 </head>
 
 <body class="hold-transition sidebar-mini">

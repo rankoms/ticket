@@ -6,6 +6,7 @@ use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ScannerController;
 use App\Models\Ticket;
+use App\Models\TicketHistory;
 use App\Rules\ExceptSymbol;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -16,8 +17,11 @@ class TicketController extends Controller
     public function dashboard_ticket(Request $request)
     {
         $ticket = Ticket::orderBy('category', 'asc');
+        $ticket_not_valid = 0;
         if ($request->event) {
             $ticket = $ticket->where('event', $request->event);
+            $ticket_not_valid = TicketHistory::where('event', $request->event)->get();
+            $ticket_not_valid = count($ticket_not_valid);
         }
         $ticket = $ticket->get();
         $event = Ticket::groupBy('event')->select('event')->orderBy('event')->get();
@@ -39,7 +43,7 @@ class TicketController extends Controller
                 isset($kategory_aset[$value->category]['checkout']) ? $kategory_aset[$value->category]['checkout']++ : $kategory_aset[$value->category]['checkout'] = 1;
             endif;
         endforeach;
-        return view('admin.dashboard_ticket', compact('kategory_aset', 'jumlah_pending', 'jumlah_checkin', 'jumlah_checkout', 'ticket', 'event', 'request'));
+        return view('admin.dashboard_ticket', compact('kategory_aset', 'jumlah_pending', 'jumlah_checkin', 'jumlah_checkout', 'ticket', 'event', 'request', 'ticket_not_valid'));
     }
 
     public function checkin(Request $request)
