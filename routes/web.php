@@ -71,7 +71,8 @@ Route::get('/redeem_voucher/{kode}', [RedeemVoucherController::class, 'detail'])
 
 
 Route::group(['middleware' => ['auth'], 'prefix' => 'admin'], function () {
-    Route::get('/dashboard', [RedeemVoucherController::class, 'dashboard'])->name('redeem_voucher.dashboard');
+    Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('/dashboard_redeem', [RedeemVoucherController::class, 'dashboard'])->name('redeem_voucher.dashboard');
     Route::get('/dashboard_ticket', [TicketController::class, 'dashboard_ticket'])->name('dashboard_ticket');
     Route::get('/dashboard_new', [HomeController::class, 'dashboard_new'])->name('dashboard_new');
     Route::resource('event', EventController::class);

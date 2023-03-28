@@ -69,6 +69,15 @@ class HomeController extends Controller
         return view('home_new');
     }
 
+    public function dashboard(Request $request)
+    {
+        $event = Ticket::groupBy('event')->select('event')->orderBy('event')->get();
+        if ($request->report == 'ticket') {
+            return redirect()->route('dashboard_ticket', ['event' => $request->event]);
+        }
+        return view('admin.dashboard', compact('event'));
+    }
+
     public function test()
     {
 
