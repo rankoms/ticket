@@ -5,11 +5,56 @@
 	<!-- Content Wrapper. Contains page content -->
 	<div class="content-wrapper">
 		<!-- Content Header (Page header) -->
-		<section class="content-header">
-			<div class="container-fluid">
+		<nav class="main-header navbar navbar-expand navbar-white navbar-light p-0 m-0 border-0 mb-4"
+			style="margin-left: 0px !important;">
+			<!-- Left navbar links -->
+			<ul class="navbar-nav">
+				<li class="nav-item">
+					<a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+				</li>
+			</ul>
+			<ul class="navbar-nav ml-auto p-4">
+				<!-- Navbar Search -->
 
-			</div><!-- /.container-fluid -->
-		</section>
+				<!-- Messages Dropdown Menu -->
+				<!-- Notifications Dropdown Menu -->
+				<li class="nav-item dropdown nav-user" data-toggle="dropdown">
+					<a class="align-content-center align-items-center d-flex justify-content-center nav-link p-0" href="#">
+						<div class="flex-shrink-0 me-3">
+							<div class="avatar avatar-online">
+								<img src="{{ asset('images/default-user.webp') }}" alt=""
+									class="rounded-circle img-size-50 mr-3 img-circle">
+							</div>
+						</div>
+						<div class="flex-grow-1">
+							<span class="fw-semibold d-block lh-1">{{ Auth::user()->name }}</span>
+							<small></small>
+						</div>
+					</a>
+					{{-- <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+						<span class="dropdown-item dropdown-header">15 Notifications</span>
+						<div class="dropdown-divider"></div>
+						<a href="#" class="dropdown-item">
+							<i class="fas fa-envelope mr-2"></i> 4 new messages
+							<span class="float-right text-muted text-sm">3 mins</span>
+						</a>
+						<div class="dropdown-divider"></div>
+						<a href="#" class="dropdown-item">
+							<i class="fas fa-users mr-2"></i> 8 friend requests
+							<span class="float-right text-muted text-sm">12 hours</span>
+						</a>
+						<div class="dropdown-divider"></div>
+						<a href="#" class="dropdown-item">
+							<i class="fas fa-file mr-2"></i> 3 new reports
+							<span class="float-right text-muted text-sm">2 days</span>
+						</a>
+						<div class="dropdown-divider"></div>
+						<a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+					</div> --}}
+				</li>
+			</ul>
+
+		</nav>
 		<!-- Main content -->
 		@if (!$request->event)
 			<section class="content container h-100 d-flex align-items-center justify-content-center">
@@ -109,6 +154,12 @@
 									@endforeach
 								</tbody>
 							</table>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-12 text-center">
+							<a href="" class="btn btn-success">Export Excel</a>
+
 						</div>
 					</div>
 				</div>
