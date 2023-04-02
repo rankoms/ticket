@@ -204,6 +204,7 @@ class TicketController extends Controller
                     $ticket_history->gate = $value['gate'];
                     $ticket_history->is_valid = $value['is_valid'];
                     $ticket_history->created_at = $value['created_at'];
+                    $ticket_history->status = $value['status'];
                     $ticket_history->save();
                 endforeach;
             endif;
