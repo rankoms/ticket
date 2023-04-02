@@ -16,7 +16,7 @@ class IsAdmin
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::check() && (Auth::user()->user_group == 'admin')) {
+        if (Auth::check() && (Auth::user()->user_group == 'client')) {
             return $next($request);
         } else {
             abort(404);

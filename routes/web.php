@@ -59,7 +59,6 @@ Route::group(['middleware' => ['auth']], function () {
 
 
 
-    // Route::group(['prefix'=>])
 
     Route::get('/summary_redeem', [RedeemVoucherController::class, 'summary_redeem'])->name('redeem_voucher.summary_redeem');
     Route::post('/redeem_voucher_update', [RedeemVoucherController::class, 'redeem_voucher_update'])->name('redeem_voucher.redeem_voucher_update');
@@ -75,6 +74,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin'], function () {
     Route::get('/dashboard_redeem', [RedeemVoucherController::class, 'dashboard'])->name('redeem_voucher.dashboard');
     Route::get('/dashboard_ticket', [TicketController::class, 'dashboard_ticket'])->name('dashboard_ticket');
     Route::get('/dashboard_new', [HomeController::class, 'dashboard_new'])->name('dashboard_new');
+    Route::get('/excel_ticket', [TicketController::class, 'excel_ticket'])->name('excel_ticket');
     Route::resource('event', EventController::class);
     Route::resource('ticket', TicketController::class);
 });
