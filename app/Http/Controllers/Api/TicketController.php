@@ -226,9 +226,12 @@ class TicketController extends Controller
 
     public function scan_history(Request $request, $ticket)
     {
+        $scanned_by = $request->checkin_by ? $request->checkin_by : $request->checkout_by;
+
+        $scanned_by = $scanned_by ? $scanned_by : 1;
         $history = new TicketHistory();
         $history->barcode_no = $request->barcode_no;
-        $history->scanned_by = Auth::user() ? Auth::user()->id : 1;
+        $history->scanned_by = $scanned_by;
         $history->is_valid = $ticket ? 1 : 0;
         $history->event = $request->event;
         $history->category = $request->category;
