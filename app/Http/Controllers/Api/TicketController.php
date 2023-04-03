@@ -188,8 +188,8 @@ class TicketController extends Controller
 
                             if ($ticket) {
                                 $ticket->checkin = $request['tickets'][$i]['checkin'];
-                                $ticket->checkin_by = $request['tickets'][$i]['checkin_by'];
-                                $ticket->checkout_by = $request['tickets'][$i]['checkout_by'];
+                                $ticket->checkin_by = isset($request['tickets'][$i]['checkin_by']) ? $request['tickets'][$i]['checkin_by'] : null;
+                                $ticket->checkout_by = isset($request['tickets'][$i]['checkout_by']) ? $request['tickets'][$i]['checkout_by'] : null;
                                 $ticket->checkout = $request['tickets'][$i]['checkout'];
                                 $ticket->is_bypass = $request['tickets'][$i]['is_bypass'];
                                 $ticket->max_checkin = $request['tickets'][$i]['max_checkin'];
