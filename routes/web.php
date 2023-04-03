@@ -22,14 +22,28 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [HomeController::class, 'index'])->name('home.index');
+Auth::routes([
+    'register' => false
+]);
+Route::get('user_logout', [LoginController::class, 'logout'])->name('user.logout');
 
-Route::get('/test', [HomeController::class, 'test'])->name('test');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+Route::get('/privacy-policy', [HomeController::class, 'privacy'])->name('privacy-policy');
+
+Route::group(['middleware' => ['auth', 'is_client'], 'prefix' => 'admin'], function () {
+    Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('/dashboard_redeem', [RedeemVoucherController::class, 'dashboard'])->name('redeem_voucher.dashboard');
+    Route::get('/dashboard_ticket', [TicketController::class, 'dashboard_ticket'])->name('dashboard_ticket');
+    Route::get('/excel_ticket', [TicketController::class, 'excel_ticket'])->name('excel_ticket');
+});
+
 
 Route::get('/home_new', [HomeController::class, 'home_new'])->name('home_new');
 
 
-Route::group(['middleware' => ['auth']], function () {
+Route::group(['middleware' => ['auth', 'is_admin'], 'prefix' => 'admin'], function () {
+    Route::get('/home', [HomeController::class, 'index'])->name('home.index');
     Route::group(['prefix' => 'scanner'], function () {
         Route::get('/store_pilih_event', [ScannerController::class, 'store_pilih_event'])->name('scanner.store_pilih_event');
         Route::get('/pilih_event', [ScannerController::class, 'pilih_event'])->name('scanner.pilih_event');
@@ -59,30 +73,12 @@ Route::group(['middleware' => ['auth']], function () {
 
 
 
-    // Route::group(['prefix'=>])
 
+    Route::get('/redeem_voucher/{kode}', [RedeemVoucherController::class, 'detail'])->name('redeem_voucher.detail');
     Route::get('/summary_redeem', [RedeemVoucherController::class, 'summary_redeem'])->name('redeem_voucher.summary_redeem');
     Route::post('/redeem_voucher_update', [RedeemVoucherController::class, 'redeem_voucher_update'])->name('redeem_voucher.redeem_voucher_update');
     Route::post('/redeem_voucher_update_v2', [RedeemVoucherController::class, 'redeem_voucher_update_v2'])->name('redeem_voucher.redeem_voucher_update_v2');
     Route::post('/cek_redeem_vouceher', [RedeemVoucherController::class, 'cek_redeem_voucher'])->name('redeem_voucher.cek_redeem_voucher');
-});
-
-Route::get('/redeem_voucher/{kode}', [RedeemVoucherController::class, 'detail'])->name('redeem_voucher.detail');
-
-
-Route::group(['middleware' => ['auth'], 'prefix' => 'admin'], function () {
-    Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('admin.dashboard');
-    Route::get('/dashboard_redeem', [RedeemVoucherController::class, 'dashboard'])->name('redeem_voucher.dashboard');
-    Route::get('/dashboard_ticket', [TicketController::class, 'dashboard_ticket'])->name('dashboard_ticket');
-    Route::get('/dashboard_new', [HomeController::class, 'dashboard_new'])->name('dashboard_new');
     Route::resource('event', EventController::class);
     Route::resource('ticket', TicketController::class);
 });
-Auth::routes([
-    'register' => false
-]);
-Route::get('user_logout', [LoginController::class, 'logout'])->name('user.logout');
-
-Route::get('/home', [HomeController::class, 'index'])->name('home');
-
-Route::get('/privacy-policy', [HomeController::class, 'privacy'])->name('privacy-policy');

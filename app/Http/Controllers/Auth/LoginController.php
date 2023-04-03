@@ -44,6 +44,13 @@ class LoginController extends Controller
         Auth::logout();
         return redirect('/login');
     }
+    protected function authenticated(Request $request, $user)
+    {
+        if ($user->role == 'client') {
+            return redirect()->route('admin.dashboard');
+        }
+        return redirect()->route('home');
+    }
     public function username()
     {
         return 'username';

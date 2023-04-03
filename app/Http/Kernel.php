@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\IsAdmin;
+use App\Http\Middleware\IsClient;
 use App\Http\Middleware\IsLogged;
 use App\Http\Middleware\IsPic;
 use App\Http\Middleware\TokenAuth;
@@ -69,6 +70,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'is_logged' => IsLogged::class,
         'is_admin' => IsAdmin::class,
+        'is_client' => IsClient::class,
         'is_pic' => IsPic::class,
         'token_auth' => TokenAuth::class
     ];
