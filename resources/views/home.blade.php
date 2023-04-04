@@ -9,7 +9,7 @@
 	<!-- Bootstrap CSS -->
 	<link rel="stylesheet" href="{{ asset('css/bootstrap-grid.css') }}">
 
-	<title>Hello, world!</title>
+	<title>Event Bersama</title>
 	<style>
 		@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 	</style>
@@ -111,7 +111,6 @@
 			</div>
 			<div class="col-xl-3 col-sm-12 p-0 m-0 position-relative full">
 				<div class="row p-0 m-0 position-relative">
-
 					<div class="col-6 col-xl-12 col-sm-6 half p-2 m-0 position-relative">
 						<a href="{{ route('redeem_voucher.dashboard') }}">
 							<div class="half bg-white">
@@ -120,7 +119,6 @@
 										<img src="{{ asset('images/home/desktop_scanner.svg') }}" alt="POS" width="77px" height="77px">
 										<span>Desktop Scanner</span>
 									</div>
-
 								</div>
 							</div>
 						</a>
@@ -133,7 +131,6 @@
 										<img src="{{ asset('images/home/mobile_scanner.svg') }}" alt="POS" width="77px" height="77px">
 										<span>Mobile Scanner</span>
 									</div>
-
 								</div>
 							</div>
 						</a>
@@ -144,7 +141,6 @@
 				<a href="{{ route('redeem_voucher.dashboard') }}">
 					<div class="bg-yellow full wrapper">
 						<div class="">
-
 							<img src="{{ asset('images/home/redeem_ticket.svg') }}" alt="POS" width="77px" height="77px">
 							<span>Redeem E-Ticket</span>
 						</div>
@@ -154,14 +150,12 @@
 			<div class="col-xl-3 col-sm-12 p-0 m-0 position-relative full">
 				<div class="row p-0 m-0 position-relative">
 					<div class="col-6 col-xl-12 col-sm-6 half p-2 m-0 position-relative">
-						<a href="{{ route('redeem_voucher.dashboard') }}">
+						<a href="{{ route('admin.dashboard') }}">
 							<div class="half bg-blue wrapper">
 								<div class="">
-
 									<img src="{{ asset('images/home/report.svg') }}" alt="POS" width="77px" height="77px">
 									<span>Report</span>
 								</div>
-
 							</div>
 						</a>
 					</div>
