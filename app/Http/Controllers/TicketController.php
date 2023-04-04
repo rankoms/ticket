@@ -185,6 +185,6 @@ class TicketController extends Controller
     public function excel_ticket(Request $request)
     {
 
-        return Excel::download(new TicketExport($request), 'Laporan Ticket ' . date('Y-m-d H:i') . ' .xlsx');
+        return Excel::download(new TicketExport($request), 'Laporan Ticket ' . date('Y-m-d H_i') . '.xlsx');
     }
 }
