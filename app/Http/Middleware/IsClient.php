@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
-class IsAdmin
+class IsClient
 {
     /**
      * Handle an incoming request.
@@ -16,7 +16,7 @@ class IsAdmin
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::check() && (Auth::user()->role == 'admin')) {
+        if (Auth::check() && (Auth::user()->role == 'client' || (Auth::user()->role == 'admin'))) {
             return $next($request);
         } else {
             abort(404);

@@ -119,10 +119,9 @@
 						</table>
 					</div>
 				</div>
-				<div class="row">
+				<div class="row mt-4">
 					<div class="col-12 text-center">
-						<a href="" class="btn btn-success">Export Excel</a>
-
+						<a href="{{ route('excel_ticket', ['event' => $request->event]) }}" class="btn btn-success">Export Excel</a>
 					</div>
 				</div>
 			</div>

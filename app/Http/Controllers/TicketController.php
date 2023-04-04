@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\TicketExport;
 use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ScannerController;
@@ -10,6 +11,7 @@ use App\Models\TicketHistory;
 use App\Rules\ExceptSymbol;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TicketController extends Controller
 {
@@ -178,5 +180,11 @@ class TicketController extends Controller
             //TODO Handle your error
             return ResponseFormatter::error(null, $validator->errors()->all(), 400);
         }
+    }
+
+    public function excel_ticket(Request $request)
+    {
+
+        return Excel::download(new TicketExport($request), 'Laporan Ticket ' . date('Y-m-d H:i') . ' .xlsx');
     }
 }
