@@ -38,6 +38,18 @@
 			min-height: 50vh;
 		}
 
+		.atas {
+
+			height: 49vh;
+			min-height: auto;
+		}
+
+		.half-atas-bg {
+
+			height: 48vh;
+			min-height: auto;
+		}
+
 		.bg-white {
 			background-color: white;
 		}
@@ -79,7 +91,7 @@
 			text-decoration: none;
 		}
 
-		@media (max-width: 576px) {
+		@media (max-width: 1201px) {
 			.full {
 				height: 100%;
 				max-height: 300px;
@@ -111,10 +123,10 @@
 			</div>
 			<div class="col-xl-3 col-sm-12 p-0 m-0 position-relative full">
 				<div class="row p-0 m-0 position-relative">
-					<div class="col-6 col-xl-12 col-sm-6 half p-2 m-0 position-relative">
+					<div class="col-6 col-xl-12 col-sm-6 half atas p-2 m-0 position-relative">
 						<a href="{{ route('redeem_voucher.dashboard') }}">
-							<div class="half bg-white">
-								<div class="half bg-yellow wrapper pb-2">
+							<div class="half atas bg-white">
+								<div class="half half-atas-bg bg-yellow wrapper">
 									<div class="">
 										<img src="{{ asset('images/home/desktop_scanner.svg') }}" alt="POS" width="77px" height="77px">
 										<span>Desktop Scanner</span>
@@ -149,19 +161,21 @@
 			</div>
 			<div class="col-xl-3 col-sm-12 p-0 m-0 position-relative full">
 				<div class="row p-0 m-0 position-relative">
-					<div class="col-6 col-xl-12 col-sm-6 half p-2 m-0 position-relative">
+					<div class="col-6 col-xl-12 col-sm-6 half atas p-2 m-0 position-relative">
 						<a href="{{ route('admin.dashboard') }}">
-							<div class="half bg-blue wrapper">
-								<div class="">
-									<img src="{{ asset('images/home/report.svg') }}" alt="POS" width="77px" height="77px">
-									<span>Report</span>
+							<div class="half atas bg-white">
+								<div class="half half-atas-bg bg-blue wrapper">
+									<div class="">
+										<img src="{{ asset('images/home/report.svg') }}" alt="POS" width="77px" height="77px">
+										<span>Report</span>
+									</div>
 								</div>
 							</div>
 						</a>
 					</div>
 					<div class="col-6 col-xl-12 col-sm-6 half p-2 m-0 position-relative">
 						<a href="{{ route('user.logout') }}">
-							<div class="half bg-yellow wrapper">
+							<div class="half bg-yellow wrapper pt-2">
 								<div class="">
 
 									<img src="{{ asset('images/home/logout.svg') }}" alt="POS" width="77px" height="77px">
