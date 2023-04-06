@@ -31,7 +31,7 @@
 								<select name="report" id="report" class="form-control" required>
 									<option value="">Pilih Report</option>
 									<option value="ticket">Ticket</option>
-									{{-- <option value="redeem">Redeem</option> --}}
+									<option value="redeem_voucher">Redeem Voucher</option>
 								</select>
 								<i class="fa fa-chevron-down"></i>
 							</div>
