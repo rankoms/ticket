@@ -31,7 +31,9 @@ Route::get('/', function () {
 });
 Route::get('user_logout', [LoginController::class, 'logout'])->name('user.logout');
 
-Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::group(['middleware' => ['auth', 'is_admin']], function () {
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+});
 
 Route::get('/privacy-policy', [HomeController::class, 'privacy'])->name('privacy-policy');
 
