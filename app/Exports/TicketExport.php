@@ -57,6 +57,12 @@ class TicketExport implements FromView
 
         return view('excel.ticket', [
             'kategory_aset' => $kategory_aset,
+            'ticket_not_valid' => $ticket_not_valid,
+            'event' => $request->event,
+            'jumlah_pending' => $jumlah_pending,
+            'jumlah_checkin' => $jumlah_checkin,
+            'jumlah_checkout' => $jumlah_checkout
+
         ]);
     }
 }

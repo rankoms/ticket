@@ -119,7 +119,7 @@ class TicketController extends Controller
             return ResponseFormatter::error(null, 'Ticket Salah Pintu', 400);
         }
         if ($ticket->checkout) {
-            return ResponseFormatter::error($ticket, 'This QR Code Already Used');
+            return ResponseFormatter::error($ticket, 'Checkin First', 403);
         }
         $ticket->checkout = $now;
         $ticket->checkout_by = $checkout_by;
