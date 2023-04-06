@@ -240,9 +240,14 @@ class TicketController extends Controller
         $history->save();
     }
 
-    public function event_category()
+    public function event_category(Request $request)
     {
-        $tickets = Ticket::orderBy('id', 'asc')->get();
+        $event = $request->event;
+        $tickets = Ticket::orderBy('id', 'asc');
+        if ($event) {
+            $tickets = $tickets->where('event', $event);
+        }
+        $tickets = $tickets->get();
         $event = [];
         $category = [];
         foreach ($tickets as $key => $value) :
@@ -273,10 +278,17 @@ class TicketController extends Controller
         ];
         return ResponseFormatter::success($array);
     }
-    public function ticket()
+    public function ticket(Request $request)
     {
+        $event = $request->event;
         $ticket = [];
-        $data = DB::table('tickets')->orderBy('id')->chunk(1000, function ($rows) use (&$response) {
+        $data = DB::table('tickets')->orderBy('id');
+        if ($event) {
+            $data = $data->where('event', $event);
+        }
+
+
+        $data = $data->chunk(1000, function ($rows) use (&$response) {
             foreach ($rows as $row) {
                 $response[] = $row;
             }

@@ -31,14 +31,14 @@
 						</p>
 					</a>
 				</li>
-				<li class="nav-item">
+				{{-- <li class="nav-item">
 					<a href="{{ route('dashboard_new') }}" class="nav-link {{ areActiveRoutes(['dashboard_new']) }}">
 						<i class="nav-icon fas fa-tachometer-alt"></i>
 						<p>
 							Dashboard New
 						</p>
 					</a>
-				</li>
+				</li> --}}
 				{{-- 
 				<li class="nav-item">
 					<a href="{{ route('event.index') }}"

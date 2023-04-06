@@ -112,7 +112,7 @@
 	<div>
 		<div class="row p-0 m-0" id="dashboard_new">
 			<div class="col-xl-3 col-sm-12 p-2 m-0 position-relative full">
-				<a href="{{ route('redeem_voucher.dashboard') }}">
+				<a href="{{ route('home') }}">
 					<div class="bg-blue full wrapper">
 						<div>
 							<img src="{{ asset('images/home/pos.svg') }}" alt="POS" width="77px" height="77px">
@@ -124,7 +124,7 @@
 			<div class="col-xl-3 col-sm-12 p-0 m-0 position-relative full">
 				<div class="row p-0 m-0 position-relative">
 					<div class="col-6 col-xl-12 col-sm-6 half atas p-2 m-0 position-relative">
-						<a href="{{ route('redeem_voucher.dashboard') }}">
+						<a href="{{ route('redeem_voucher.index') }}">
 							<div class="half atas bg-white">
 								<div class="half half-atas-bg bg-yellow wrapper">
 									<div class="">
@@ -136,7 +136,7 @@
 						</a>
 					</div>
 					<div class="col-6 col-xl-12 col-sm-6 half p-2 m-0 position-relative">
-						<a href="{{ route('redeem_voucher.dashboard') }}">
+						<a href="{{ asset('apk/eventbersama.apk') }}">
 							<div class="half bg-white">
 								<div class="half bg-blue wrapper pt-2">
 									<div class="">

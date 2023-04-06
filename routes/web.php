@@ -31,15 +31,18 @@ Route::get('/', function () {
 });
 Route::get('user_logout', [LoginController::class, 'logout'])->name('user.logout');
 
-Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::group(['middleware' => ['auth', 'is_admin']], function () {
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+});
 
 Route::get('/privacy-policy', [HomeController::class, 'privacy'])->name('privacy-policy');
 
 Route::group(['middleware' => ['auth', 'is_client'], 'prefix' => 'admin'], function () {
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('admin.dashboard');
-    Route::get('/dashboard_redeem', [RedeemVoucherController::class, 'dashboard'])->name('redeem_voucher.dashboard');
+    Route::get('/dashboard_redeem', [RedeemVoucherController::class, 'dashboard_redeem'])->name('redeem_voucher.dashboard');
     Route::get('/dashboard_ticket', [TicketController::class, 'dashboard_ticket'])->name('dashboard_ticket');
     Route::get('/excel_ticket', [TicketController::class, 'excel_ticket'])->name('excel_ticket');
+    Route::get('/excel_redeem', [RedeemVoucherController::class, 'excel_redeem'])->name('excel_redeem');
 });
 
 
