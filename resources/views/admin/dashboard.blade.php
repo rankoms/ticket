@@ -5,8 +5,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Event Bersama</title>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
-		integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+	<link rel="stylesheet" href="{{ asset('bootstrap.min.css') }}">
 	<link rel="stylesheet" href="{{ url('adminlte') }}/plugins/fontawesome-free/css/all.min.css">
 	<link rel="stylesheet" href="{{ url('css') }}/custom-admin.css">
 </head>
@@ -20,20 +19,7 @@
 				<span>Laporan dashboard data pengunjung</span>
 			</div>
 			<div class="col-lg-6 col-sm-12 d-flex justify-content-end">
-				<a class="profile align-content-center align-items-center d-flex justify-content-center nav-link position-relative"
-					href="#">
-					<div class="flex-shrink-0 me-3">
-						<div class="avatar avatar-online">
-							<img src="{{ asset('images/default-user.webp') }}" alt=""
-								class="rounded-circle img-size-50 mr-3 img-circle">
-						</div>
-					</div>
-					<div class="flex-grow-1">
-						<span class="fw-semibold d-block lh-1">{{ Auth::user()->name }}</span>
-						<small></small>
-					</div>
-					<i class="fa fa-chevron-down"></i>
-				</a>
+				@include('partials.user_dropdown')
 			</div>
 		</div>
 		<div class="content d-flex align-items-center justify-content-center dashboard">
