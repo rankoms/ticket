@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\VoucherRedeemExport;
 use App\Helpers\ResponseFormatter;
 use App\Models\Event;
 use App\Models\RedeemHistory;
@@ -9,6 +10,7 @@ use App\Models\RedeemVoucher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
 class RedeemVoucherController extends Controller
 {
@@ -139,6 +141,13 @@ class RedeemVoucherController extends Controller
         }
 
         return view('redeem_detail', compact('redeem_voucher'));
+    }
+
+
+    public function excel_redeem(Request $request)
+    {
+
+        return Excel::download(new VoucherRedeemExport($request), 'Laporan Voucher Redeem ' . date('Y-m-d H_i') . '.xlsx');
     }
 
     /**
