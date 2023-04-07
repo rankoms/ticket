@@ -23,11 +23,13 @@ class TicketController extends Controller
             'barcode_no' => [new ExceptSymbol()],
             'event' => ['required'],
             'category' => ['required'],
+            'checkin_by' => ['nullable', 'numeric']
         ]);
         $request->merge(['gate' => 'Check In']);
         $now = date('Y-m-d H:i:s');
         $event = $request->event;
         $category = $request->category;
+        $checkin_by = $request->checkin_by;
 
         $ticket = Ticket::where('barcode_no', $request->barcode_no)
             ->where('event', $event);
@@ -53,8 +55,10 @@ class TicketController extends Controller
         if ($ticket->checkin && $ticket->checkin_count > $ticket->max_checkin) {
             return ResponseFormatter::error(null, 'Ticket Sudah Digunakan', 400);
         }
+        $ticket->checkin_by = $checkin_by;
         $ticket->checkin = $now;
         $ticket->checkout = null;
+        $ticket->checkout_by = null;
         $ticket->checkin_count = $ticket->checkin_count + 1;
         if ($ticket->save()) {
             // $section_selected = $this->count_gate($ticket->event_id, $ticket->category)->getData();
@@ -90,11 +94,13 @@ class TicketController extends Controller
             'barcode_no' => [new ExceptSymbol()],
             'event' => ['required'],
             'category' => ['required'],
+            'checkout_by' => ['nullable', 'numeric']
         ]);
         $request->merge(['gate' => 'Check Out']);
         $now = date('Y-m-d H:i:s');
         $event = $request->event;
         $category = $request->category;
+        $checkout_by = $request->checkout_by;
 
         $ticket = Ticket::where('barcode_no', $request->barcode_no)
             ->where('event', $event);
@@ -113,9 +119,10 @@ class TicketController extends Controller
             return ResponseFormatter::error(null, 'Ticket Salah Pintu', 400);
         }
         if ($ticket->checkout) {
-            return ResponseFormatter::error($ticket, 'This QR Code Already Used');
+            return ResponseFormatter::error($ticket, 'Checkin First', 403);
         }
         $ticket->checkout = $now;
+        $ticket->checkout_by = $checkout_by;
         $ticket->checkin_count = $ticket->checkin_count  > 0 ? $ticket->checkin_count - 1 : $ticket->checkin_count;
         if ($ticket->save()) {
             return ResponseFormatter::success($ticket, 'Anda Berhasil Checkout');
@@ -181,6 +188,8 @@ class TicketController extends Controller
 
                             if ($ticket) {
                                 $ticket->checkin = $request['tickets'][$i]['checkin'];
+                                $ticket->checkin_by = isset($request['tickets'][$i]['checkin_by']) ? $request['tickets'][$i]['checkin_by'] : null;
+                                $ticket->checkout_by = isset($request['tickets'][$i]['checkout_by']) ? $request['tickets'][$i]['checkout_by'] : null;
                                 $ticket->checkout = $request['tickets'][$i]['checkout'];
                                 $ticket->is_bypass = $request['tickets'][$i]['is_bypass'];
                                 $ticket->max_checkin = $request['tickets'][$i]['max_checkin'];
@@ -217,9 +226,12 @@ class TicketController extends Controller
 
     public function scan_history(Request $request, $ticket)
     {
+        $scanned_by = $request->checkin_by ? $request->checkin_by : $request->checkout_by;
+
+        $scanned_by = $scanned_by ? $scanned_by : 1;
         $history = new TicketHistory();
         $history->barcode_no = $request->barcode_no;
-        $history->scanned_by = Auth::user() ? Auth::user()->id : 1;
+        $history->scanned_by = $scanned_by;
         $history->is_valid = $ticket ? 1 : 0;
         $history->event = $request->event;
         $history->category = $request->category;
@@ -228,9 +240,14 @@ class TicketController extends Controller
         $history->save();
     }
 
-    public function event_category()
+    public function event_category(Request $request)
     {
-        $tickets = Ticket::orderBy('id', 'asc')->get();
+        $event = $request->event;
+        $tickets = Ticket::orderBy('id', 'asc');
+        if ($event) {
+            $tickets = $tickets->where('event', $event);
+        }
+        $tickets = $tickets->get();
         $event = [];
         $category = [];
         foreach ($tickets as $key => $value) :
@@ -261,10 +278,17 @@ class TicketController extends Controller
         ];
         return ResponseFormatter::success($array);
     }
-    public function ticket()
+    public function ticket(Request $request)
     {
+        $event = $request->event;
         $ticket = [];
-        $data = DB::table('tickets')->orderBy('id')->chunk(1000, function ($rows) use (&$response) {
+        $data = DB::table('tickets')->orderBy('id');
+        if ($event) {
+            $data = $data->where('event', $event);
+        }
+
+
+        $data = $data->chunk(1000, function ($rows) use (&$response) {
             foreach ($rows as $row) {
                 $response[] = $row;
             }
@@ -297,13 +321,22 @@ class TicketController extends Controller
 
     }
 
+    public function user(Request $request)
+    {
+
+        request()->validate([
+            'user_id' => ['numeric', 'required']
+        ]);
+        $user_id = $request->user_id;
+        $user = User::find($user_id);
+
+        return ResponseFormatter::success($user);
+    }
     public function logo(Request $request)
     {
         request()->validate([
             'user_id' => ['numeric', 'required']
         ]);
-        // $logo = asset('/') . \config('logo.logo');
-        // $logo = Ticket::groupBy('event', 'logo')->select('event', DB::raw("CONCAT('" . asset('/') . "',logo) AS logo"))->orderBy('event')->get();
         $user_id = $request->user_id;
         $user = User::find($user_id);
         $logo = '';
@@ -351,7 +384,7 @@ class TicketController extends Controller
                     isset($kategory_ticket[$value->category]['checkin']) ? $kategory_ticket[$value->category]['checkin']++ : $kategory_ticket[$value->category]['checkin'] = 1;
                 } else {
                     $jumlah_checkout++;
-                    isset($kategory_ticket[$value->category]['checkout']) ? $kategory_ticket[$value->category]['checkout']++ : $kategory_ticket[$value->category]   ['checkout'] = 1;
+                    isset($kategory_ticket[$value->category]['checkout']) ? $kategory_ticket[$value->category]['checkout']++ : $kategory_ticket[$value->category]['checkout'] = 1;
                 }
             elseif ($value->checkout) :
                 $jumlah_checkout++;

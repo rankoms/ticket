@@ -25,6 +25,7 @@ Route::post('/login_username', [AuthController::class, 'login_username']);
 
 
 Route::get('/logo', [TicketController::class, 'logo']);
+Route::get('/user', [TicketController::class, 'user']);
 
 Route::get('/dashboard_ticket', [TicketController::class, 'dashboard_ticket']);
 Route::group(['prefix' => 'scanner'], function () {
