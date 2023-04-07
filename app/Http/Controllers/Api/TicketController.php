@@ -133,6 +133,7 @@ class TicketController extends Controller
 
     public function sync(Request $request)
     {
+        $request_data = $request;
         $request = $request->json()->all();
         $data = [];
         $rules = [];
@@ -217,7 +218,7 @@ class TicketController extends Controller
                     $ticket_history->save();
                 endforeach;
             endif;
-            return $this->ticket();
+            return $this->ticket($request_data);
         } else {
             //TODO Handle your error
             return ResponseFormatter::error(null, $validator->errors()->all(), 400);
