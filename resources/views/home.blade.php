@@ -124,7 +124,7 @@
 			<div class="col-xl-3 col-sm-12 p-0 m-0 position-relative full">
 				<div class="row p-0 m-0 position-relative">
 					<div class="col-6 col-xl-12 col-sm-6 half atas p-2 m-0 position-relative">
-						<a href="{{ route('redeem_voucher.index') }}">
+						<a href="{{ route('home') }}">
 							<div class="half atas bg-white">
 								<div class="half half-atas-bg bg-yellow wrapper">
 									<div class="">
@@ -150,7 +150,7 @@
 				</div>
 			</div>
 			<div class="col-xl-3 col-sm-12 p-2 m-0 position-relative full">
-				<a href="{{ route('redeem_voucher.dashboard') }}">
+				<a href="{{ route('redeem_voucher.index') }}">
 					<div class="bg-yellow full wrapper">
 						<div class="">
 							<img src="{{ asset('images/home/redeem_ticket.svg') }}" alt="POS" width="77px" height="77px">
