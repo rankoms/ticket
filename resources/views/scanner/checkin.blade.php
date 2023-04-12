@@ -1,350 +1,300 @@
-@extends('layouts.app_mobile')
+<!DOCTYPE html>
+<!--
+* CoreUI - Free Bootstrap Admin Template
+* @version v4.2.1
+* @link https://coreui.io
+* Copyright (c) 2022 creativeLabs Łukasz Holeczek
+* Licensed under MIT (https://coreui.io/license)
+-->
+<html lang="en">
 
-@section('content')
-	<main>
-		<div class="header">
-			<a href="javascript:history.back()">
-				<img src="{{ url('images/mobile/caret-back.svg') }}" width="4.5px" height="9px" alt="Back">
-				Back
-			</a>
+<head>
+	<base href="./">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+	<meta name="description" content="CoreUI - Open Source Bootstrap Admin Template">
+	<meta name="author" content="Łukasz Holeczek">
+	<meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,jQuery,CSS,HTML,RWD,Dashboard">
+	<title>Checkin</title>
+	<link rel="apple-touch-icon" sizes="57x57" href="assets/favicon/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="assets/favicon/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="assets/favicon/apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="assets/favicon/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="assets/favicon/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="assets/favicon/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="assets/favicon/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="assets/favicon/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192" href="assets/favicon/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="assets/favicon/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
+	<link rel="manifest" href="assets/favicon/manifest.json">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="assets/favicon/ms-icon-144x144.png">
+	<meta name="theme-color" content="#ffffff">
+	<!-- Vendors styles-->
+	<link rel="stylesheet" href="{{ url('css/simplebar.css') }}">
+	<link rel="stylesheet" href="{{ url('css/simplebar2.css') }}">
+	<!-- Main styles for this application-->
+	<link href="{{ url('css/style.css') }}" rel="stylesheet">
+	<!-- We use those styles to show code examples, you should remove them in your application.-->
+	<link rel="stylesheet" href="{{ url('css/prism.css') }}">
+	<link href="{{ url('css/examples.css') }}" rel="stylesheet">
+	<style>
+		@font-face {
+			font-family: 'Roboto-Light';
+			src: url('{{ url('fonts/Roboto-Light.ttf') }}');
+			font-weight: 300;
+		}
 
-			<span>Checkin Ticket</span>
-		</div>
-		<div class="content">
-			<div class="wrapping-content">
-				<div class="wrapping-input form-floating">
-					<select class="form-control" name="events" id="events">
-						<option value="{{ $event->event }}">{{ $event->event }}</option>
-					</select>
-					<label for="events">Event</label>
-				</div>
-				<div class="wrapping-input form-floating">
-					<select class="form-control" name="section" id="section">
-						<option value="{{ $event->category }}">{{ $event->category }}</option>
-					</select>
-					<label for="events">Kategory</label>
-				</div>
-				<div class="row mb-10">
-					<div class="col-6">
-						<div class="wrapper-radio active" id="wrapper-checkin">
-							<label for="checkin">
-								<input type="radio" name="gate" value="checkin" id="checkin">
-								<i class="fa fa-sign-in me-10"></i>
-								<span>checkin</span>
-							</label>
-						</div>
-					</div>
-					<div class="col-6">
-						<div class="wrapper-radio" id="wrapper-checkout">
-							<label for="checkout">
-								<input type="radio" name="gate" value="checkout" id="checkout" disabled>
-								<i class="fa fa-sign-out me-10"></i>
-								<span>checkout</span>
-							</label>
-						</div>
-					</div>
-				</div>
+		@font-face {
+			font-family: 'Roboto-Regular';
+			src: url('{{ url('fonts/Roboto-Regular.ttf') }}');
+			font-weight: 400;
+		}
 
-				{{-- <select class="form-control" name="gate" id="gate">
-				<option value="checkin">Checkin</option>
-			</select> --}}
-				<div id="reader" width="100%" max-width="480px"></div>
-				<div class="wrapper-keterangan" style="display: none">
-					<div class="wrapper-box">
-						Total Pending
-						<div id="jumlah_pending">
-							{{ $total_pending }}
+		@font-face {
+			font-family: 'Roboto-Medium';
+			src: url('{{ url('fonts/Roboto-Medium.ttf') }}');
+			font-weight: 600;
+		}
+
+		@font-face {
+			font-family: 'Roboto-Bold';
+			src: url('{{ url('fonts/Roboto-Bold.ttf') }}');
+			font-weight: 700;
+		}
+
+		@font-face {
+			font-family: 'Roboto-Black';
+			src: url('{{ url('fonts/Roboto-Bold.ttf') }}');
+			font-weight: 900;
+		}
+	</style>
+	<style>
+		* {
+			font-family: 'Roboto-Regular' !important;
+		}
+
+		.swal2-popup {
+			font-size: 1.4rem !important;
+			font-family: cursive !important;
+		}
+
+		.swal2-popup .btn,
+		.swal2-popup .swal2-confirm {
+			width: 100%;
+		}
+
+		.swal2-popup .swal2-success-circular-line-left,
+		.swal2-popup .swal2-success-circular-line-right,
+		.swal2-popup .swal2-success-fix {
+			background-color: transparent !important;
+		}
+
+		.swal2-backdrop-show {
+			background-size: cover !important;
+		}
+
+		body {
+			width: 100%;
+			height: 100%;
+			background: url('../../images/bg.png');
+			center top no-repeat;
+			background-size: cover;
+			position: relative;
+		}
+
+		p {
+			margin: 0;
+			padding: 0;
+		}
+
+		.bungkus-total {
+			background-color: white;
+			width: 149px;
+			text-align: center;
+			padding: 5px;
+			border-radius: 15px;
+		}
+
+		.form-floating {
+
+			position: relative;
+		}
+
+		.form-floating>.form-control {
+			padding: 1rem 0.735rem;
+		}
+
+		.form-floating>.form-control,
+		.form-floating>.form-select {
+			height: calc(3.5rem + 2px);
+			line-height: 1.25;
+		}
+
+		.form-control {
+			display: block;
+			width: 100%;
+			padding: 0.469rem 0.735rem;
+			font-size: 0.9375rem;
+			font-weight: 400;
+			line-height: 1.4;
+			color: #677788;
+			background-color: #fff;
+			background-clip: padding-box;
+			border: 1px solid #d4d8dd;
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			appearance: none;
+			border-radius: 0.25rem;
+			transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+		}
+
+		.form-floating>label {
+			width: 717px !important;
+			position: absolute;
+			top: 0;
+			/* left: 272px !important; */
+			height: 100%;
+			padding: 1rem 0.735rem;
+			pointer-events: none;
+			border: 1px solid transparent;
+			transform-origin: 0 0;
+			transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+		}
+
+		label {
+			display: inline-block;
+		}
+	</style>
+</head>
+
+<!-- <body style="background-image:url('images/bg.png');"> -->
+
+<form action="" id="form-voucher">
+	<div class="min-vh-100 d-flex flex-row align-items-center">
+		<div class="container">
+			<div class="row justify-content-center opacity-0">
+				<div class="col-md-6">
+					<div class="card p-4">
+						<div class="row">
+
 						</div>
-					</div>
-					<div class="wrapper-box">
-						Total Checkin
-						<div id="jumlah_checkin">
-							{{ $total_checkin }}
-						</div>
+
+						<input class="form-control mb-3" id="voucher" name="voucher" size="16" type="text" placeholder=""
+							autofocus autocomplete="off">
+						<button class="btn btn-info" style="width:100%" type="submit" autofocus="false">Search</button>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="container-btn-manual" style="display: none">
-			<button class="btn-manual">Input Manual</button>
-		</div>
-		<div class="popupMedium">
-			<div class="footer-container">
-				<div id="PopupDetail" class="container-popup ">
-					<div class="wrapper-title">
-						<div class="labelPopup">
-							Checkin Ticket
-						</div>
-						<div class="boxClose">
-							<img src="{{ url('images/mobile/icons/close.svg') }}" alt="close" width="24px" height="24px"
-								class="close-detail">
-						</div>
-					</div>
-					<div class="wrapper-popup" style="padding-bottom: 60px;">
-						<div class="content-detail">
-							<div class="container-detail">
-								<form role="form" method="POST" id="form-submit" action="">
-									@csrf
-									<div class="content-auth penerimaan-barang pt-0">
-										@if ($message = Session::get('success'))
-											<div class="alert alert-success alert-block">
-												<button type="button" class="close" data-dismiss="alert">×</button>
-												<strong>{{ $message }}</strong>
-											</div>
-										@endif
-										@if ($message = Session::get('error'))
-											<div class="alert alert-danger alert-block">
-												<button type="button" class="close" data-dismiss="alert">×</button>
-												<strong>{{ $message }}</strong>
-											</div>
-										@endif
-										<div class="row-control-auth">
-											<label for="ticket">No Ticket <span>*</span></label>
-											<input type="text" name="ticket" id="ticket" value="{{ old('ticket') ? old('ticket') : '' }}"
-												class="ticket {{ $errors->has('ticket') ? ' is-invalid' : '' }}">
-										</div>
-										<div class="row-control-auth">
-											<button type="submit" class="btn-submit">
-												Cari
-											</button>
-										</div>
-									</div>
-								</form>
+	</div>
+</form>
+<!-- CoreUI and necessary plugins-->
+<script src="{{ url('js/coreui.bundle.min.js') }}"></script>
+<script src="{{ url('js/simplebar.min.js') }}"></script>
+<script src="{{ url('js/sweetalert2@11.js') }}"></script>
+<script type="text/javascript" src="{{ url('js/jquery.min.js') }}"></script>
+
+<script>
+	setInterval(() => {
+		document.getElementById("voucher").focus();
+	}, 500);
+	$('#form-voucher').on('submit', function(e) {
+		e.preventDefault();
+		var data = getJSON("{{ route('ticket.checkin') }}", {
+			_token: '{{ csrf_token() }}',
+			voucher: $('#voucher').val()
+		});
+
+		if (data.meta.code != 200) {
+
+			Swal.fire({
+				title: "<h1 style='color:red'>" + data.meta.message + "</h1>",
+				showCloseButton: false,
+				showConfirmButton: false,
+				icon: 'error',
+				timer: 3000,
+				background: 'rgba(255,255,255,2)',
+				backdrop: `
+						rgba(0,0,123,0.4)
+						url("/images/bg2.png")
+						`,
+
+				color: '#000',
+				html: ` <span></span>
+						`,
+			}).then((result) => {
+				$('#voucher').val('');
+				$('#voucher').focus();
+			});
+
+		} else {
+			Swal.fire({
+				title: data.meta.message,
+				showCloseButton: false,
+				showConfirmButton: false,
+				icon: data.meta.message == 'Ticket is successfully scanned!' ? 'success' : 'warning',
+				timer: 3000,
+				background: 'rgba(255,255,255,2)',
+				backdrop: `
+						rgba(0,0,123,0.4)
+						url("/images/bg2.png")
+						`,
+
+				color: '#000',
+				html: `
+						<div class="row mt-4 m-0 p-0">
+							<div class="col-12">
+								<div class="form-floating">
+									<input type="text" class="form-control text-center" id="nama_lengkap" placeholder="John Doe"
+										aria-describedby="nama_lengkapHelp" value="${data.data.name}" readonly>
+									<label for="nama_lengkap">Name</label>
+								</div>
+						
+							</div>
+							<div class="col-12">
+							
+								<div class="form-floating mt-4">
+									<input type="text" class="form-control text-center" id="category" placeholder="John Doe"
+										aria-describedby="categoryHelp" value="${data.data.category_name}" readonly>
+									<label for="category">Category</label>
+								</div>
 							</div>
 						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</main>
-@endsection
-
-@section('script')
-	<script src="{{ url('js/sweetalert2@11.js') }}"></script>
-	<script src="{{ url('js/html5-qrcode.min.js') }}"></script>
-	<script>
-		var scan = 0;
-
-
-		let html5QrcodeScanner = new Html5QrcodeScanner(
-			"reader", {
-				fps: 10,
-				qrbox: {
-					width: 250,
-					height: 250
-				}
-			},
-			/* verbose= */
-			false);
-		html5QrcodeScanner.render(onScanSuccess, onScanFailure);
-
-
-
-		function onScanSuccess(decodedText, decodedResult) {
-			if (scan == 0) {
-				if (!$('#events').val()) {
-					return gagal_pilih_event('scan');
-				}
-				if (!$('#section').val()) {
-					return gagal_pilih_section('scan');
-				}
-				if (!$('#gate').val()) {
-					return gagal_pilih_gate('scan');
-				}
-				var data = getJSON("{{ route('ticket.checkin') }}", {
-					'barcode_no': decodedText,
-					'category': $('#section').val(),
-					'gate': $('#gate').val(),
-					'_token': '{{ csrf_token() }}'
-				});
-				if (data.meta.code != 200) {
-					// html5QrCode.stop().then((ignore) => {
-					// 	// QR Code scanning is stopped.
-					// }).catch((err) => {
-					// 	// Stop failed, handle it.
-					// });
-					html5QrcodeScanner.clear();
-					Swal.fire({
-						timer: 3000,
-						icon: 'error',
-						title: data.meta.message,
-						showConfirmButton: false
-					}).then((result) => {
-
-						html5QrcodeScanner.render(onScanSuccess, onScanFailure);
-					})
-					// alert(data.meta.message);
-				} else {
-					// html5QrCode.stop().then((ignore) => {
-					// 	// QR Code scanning is stopped.
-					// }).catch((err) => {
-					// 	// Stop failed, handle it.
-					// });
-					html5QrcodeScanner.clear();
-					Swal.fire({
-						timer: 3000,
-						icon: 'success',
-						title: data.meta.message,
-						showConfirmButton: false
-					}).then((result) => {
-
-						html5QrcodeScanner.render(onScanSuccess, onScanFailure);
-					})
-					// alert(data.meta.message);
-					$('#jumlah_checkin').html(data.data['checkin'])
-					$('#jumlah_pending').html(data.data['pending'])
-				}
-			}
-		}
-
-		function onScanFailure(error) {
-			// handle scan failure, usually better to ignore and keep scanning.
-			// for example:
-			// console.warn(`Code scan error = ${error}`);
-		}
-
-		function getJSON(url, data, type = 'POST') {
-			return JSON.parse($.ajax({
-				type: type,
-				url: url,
-				data: data,
-				dataType: 'json',
-				global: false,
-				async: false,
-				success: function(msg) {
-
-				}
-			}).responseText);
-		}
-
-		$('#events').on('change', function(e) {
-			var data = getJSON("{{ route('scanner.section_select') }}", {
-				_token: '{{ csrf_token() }}',
-				id: $(this).val()
+						`,
+				confirmButtonText: 'Redeem E-Ticket',
+			}).then((result) => {
+				$('#voucher').val('');
+				$('#voucher').focus();
 			});
-			$('#jumlah_checkin').html(data.data['checkin'])
-			$('#jumlah_pending').html(data.data['pending'])
-			$('#section').find('option').not(':first').remove();
-			$.each(data.data['event_gate'], function(key, value) {
-				$('#section').append(`
-                <option value="${value['type']}">${value['name']}</option>
-            `);
-			});
-		});
-
-		$('#section').on('change', function(e) {
-			var data = getJSON("{{ route('scanner.section_selected') }}", {
-				_token: '{{ csrf_token() }}',
-				type: $(this).val(),
-				id: $('#events').val()
-			})
-			$('#jumlah_checkin').html(data.data['checkin'])
-			$('#jumlah_pending').html(data.data['pending'])
-		});
-
-
-		$('.btn-submit').on('click', function(e) {
-			e.preventDefault();
-			if (!$('#events').val()) {
-				return gagal_pilih_event();
-			}
-			if (!$('#section').val()) {
-				return gagal_pilih_section();
-			}
-			if (!$('#gate').val()) {
-				return gagal_pilih_gate();
-			}
-
-			var data = getJSON("{{ route('ticket.checkin') }}", {
-				'barcode_no': $('#ticket').val(),
-				'category': $('#section').val(),
-				'gate': $('#gate').val()
-			});
-			if (data.meta.code != 200) {
-				Swal.fire(
-					'Gagal',
-					data.meta.message,
-					'error'
-				)
-			} else {
-				$('#spinner-loading').show();
-				scan = scan + 1;
-				Swal.fire(
-					'Berhasil',
-					data.meta.message,
-					'success'
-				)
-				$('#ticket').val('');
-
-				$('#jumlah_checkin').html(data.data['checkin'])
-				$('#jumlah_pending').html(data.data['pending'])
-			}
-		})
-		$('.btn-manual').on('click', function(e) {
-			e.preventDefault();
-			pop_up_detail();
-		})
-		$('.close-detail').on('click', function(e) {
-			close_detail();
-		})
-		// pop_up_detail();
-
-		function pop_up_detail() {
-			$('#ticket').focus();
-			setTimeout(function() {
-				bgModalAdd()
-			}, 400);
-			$('#PopupDetail').animate({
-				bottom: 0
-			});
-			$('#PopupDetail').css('max-height', maxModalHeight(40))
-			$("body").css("overflow", "hidden");
 		}
+		$('#voucher').focus();
+		$('#voucher').val('');
+		document.getElementById("voucher").focus();
+	});
+	document.getElementById("voucher").focus();
 
-		function gagal_pilih_event(scan = false) {
-			let text = 'Pilih Event terlebih dahulu';
-			if (scan) {
-				return alert(text)
+	$(".swal2-modal").css('background-color', '#000'); //Optional changes the color of the sweetalert 
+	$(".swal2-container.in").css('background-color', 'rgba(43, 165, 137, 0.45)'); //changes the color of the overlay
+	function getJSON(url, data, type = 'POST') {
+		return JSON.parse($.ajax({
+			type: type,
+			url: url,
+			data: data,
+			dataType: 'json',
+			global: false,
+			async: false,
+			success: function(msg) {
+
 			}
-			return Swal.fire(
-				'Gagal',
-				text,
-				'error'
-			)
-		}
+		}).responseText);
+	}
+</script>
 
-		function gagal_pilih_section(scan = false) {
-			let text = 'Pilih Section terlebih dahulu';
-			if (scan) {
-				return alert(text)
-			}
-			return Swal.fire(
-				'Gagal',
-				text,
-				'error'
-			)
-		}
+</body>
 
-		function gagal_pilih_gate(scan = false) {
-			let text = 'Pilih Gate terlebih dahulu';
-			if (scan) {
-				return alert(text)
-			}
-			return Swal.fire(
-				'Gagal',
-				text,
-				'error'
-			)
-		}
-
-		function close_detail() {
-			$('#PopupDetail').animate({
-				bottom: -$('#PopupDetail').height()
-			}, 350, function() {
-				$('#PopupDetail').css('bottom', 'unset')
-			});
-			bgModalRemove()
-			$("body").css("overflow", "inherit");
-		}
-	</script>
-@endsection
+</html>
