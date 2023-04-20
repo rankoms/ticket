@@ -48,9 +48,8 @@ Route::group(['middleware' => ['auth', 'is_client'], 'prefix' => 'admin'], funct
 
 Route::get('/home_new', [HomeController::class, 'home_new'])->name('home_new');
 
+Route::group(['middleware' => ['is_admin']], function () {
 
-Route::group(['middleware' => ['auth', 'is_admin'], 'prefix' => 'admin'], function () {
-    Route::get('/home', [HomeController::class, 'index'])->name('home.index');
     Route::group(['prefix' => 'scanner'], function () {
         Route::get('/store_pilih_event', [ScannerController::class, 'store_pilih_event'])->name('scanner.store_pilih_event');
         Route::get('/pilih_event', [ScannerController::class, 'pilih_event'])->name('scanner.pilih_event');
@@ -72,7 +71,10 @@ Route::group(['middleware' => ['auth', 'is_admin'], 'prefix' => 'admin'], functi
 
         Route::post('/ticket/checkin', [TicketController::class, 'checkin'])->name('ticket.checkin');
     });
+});
 
+Route::group(['middleware' => ['auth', 'is_admin'], 'prefix' => 'admin'], function () {
+    Route::get('/home', [HomeController::class, 'index'])->name('home.index');
     Route::group(['prefix' => 'redeem_voucher'], function () {
         Route::get('/', [RedeemVoucherController::class, 'index'])->name('redeem_voucher.index');
         Route::get('/v2', [RedeemVoucherController::class, 'index_v2'])->name('redeem_voucher.index_v2');
