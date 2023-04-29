@@ -5,6 +5,7 @@ use App\Http\Controllers\TicketController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PosController;
 use App\Http\Controllers\RedeemVoucherController;
 use App\Http\Controllers\ScannerController;
 use App\Http\Controllers\ScannerDesktopController;
@@ -25,6 +26,8 @@ use Illuminate\Support\Facades\Route;
 Auth::routes([
     'register' => false
 ]);
+
+Route::get('test', [HomeController::class, 'test']);
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -50,6 +53,11 @@ Route::get('/home_new', [HomeController::class, 'home_new'])->name('home_new');
 
 Route::group(['middleware' => ['is_admin']], function () {
 
+    Route::group(['prefix' => 'pos'], function () {
+        Route::get('/', [PosController::class, 'index'])->name('pos.index');
+        Route::get('/cetak/{id}', [PosController::class, 'cetak'])->name('pos.cetak');
+        Route::post('/store', [PosController::class, 'store'])->name('pos.store');
+    });
     Route::group(['prefix' => 'scanner'], function () {
         Route::get('/store_pilih_event', [ScannerController::class, 'store_pilih_event'])->name('scanner.store_pilih_event');
         Route::get('/pilih_event', [ScannerController::class, 'pilih_event'])->name('scanner.pilih_event');

@@ -84,8 +84,20 @@ class HomeController extends Controller
 
     public function test(Request $request)
     {
+        $id = 4478;
+        $prefix = 'OTS';
+        $digit = 8;
+        // $barcode = $prefix . $id;
+        $len_prefix = strlen($prefix);
+        $len_id = strlen($id);
+        $barcode = $prefix;
+        for ($i = 0; $i < $digit - $len_prefix - $len_id; $i++) {
+            $barcode .= '0';
+        }
+        $barcode .= $id;
 
-        return Excel::download(new TicketExport($request), 'Laporan Ticket.xlsx');
+
+        dd($barcode);
     }
 
     public function privacy()
