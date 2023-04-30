@@ -39,13 +39,15 @@
 				height: 5.83in;
 				margin: 0;
 				padding: 0;
+				overflow: hidden;
 			}
 
 			.content {
 
 				text-align: center;
-				padding: 100px 0;
+				padding: 50px 0 0 0;
 				height: 100%;
+				overflow: hidden;
 			}
 		}
 	</style>
@@ -68,5 +70,8 @@
 
 
 </body>
+<script>
+	window.print();
+</script>
 
 </html>

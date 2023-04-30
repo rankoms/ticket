@@ -172,13 +172,25 @@
 				const meta = response.meta;
 				resetForm();
 				$('#name').focus();
-				Swal.fire(
-					'Success',
-					meta.message,
-					'success'
-				).then((result) => {
-					if (result.isConfirmed) {}
-				});
+
+				Swal.fire({
+					title: meta.message,
+					icon: 'success',
+					showDenyButton: true,
+					confirmButtonText: 'OK',
+					denyButtonText: `Cetak Ticket`,
+					denyButtonColor: '#3085d6',
+				}).then((result) => {
+					/* Read more about isConfirmed, isDenied below */
+					if (result.isConfirmed) {
+
+					} else if (result.isDenied) {
+						// Swal.fire('Changes are not saved', '', 'info')
+						var url = "{{ route('pos.cetak', [':id']) }}";
+						url = url.replace(':id', response.data.id);
+						return window.location.href = url;
+					}
+				})
 			},
 			error: function(error) {
 
