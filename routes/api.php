@@ -42,5 +42,5 @@ Route::group(['prefix' => 'data', 'as' => 'data.'], function () {
 });
 
 Route::group(['prefix' => 'pos'], function () {
-    Route::post('/store', [PosController::class, 'store']);
+    Route::post('/store', [PosController::class, 'store'])->name('pos.store');
 });

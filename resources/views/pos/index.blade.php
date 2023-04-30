@@ -22,10 +22,61 @@
 				@include('partials.user_dropdown')
 			</div>
 		</div>
-		<div class="content d-flex align-items-center justify-content-center dashboard">
+		<div class="pb-4 d-flex align-items-center justify-content-center dashboard">
 			<section class="">
 				<div class="row dashboard">
-					<form action="">
+					<form id="form-pos">
+						@csrf
+						<div class="row mb-4">
+							<div class="col-lg-12 col-12 position-relative">
+								<input type="text" name="name" id="name" placeholder="Masukan Nama" class="form-control">
+							</div>
+						</div>
+						<div class="row mb-4">
+							<div class="col-lg-6 col-6 position-relative">
+								<select name="jenis_kelamin" id="jenis_kelamin" class="form-control">
+									<option value="">Pilih Jenis Kelamin</option>
+									<option value="Pria">Pria</option>
+									<option value="Wanita">Wanita</option>
+								</select>
+								<i class="fa fa-chevron-down"></i>
+							</div>
+							<div class="col-lg-6 col-6 position-relative">
+								<select name="golongan_darah" id="golongan_darah" class="form-control">
+									<option value="">Pilih Golongan Darah</option>
+									<option value="O">O</option>
+									<option value="A">A</option>
+									<option value="B">B</option>
+									<option value="AB">AB</option>
+								</select>
+								<i class="fa fa-chevron-down"></i>
+							</div>
+						</div>
+						<div class="row mb-4">
+							<div class="col-lg-12 col-12 position-relative">
+								<input type="email" name="email" id="email" placeholder="Masukan Email" class="form-control">
+							</div>
+						</div>
+						<div class="row mb-4">
+							<div class="col-lg-12 col-12 position-relative">
+								<input type="text" name="no_hp" id="no_hp" placeholder="Masukan No HP" class="form-control">
+							</div>
+						</div>
+						<div class="row mb-4">
+							<div class="col-lg-12 col-12 position-relative">
+								<textarea name="alamat" id="alamat" class="form-control" placeholder="Masukan Alamat"></textarea>
+							</div>
+						</div>
+						<div class="row mb-4">
+							<div class="col-lg-12 col-12 position-relative">
+								<input type="text" name="club" id="club" placeholder="Masukan Asal Club" class="form-control">
+							</div>
+						</div>
+						<div class="row mb-4">
+							<div class="col-lg-12 col-12 position-relative">
+								<input type="text" name="type_motor" id="type_motor" placeholder="Masukan Type Motor" class="form-control">
+							</div>
+						</div>
 						<div class="row mb-4">
 							<div class="col-lg-12 col-12 position-relative">
 								<select name="event" id="event" class="form-control">
@@ -50,16 +101,6 @@
 									@endforeach
 								</select>
 								<i class="fa fa-chevron-down"></i>
-							</div>
-						</div>
-						<div class="row mb-4">
-							<div class="col-lg-12 col-12 position-relative">
-								<input type="text" name="name" id="name" placeholder="Masukan Nama" class="form-control">
-							</div>
-						</div>
-						<div class="row mb-4">
-							<div class="col-lg-12 col-12 position-relative">
-								<input type="email" name="email" id="email" placeholder="Masukan Email" class="form-control">
 							</div>
 						</div>
 						<div class="col-12 text-center">
@@ -100,6 +141,72 @@
 			$('#category').append(`
                 <option value="${value['category']}">${value['category']}</option>
             `);
+		});
+	});
+
+	function resetForm() {
+		$('input').removeClass('invalid');
+		$('select').removeClass('invalid');
+		$('.invalid-feedback div').html('');
+		$('textarea').val('');
+		$('select').val('');
+		$('input').val('');
+
+	}
+
+	$('#form-pos').on('submit', function(e) {
+
+		e.preventDefault();
+		var formData = $(this).serialize();
+		$.ajax({
+			url: "{{ route('pos.store') }}",
+			method: 'POST',
+			data: formData,
+			global: false,
+			async: false,
+			dataType: 'json',
+			beforeSend: function() {
+
+			},
+			success: function(response) {
+				const meta = response.meta;
+				resetForm();
+				$('#name').focus();
+				Swal.fire(
+					'Success',
+					meta.message,
+					'success'
+				).then((result) => {
+					if (result.isConfirmed) {}
+				});
+			},
+			error: function(error) {
+
+				const data = JSON.parse(error.responseText);
+
+				if (data.errors) {
+					var idx = 0;
+
+					$.each(data.errors, function(key, value) {
+						$('#' + key.split('.')[0]).addClass('invalid');
+						$('#' + key.split('.')[0] + '_invalid-feedback').html(
+							value
+							.join(' '));
+
+						if (idx == 0) {
+							$('#' + key.split('.')[0]).focus();
+						}
+
+						idx++;
+					});
+				} else {
+					Swal.fire(
+						'Fail',
+						error.responseJSON.message,
+						'error'
+					);
+				}
+			},
 		});
 	});
 </script>

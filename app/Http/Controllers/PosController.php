@@ -24,7 +24,12 @@ class PosController extends Controller
     public function cetak($id)
     {
         $pos = Pos::find($id);
-        return view('pos.cetak', compact('pos'));
+        $user_logo = Auth::user() ? Auth::user()->logo : '';
+        $logo = '';
+        if ($user_logo) {
+            $logo = asset('/') . $user_logo;
+        }
+        return view('pos.cetak', compact('pos', 'logo'));
     }
 
     /**
@@ -53,19 +58,32 @@ class PosController extends Controller
         $name = $request->name;
         $email = $request->email;
         $category = $request->category;
+        $club = $request->club;
+        $jenis_kelamin = $request->jenis_kelamin;
+        $golongan_darah = $request->golongan_darah;
+        $no_hp = $request->no_hp;
+        $alamat = $request->alamat;
+        $type_motor = $request->type_motor;
         $pos = new Pos();
         $pos->event = $event;
         $pos->name = $name;
         $pos->email = $email;
         $pos->category = $category;
+        $pos->jenis_kelamin = $jenis_kelamin;
+        $pos->golongan_darah = $golongan_darah;
+        $pos->no_hp = $no_hp;
+        $pos->alamat = $alamat;
+        $pos->type_motor = $type_motor;
+        $pos->club = $club;
         $pos->user_id = Auth::user() ? Auth::user()->id : null;
         $pos->save();
         $pos->barcode_no = $this->generate_barcode($pos->id);
+        $pos->undian = $pos->barcode_no;
         $pos->save();
         $ticket = new TicketController();
         $request->merge(['barcode_no' => $pos->barcode_no]);
         $ticket = $ticket->store($request);
-        return ResponseFormatter::success($pos);
+        return ResponseFormatter::success($pos, 'Berhasil di input');
     }
 
     /**
@@ -115,6 +133,8 @@ class PosController extends Controller
 
     public function generate_barcode($id, $prefix = 'OTS', $digit = 8)
     {
+        $init_awal_id = 1500;
+        $id = $init_awal_id + $id;
         $len_prefix = strlen($prefix);
         $len_id = strlen($id);
         $barcode = $prefix;
