@@ -34,8 +34,8 @@
 						</div>
 					</div>
 					<div class="col-lg-9 col-sm-12">
-						<div class="row">
-							<div class="col-lg-3 col-sm-12">
+						<div class="row gx-1">
+							<div class="col-lg-3 col-sm-12 p-2">
 								<div class="small-box bg-info justify-content-between d-flex">
 									<div class="icon">
 										<i class="fa fa-clipboard-list"></i>
@@ -46,7 +46,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-lg-3 col-sm-12">
+							<div class="col-lg-3 col-sm-12 p-2">
 								<div class="small-box bg-success text-center">
 									<div class="inner text-center">
 										<p>Ticket Scan</p>
@@ -54,7 +54,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-lg-3 col-sm-12">
+							<div class="col-lg-3 col-sm-12 p-2">
 								<div class="small-box bg-info justify-content-between d-flex">
 									<div class="icon">
 										<i class="fa fa-sign-in-alt"></i>
@@ -65,7 +65,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-lg-3 col-sm-12">
+							<div class="col-lg-3 col-sm-12 p-2">
 								<div class="small-box bg-warning justify-content-between d-flex">
 									<div class="icon">
 										<i class="fa fa-sign-out-alt"></i>
