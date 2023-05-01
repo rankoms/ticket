@@ -57,6 +57,7 @@ Route::group(['middleware' => ['is_admin']], function () {
         Route::get('/', [PosController::class, 'index'])->name('pos.index');
         Route::get('/cetak/{id}', [PosController::class, 'cetak'])->name('pos.cetak');
         Route::post('/store', [PosController::class, 'store'])->name('pos.store');
+        Route::get('/dashboard_pos', [PosController::class,  'dashboard_pos'])->name('pos.dashboard_pos');
     });
     Route::group(['prefix' => 'scanner'], function () {
         Route::get('/store_pilih_event', [ScannerController::class, 'store_pilih_event'])->name('scanner.store_pilih_event');

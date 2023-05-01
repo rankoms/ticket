@@ -10,6 +10,14 @@
 	<link rel="stylesheet" href="{{ url('css') }}/custom-admin.css">
 </head>
 
+<style>
+	body {
+		background: url('{{ asset('bg-pos.jpg') }}');
+		background-repeat: round;
+		height: 100%;
+	}
+</style>
+
 <body>
 
 	<div class="container">

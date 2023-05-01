@@ -21,6 +21,14 @@ class PosController extends Controller
         $event = Ticket::groupBy('event')->select('event')->orderBy('event')->get();
         return view('pos.index', compact('event'));
     }
+
+    public function dashboard_pos(Request $request)
+    {
+        $pos = Pos::get();
+        return view('pos.dashboard_pos', compact('pos', 'request'));
+    }
+
+
     public function cetak($id)
     {
         $pos = Pos::find($id);
@@ -77,8 +85,9 @@ class PosController extends Controller
         $pos->club = $club;
         $pos->user_id = Auth::user() ? Auth::user()->id : null;
         $pos->save();
-        $pos->barcode_no = $this->generate_barcode($pos->id);
-        $pos->undian = $pos->barcode_no;
+        $pos->barcode_no = $this->generate_barcode();
+        $pos->undian = $this->generate_undian($pos->id);
+        $pos->id = $pos->undian;
         $pos->save();
         $ticket = new TicketController();
         $request->merge(['barcode_no' => $pos->barcode_no]);
@@ -131,19 +140,27 @@ class PosController extends Controller
         //
     }
 
-    public function generate_barcode($id, $prefix = 'OTS', $digit = 8)
+    public function generate_barcode($prefix = 'OTS', $length = 5)
     {
-        $init_awal_id = 1500;
-        $id = $init_awal_id + $id;
-        $len_prefix = strlen($prefix);
-        $len_id = strlen($id);
-        $barcode = $prefix;
-        for ($i = 0; $i < $digit - $len_prefix - $len_id; $i++) {
-            $barcode .= '0';
+        $length = 5; // jumlah karakter yang diinginkan
+        $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'; // daftar karakter yang diizinkan
+        $characters_length = strlen($characters);
+        $result = '';
+        for ($i = 0; $i < $length; $i++) {
+            $result .= $characters[rand(0, $characters_length - 1)];
         }
-        $barcode .= $id;
+        $result = $prefix . $result;
+        if (Pos::where('barcode_no', $result)->first()) {
+            $this->generate_barcode();
+        }
 
 
-        return $barcode;
+        return $result;
+    }
+
+    public function generate_undian($id, $init_awal_id = 1500)
+    {
+        $id = $init_awal_id + $id;
+        return $id;
     }
 }
