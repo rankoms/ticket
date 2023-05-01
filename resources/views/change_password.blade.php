@@ -32,6 +32,19 @@
 						@csrf
 						<div class="row mb-4">
 							<div class="col-lg-12 col-12 position-relative">
+								<select name="user" id="user" class="form-control">
+									<option value="">Pilih User</option>
+									@foreach ($user as $key => $value)
+										<option value="{{ $value->id }}">
+											{{ $value->username }}
+										</option>
+									@endforeach
+								</select>
+								<i class="fa fa-chevron-down"></i>
+							</div>
+						</div>
+						<div class="row mb-4">
+							<div class="col-lg-12 col-12 position-relative">
 								<input type="text" name="password" id="password" placeholder="Masukan Password Baru" class="form-control">
 							</div>
 						</div>

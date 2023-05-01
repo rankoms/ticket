@@ -87,13 +87,18 @@ class HomeController extends Controller
 
     public function change_password(Request $request)
     {
-        return view('change_password');
+        $user = User::get();
+        return view('change_password', compact('user'));
     }
 
     public function update_password(Request $request)
     {
         $password = $request->password;
-        $user = User::find(Auth::user()->id);
+        if (!$request->user) {
+            $user = User::find(Auth::user()->id);
+        } else {
+            $user = User::find($request->user);
+        }
         $user->password = Hash::make($password);
         $user->save();
         return ResponseFormatter::success(null, 'Your Password successfully updated');
