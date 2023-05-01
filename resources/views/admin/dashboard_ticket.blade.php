@@ -48,8 +48,8 @@
 							</div>
 							<div class="col-lg-3 col-sm-12 pl-2 pr-1">
 								<div class="small-box bg-ijo text-center">
-									<div class="inner text-center">
-										<p>Ticket Scan</p>
+									<div class="inner text-center pt-3">
+										<p>Total Scan Ticket</p>
 										<h3>{{ $jumlah_checkin + $jumlah_checkout }}</h3>
 									</div>
 								</div>
