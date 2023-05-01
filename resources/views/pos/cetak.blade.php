@@ -63,7 +63,7 @@
 		<div>
 			RACER : {{ $pos->name }} <br>
 			CLUB : {{ $pos->club }} <br>
-			NO START : {{ $pos->id }}<br>
+			NO START : {{ $pos->no_start }}<br>
 			UNDIAN : {{ $pos->undian }}
 		</div>
 		<button onclick="window.print();" id="non-printable">Cetak Halaman</button>

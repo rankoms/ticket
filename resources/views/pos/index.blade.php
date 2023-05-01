@@ -87,6 +87,11 @@
 						</div>
 						<div class="row mb-4">
 							<div class="col-lg-12 col-12 position-relative">
+								<input type="text" name="no_start" id="no_start" placeholder="Masukan No Start" class="form-control">
+							</div>
+						</div>
+						<div class="row mb-4">
+							<div class="col-lg-12 col-12 position-relative">
 								<select name="event" id="event" class="form-control">
 									<option value="">Pilih Event</option>
 									@foreach ($event as $key => $value)

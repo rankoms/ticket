@@ -72,6 +72,7 @@ class PosController extends Controller
         $no_hp = $request->no_hp;
         $alamat = $request->alamat;
         $type_motor = $request->type_motor;
+        $no_start = $request->no_start;
         $pos = new Pos();
         $pos->event = $event;
         $pos->name = $name;
@@ -83,6 +84,7 @@ class PosController extends Controller
         $pos->alamat = $alamat;
         $pos->type_motor = $type_motor;
         $pos->club = $club;
+        $pos->no_start = $no_start;
         $pos->user_id = Auth::user() ? Auth::user()->id : null;
         $pos->save();
         $pos->barcode_no = $this->generate_barcode();
