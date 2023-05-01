@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Exports\TicketExport;
 use App\Helpers\ResponseFormatter;
 use App\Models\Ticket;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use League\CommonMark\CommonMarkConverter;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -82,10 +85,35 @@ class HomeController extends Controller
         return view('admin.dashboard', compact('event'));
     }
 
+    public function change_password(Request $request)
+    {
+        return view('change_password');
+    }
+
+    public function update_password(Request $request)
+    {
+        $password = $request->password;
+        $user = User::find(Auth::user()->id);
+        $user->password = Hash::make($password);
+        $user->save();
+        return ResponseFormatter::success(null, 'Your Password successfully updated');
+    }
     public function test(Request $request)
     {
+        $id = 4478;
+        $prefix = 'OTS';
+        $digit = 8;
+        // $barcode = $prefix . $id;
+        $len_prefix = strlen($prefix);
+        $len_id = strlen($id);
+        $barcode = $prefix;
+        for ($i = 0; $i < $digit - $len_prefix - $len_id; $i++) {
+            $barcode .= '0';
+        }
+        $barcode .= $id;
 
-        return Excel::download(new TicketExport($request), 'Laporan Ticket.xlsx');
+
+        dd($barcode);
     }
 
     public function privacy()

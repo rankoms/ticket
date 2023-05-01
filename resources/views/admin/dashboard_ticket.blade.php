@@ -35,7 +35,7 @@
 					</div>
 					<div class="col-lg-9 col-sm-12">
 						<div class="row">
-							<div class="col-lg-4 col-sm-12">
+							<div class="col-lg-3 col-sm-12">
 								<div class="small-box bg-info justify-content-between d-flex">
 									<div class="icon">
 										<i class="fa fa-clipboard-list"></i>
@@ -46,24 +46,32 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-lg-4 col-sm-12">
-								<div class="small-box bg-success justify-content-between d-flex">
+							<div class="col-lg-3 col-sm-12">
+								<div class="small-box bg-success text-center">
+									<div class="inner text-center">
+										<p>Ticket Scan</p>
+										<h3>{{ $jumlah_checkin + $jumlah_checkout }}</h3>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-3 col-sm-12">
+								<div class="small-box bg-info justify-content-between d-flex">
 									<div class="icon">
 										<i class="fa fa-sign-in-alt"></i>
 									</div>
 									<div class="inner text-center">
-										<p>Checkin</p>
+										<p>Check-in</p>
 										<h3>{{ $jumlah_checkin }}</h3>
 									</div>
 								</div>
 							</div>
-							<div class="col-lg-4 col-sm-12">
+							<div class="col-lg-3 col-sm-12">
 								<div class="small-box bg-warning justify-content-between d-flex">
 									<div class="icon">
 										<i class="fa fa-sign-out-alt"></i>
 									</div>
 									<div class="inner text-center">
-										<p>Checkout</p>
+										<p>Check-out</p>
 										<h3>{{ $jumlah_checkout }}</h3>
 									</div>
 								</div>
@@ -88,8 +96,8 @@
 								<tr>
 									<th>Kategory</th>
 									<th>Pending</th>
-									<th>Checkin</th>
-									<th>Checkout</th>
+									<th>Check-in</th>
+									<th>Check-out</th>
 								</tr>
 							</thead>
 							<tbody>

@@ -5,6 +5,7 @@ use App\Http\Controllers\TicketController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PosController;
 use App\Http\Controllers\RedeemVoucherController;
 use App\Http\Controllers\ScannerController;
 use App\Http\Controllers\ScannerDesktopController;
@@ -26,6 +27,8 @@ Auth::routes([
     'register' => false
 ]);
 
+Route::get('test', [HomeController::class, 'test']);
+
 Route::get('/', function () {
     return redirect()->route('login');
 });
@@ -36,6 +39,7 @@ Route::group(['middleware' => ['auth', 'is_admin']], function () {
 });
 
 Route::get('/privacy-policy', [HomeController::class, 'privacy'])->name('privacy-policy');
+Route::post('/update_password', [HomeController::class, 'update_password'])->name('update_password');
 
 Route::group(['middleware' => ['auth', 'is_client'], 'prefix' => 'admin'], function () {
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('admin.dashboard');
@@ -43,6 +47,8 @@ Route::group(['middleware' => ['auth', 'is_client'], 'prefix' => 'admin'], funct
     Route::get('/dashboard_ticket', [TicketController::class, 'dashboard_ticket'])->name('dashboard_ticket');
     Route::get('/excel_ticket', [TicketController::class, 'excel_ticket'])->name('excel_ticket');
     Route::get('/excel_redeem', [RedeemVoucherController::class, 'excel_redeem'])->name('excel_redeem');
+
+    Route::get('/change_password', [HomeController::class, 'change_password'])->name('change_password');
 });
 
 
@@ -50,6 +56,12 @@ Route::get('/home_new', [HomeController::class, 'home_new'])->name('home_new');
 
 Route::group(['middleware' => ['is_admin']], function () {
 
+    Route::group(['prefix' => 'pos'], function () {
+        Route::get('/', [PosController::class, 'index'])->name('pos.index');
+        Route::get('/cetak/{id}', [PosController::class, 'cetak'])->name('pos.cetak');
+        Route::post('/store', [PosController::class, 'store'])->name('pos.store');
+        Route::get('/dashboard_pos', [PosController::class,  'dashboard_pos'])->name('pos.dashboard_pos');
+    });
     Route::group(['prefix' => 'scanner'], function () {
         Route::get('/store_pilih_event', [ScannerController::class, 'store_pilih_event'])->name('scanner.store_pilih_event');
         Route::get('/pilih_event', [ScannerController::class, 'pilih_event'])->name('scanner.pilih_event');

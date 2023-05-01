@@ -105,7 +105,9 @@ body {
     padding-bottom: 100px;
 }
 
-.dashboard select {
+.dashboard select,
+.dashboard input,
+.dashboard textarea {
     width: 100%;
     padding: 18px 39px;
     min-width: 500px;
@@ -165,7 +167,7 @@ body {
 
 .small-box .icon .fa {
     position: unset;
-    padding-left: 20px;
+    padding-left: 0px;
     color: #fff;
     font-size: 70px;
 }
@@ -210,7 +212,9 @@ body {
 }
 
 @media (max-width: 992px) {
-    .dashboard select {
+    .dashboard select,
+    .dashboard input,
+    .dashboard textarea {
         width: 100%;
         min-width: auto;
     }

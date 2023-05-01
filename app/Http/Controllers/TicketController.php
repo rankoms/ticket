@@ -187,4 +187,21 @@ class TicketController extends Controller
 
         return Excel::download(new TicketExport($request), 'Laporan Ticket ' . date('Y-m-d H_i') . '.xlsx');
     }
+
+    public function store(Request $request)
+    {
+        $event = $request->event;
+        $name = $request->name;
+        $email = $request->email;
+        $category = $request->category;
+        $barcode_no = $request->barcode_no;
+        $ticket = new Ticket();
+        $ticket->event = $event;
+        $ticket->name = $name;
+        $ticket->email = $email;
+        $ticket->category = $category;
+        $ticket->barcode_no = $barcode_no;
+        $ticket->save();
+        return ResponseFormatter::success($ticket);
+    }
 }

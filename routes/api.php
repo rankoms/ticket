@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\PosController;
 use App\Http\Controllers\Api\TicketController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -38,4 +39,8 @@ Route::group(['prefix' => 'scanner'], function () {
 Route::group(['prefix' => 'data', 'as' => 'data.'], function () {
     Route::post('/event_category', [TicketController::class, 'event_category'])->name('event_category');
     Route::post('/ticket', [TicketController::class, 'ticket'])->name('ticket');
+});
+
+Route::group(['prefix' => 'pos'], function () {
+    Route::post('/store', [PosController::class, 'store'])->name('pos.store');
 });

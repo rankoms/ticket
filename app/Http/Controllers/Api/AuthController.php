@@ -40,6 +40,8 @@ class AuthController extends Controller
         return ResponseFormatter::success(['user' => $user, 'token' => $token], 'Berhasil');
     }
 
+
+
     public function sign(Request $request)
     {
 
