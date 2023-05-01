@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Exports\TicketExport;
 use App\Helpers\ResponseFormatter;
 use App\Models\Ticket;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use League\CommonMark\CommonMarkConverter;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -82,6 +85,19 @@ class HomeController extends Controller
         return view('admin.dashboard', compact('event'));
     }
 
+    public function change_password(Request $request)
+    {
+        return view('change_password');
+    }
+
+    public function update_password(Request $request)
+    {
+        $password = $request->password;
+        $user = User::find(Auth::user()->id);
+        $user->password = Hash::make($password);
+        $user->save();
+        return ResponseFormatter::success(null, 'Your Password successfully updated');
+    }
     public function test(Request $request)
     {
         $id = 4478;

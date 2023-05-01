@@ -39,6 +39,7 @@ Route::group(['middleware' => ['auth', 'is_admin']], function () {
 });
 
 Route::get('/privacy-policy', [HomeController::class, 'privacy'])->name('privacy-policy');
+Route::post('/update_password', [HomeController::class, 'update_password'])->name('update_password');
 
 Route::group(['middleware' => ['auth', 'is_client'], 'prefix' => 'admin'], function () {
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('admin.dashboard');
@@ -46,6 +47,8 @@ Route::group(['middleware' => ['auth', 'is_client'], 'prefix' => 'admin'], funct
     Route::get('/dashboard_ticket', [TicketController::class, 'dashboard_ticket'])->name('dashboard_ticket');
     Route::get('/excel_ticket', [TicketController::class, 'excel_ticket'])->name('excel_ticket');
     Route::get('/excel_redeem', [RedeemVoucherController::class, 'excel_redeem'])->name('excel_redeem');
+
+    Route::get('/change_password', [HomeController::class, 'change_password'])->name('change_password');
 });
 
 
