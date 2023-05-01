@@ -11,12 +11,14 @@
 	<tr>
 		<th></th>
 		<th>Pending</th>
-		<th>Checkin</th>
-		<th>Checkout</th>
+		<th>Ticket Scan</th>
+		<th>Check-in</th>
+		<th>Check-out</th>
 	</tr>
 	<tr>
 		<td style="background-color: #C4D79B">TOTAL</td>
 		<td style="background-color: #C4D79B">{{ $jumlah_pending }}</td>
+		<td style="background-color: #C4D79B">{{ $jumlah_checkin + $jumlah_checkout }}</td>
 		<td style="background-color: #C4D79B">{{ $jumlah_checkin }}</td>
 		<td style="background-color: #C4D79B">{{ $jumlah_checkout }}</td>
 	</tr>
@@ -28,8 +30,8 @@
 		<tr>
 			<th style="background-color: #BFBFBF">Category</th>
 			<th style="background-color: #BFBFBF">Pending</th>
-			<th style="background-color: #BFBFBF">Checkin</th>
-			<th style="background-color: #BFBFBF">Checkout</th>
+			<th style="background-color: #BFBFBF">Check-in</th>
+			<th style="background-color: #BFBFBF">Check-out</th>
 		</tr>
 	</thead>
 	<tbody>
