@@ -7,6 +7,22 @@ body {
     height: 100vh;
 }
 
+.bg-biru {
+    background-color: #516BF5;
+}
+
+.bg-kuning {
+    background-color: #FFB200;
+}
+
+.bg-ijo {
+    background-color: #34B53A;
+}
+
+.bg-teal {
+    background-color: #34B5AD;
+}
+
 .header h1 {
     font-family: 'Poppins';
     font-style: normal;
@@ -169,7 +185,7 @@ body {
     position: unset;
     padding-left: 0px;
     color: #fff;
-    font-size: 60px;
+    font-size: 48px;
 }
 
 .small-box .inner p,
@@ -186,7 +202,7 @@ body {
     font-family: 'Poppins';
     font-style: normal;
     font-weight: 600;
-    font-size: 36px;
+    font-size: 28px;
     color: #fff;
 }
 

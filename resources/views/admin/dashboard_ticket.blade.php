@@ -29,14 +29,14 @@
 		<section class="content">
 			<div class="container-fluid">
 				<div class="row">
-					<div class="align-items-center col-lg-3 col-sm-12 d-flex justify-content-center wrapper-chart">
+					<div class="align-items-center col-lg-3 col-sm-12 d-flex justify-content-center wrapper-chart p-0">
 						<div id="chart">
 						</div>
 					</div>
 					<div class="col-lg-9 col-sm-12">
 						<div class="row gx-1">
-							<div class="col-lg-3 col-sm-12 p-2">
-								<div class="small-box bg-info justify-content-between d-flex">
+							<div class="col-lg-3 col-sm-12 pr-1">
+								<div class="small-box bg-biru justify-content-between d-flex">
 									<div class="icon">
 										<i class="fa fa-clipboard-list"></i>
 									</div>
@@ -46,16 +46,16 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-lg-3 col-sm-12 p-2">
-								<div class="small-box bg-success text-center">
+							<div class="col-lg-3 col-sm-12 pl-2 pr-1">
+								<div class="small-box bg-ijo text-center">
 									<div class="inner text-center">
 										<p>Ticket Scan</p>
 										<h3>{{ $jumlah_checkin + $jumlah_checkout }}</h3>
 									</div>
 								</div>
 							</div>
-							<div class="col-lg-3 col-sm-12 p-2">
-								<div class="small-box bg-info justify-content-between d-flex">
+							<div class="col-lg-3 col-sm-12 pl-2 pr-1">
+								<div class="small-box bg-teal justify-content-between d-flex">
 									<div class="icon">
 										<i class="fa fa-sign-in-alt"></i>
 									</div>
@@ -65,8 +65,8 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-lg-3 col-sm-12 p-2">
-								<div class="small-box bg-warning justify-content-between d-flex">
+							<div class="col-lg-3 col-sm-12 pl-2">
+								<div class="small-box bg-kuning justify-content-between d-flex">
 									<div class="icon">
 										<i class="fa fa-sign-out-alt"></i>
 									</div>
