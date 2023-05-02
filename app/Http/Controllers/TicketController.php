@@ -10,6 +10,7 @@ use App\Models\Ticket;
 use App\Models\TicketHistory;
 use App\Rules\ExceptSymbol;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -45,7 +46,20 @@ class TicketController extends Controller
                 isset($kategory_aset[$value->category]['checkout']) ? $kategory_aset[$value->category]['checkout']++ : $kategory_aset[$value->category]['checkout'] = 1;
             endif;
         endforeach;
-        return view('admin.dashboard_ticket', compact('kategory_aset', 'jumlah_pending', 'jumlah_checkin', 'jumlah_checkout', 'ticket', 'event', 'request', 'ticket_not_valid'));
+        $ticket_history = TicketHistory::select(DB::raw('count(id) as jumlah'), DB::raw("date_part('hour', created_at) as hour"))->groupBy(DB::raw("date_part('hour', created_at)"))->orderBy('hour', 'asc')->get();
+        $data_ticket_history = '';
+        $label_ticket_history = '';
+
+        foreach ($ticket_history as $key => $value) :
+            // array_push($data_ticket_history, $value->jumlah);
+            // array_push($label_ticket_history, $value->hour);
+            $data_ticket_history .= $value->jumlah . ',';
+            $label_ticket_history .= '"' . $value->hour . '",';
+        endforeach;
+        $data_ticket_history = substr($data_ticket_history, 0, -1);
+        $label_ticket_history = substr($label_ticket_history, 0, -1);
+
+        return view('admin.dashboard_ticket', compact('kategory_aset', 'jumlah_pending', 'jumlah_checkin', 'jumlah_checkout', 'ticket', 'event', 'request', 'ticket_not_valid', 'data_ticket_history', 'label_ticket_history'));
     }
 
     public function checkin(Request $request)

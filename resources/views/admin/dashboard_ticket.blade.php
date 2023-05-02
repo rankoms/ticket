@@ -89,6 +89,11 @@
 						</div>
 					</div>
 				</div>
+				<div class="row">
+					<div class="col-lg-12">
+						<div id="line-chart"></div>
+					</div>
+				</div>
 				<div class="mt-4 row">
 					<div class="col-sm-12">
 						<table id="example" class="display" style="width:100%">
@@ -153,6 +158,39 @@
 		};
 
 		var chart = new ApexCharts(document.querySelector("#chart"), options);
+		chart.render();
+	</script>
+	<script>
+		var options = {
+			series: [{
+				name: "Pengunjung",
+				data: [{{ $data_ticket_history }}]
+			}],
+			chart: {
+				height: 350,
+				type: 'line',
+				zoom: {
+					enabled: true
+				}
+			},
+			dataLabels: {
+				enabled: true
+			},
+			stroke: {
+				curve: 'straight'
+			},
+			grid: {
+				row: {
+					colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+					opacity: 0.5
+				},
+			},
+			xaxis: {
+				categories: [{!! $label_ticket_history !!}],
+			}
+		};
+
+		var chart = new ApexCharts(document.querySelector("#line-chart"), options);
 		chart.render();
 	</script>
 	<script>

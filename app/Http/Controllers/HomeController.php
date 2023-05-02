@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Exports\TicketExport;
 use App\Helpers\ResponseFormatter;
 use App\Models\Ticket;
+use App\Models\TicketHistory;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use League\CommonMark\CommonMarkConverter;
 use Maatwebsite\Excel\Facades\Excel;
@@ -105,20 +107,8 @@ class HomeController extends Controller
     }
     public function test(Request $request)
     {
-        $id = 4478;
-        $prefix = 'OTS';
-        $digit = 8;
-        // $barcode = $prefix . $id;
-        $len_prefix = strlen($prefix);
-        $len_id = strlen($id);
-        $barcode = $prefix;
-        for ($i = 0; $i < $digit - $len_prefix - $len_id; $i++) {
-            $barcode .= '0';
-        }
-        $barcode .= $id;
-
-
-        dd($barcode);
+        $ticket_history = TicketHistory::select(DB::raw('count(id)'), DB::raw("date_part('hour', created_at)"))->groupBy(DB::raw("date_part('hour', created_at)"))->get();
+        dd($ticket_history);
     }
 
     public function privacy()
