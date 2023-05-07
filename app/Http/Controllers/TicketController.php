@@ -51,17 +51,65 @@ class TicketController extends Controller
         $label_ticket_history = '';
 
         foreach ($ticket_history as $key => $value) :
-            // array_push($data_ticket_history, $value->jumlah);
-            // array_push($label_ticket_history, $value->hour);
             $data_ticket_history .= $value->jumlah . ',';
             $label_ticket_history .= '"' . $value->hour . '",';
         endforeach;
         $data_ticket_history = substr($data_ticket_history, 0, -1);
         $label_ticket_history = substr($label_ticket_history, 0, -1);
 
-        return view('admin.dashboard_ticket', compact('kategory_aset', 'jumlah_pending', 'jumlah_checkin', 'jumlah_checkout', 'ticket', 'event', 'request', 'ticket_not_valid', 'data_ticket_history', 'label_ticket_history'));
+        $tanggal = format_hari_tanggal(date('Y-m-d H:i:s'));
+
+        return view('admin.dashboard_ticket', compact('kategory_aset', 'jumlah_pending', 'jumlah_checkin', 'jumlah_checkout', 'ticket', 'event', 'request', 'ticket_not_valid', 'data_ticket_history', 'label_ticket_history', 'tanggal'));
     }
 
+    public function post_dashboard_ticket(Request $request)
+    {
+        $ticket = Ticket::orderBy('category', 'asc');
+        $ticket_not_valid = 0;
+        if ($request->event) {
+            $ticket = $ticket->where('event', $request->event);
+            $ticket_not_valid = TicketHistory::where('event', $request->event)->where('is_valid', 0)->get();
+            $ticket_not_valid = count($ticket_not_valid);
+        }
+        $ticket = $ticket->get();
+        $event = Ticket::groupBy('event')->select('event')->orderBy('event')->get();
+        $jumlah_pending = 0;
+        $jumlah_checkin = 0;
+        $jumlah_checkout = 0;
+        $kategory_aset = [];
+        foreach ($ticket as $key => $value) :
+            if ($value->checkin == null && $value->checkout == null) :
+                $jumlah_pending++;
+                isset($kategory_aset[$value->category]['pending']) ? $kategory_aset[$value->category]['pending']++ : $kategory_aset[$value->category]['pending'] = 1;
+            endif;
+            if ($value->checkin && $value->checkout == null) :
+                $jumlah_checkin++;
+                isset($kategory_aset[$value->category]['checkin']) ? $kategory_aset[$value->category]['checkin']++ : $kategory_aset[$value->category]['checkin'] = 1;
+            endif;
+            if ($value->checkout) :
+                $jumlah_checkout++;
+                isset($kategory_aset[$value->category]['checkout']) ? $kategory_aset[$value->category]['checkout']++ : $kategory_aset[$value->category]['checkout'] = 1;
+            endif;
+        endforeach;
+        $ticket_history = TicketHistory::select(DB::raw('count(id) as jumlah'), DB::raw("date_part('hour', created_at) as hour"))->groupBy(DB::raw("date_part('hour', created_at)"))->orderBy('hour', 'asc')->get();
+        $data_ticket_history = [];
+        $label_ticket_history = [];
+
+        foreach ($ticket_history as $key => $value) :
+            array_push($data_ticket_history, $value->jumlah);
+
+            // $label_ticket_history .= '' . $value->hour . ',';
+            array_push($label_ticket_history, $value->hour);
+        endforeach;
+
+        $data_return['jumlah_pending'] = $jumlah_pending;
+        $data_return['jumlah_checkin'] = $jumlah_checkin;
+        $data_return['jumlah_checkout'] = $jumlah_checkout;
+        $data_return['tanggal'] = date('Y-m-d H:i:s');
+        $data_return['label_ticket_history'] = $label_ticket_history;
+        $data_return['data_ticket_history'] = $data_ticket_history;
+        return ResponseFormatter::success($data_return);
+    }
     public function checkin(Request $request)
     {
         request()->validate([
