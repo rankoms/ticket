@@ -45,6 +45,9 @@ Route::group(['middleware' => ['auth', 'is_client'], 'prefix' => 'admin'], funct
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/dashboard_redeem', [RedeemVoucherController::class, 'dashboard_redeem'])->name('redeem_voucher.dashboard');
     Route::get('/dashboard_ticket', [TicketController::class, 'dashboard_ticket'])->name('dashboard_ticket');
+
+    Route::post('/dashboard_ticket', [TicketController::class, 'post_dashboard_ticket'])->name('post_dashboard_ticket');
+
     Route::get('/excel_ticket', [TicketController::class, 'excel_ticket'])->name('excel_ticket');
     Route::get('/excel_redeem', [RedeemVoucherController::class, 'excel_redeem'])->name('excel_redeem');
 

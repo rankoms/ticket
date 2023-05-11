@@ -60,6 +60,7 @@ class TicketController extends Controller
         $ticket->checkout = null;
         $ticket->checkout_by = null;
         $ticket->checkin_count = $ticket->checkin_count + 1;
+        $ticket->status = true;
         if ($ticket->save()) {
             // $section_selected = $this->count_gate($ticket->event_id, $ticket->category)->getData();
             return ResponseFormatter::success($ticket, 'This QR Code is Valid');
@@ -118,12 +119,13 @@ class TicketController extends Controller
         if ($ticket->category != $request->category && $category != 'All Category') {
             return ResponseFormatter::error(null, 'Ticket Salah Pintu', 400);
         }
-        if ($ticket->checkout) {
+        if ($ticket->checkout && $ticket->checkin == null) {
             return ResponseFormatter::error($ticket, 'Checkin First', 403);
         }
         $ticket->checkout = $now;
         $ticket->checkout_by = $checkout_by;
         $ticket->checkin_count = $ticket->checkin_count  > 0 ? $ticket->checkin_count - 1 : $ticket->checkin_count;
+        $ticket->status = true;
         if ($ticket->save()) {
             return ResponseFormatter::success($ticket, 'Anda Berhasil Checkout');
         } else {
@@ -237,7 +239,7 @@ class TicketController extends Controller
         $history->event = $request->event;
         $history->category = $request->category;
         $history->gate = $request->gate;
-        $history->status = $request->status;
+        $history->status = true;
         $history->save();
     }
 
