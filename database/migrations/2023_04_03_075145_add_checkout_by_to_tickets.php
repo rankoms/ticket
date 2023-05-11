@@ -17,7 +17,7 @@ class AddCheckoutByToTickets extends Migration
             //
 
             $table->unsignedBigInteger('checkout_by')->index()->nullable();
-            $table->foreign('checkout_by')->references('id')->on('users');
+            // $table->foreign('checkout_by')->references('id')->on('users');
         });
     }
 
