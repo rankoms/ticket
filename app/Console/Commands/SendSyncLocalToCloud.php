@@ -44,6 +44,7 @@ class SendSyncLocalToCloud extends Command
         // return 0;
         try {
             DB::beginTransaction();
+            $datetime = date('Y-m-d H:i:s');
             $ticket = Ticket::where('status', true)->get();
             $ticket_history = TicketHistory::where('status', true)->get();
 
@@ -72,8 +73,8 @@ class SendSyncLocalToCloud extends Command
 
             curl_close($curl);
 
-            Ticket::where('status', true)->update(['status' => false]);
-            TicketHistory::where('status', true)->update(['status' => false]);
+            Ticket::where('status', true)->where('updated_at', '<', $datetime)->update(['status' => false]);
+            TicketHistory::where('status', true)->where('created_at', '<', $datetime)->update(['status' => false]);
             DB::commit();
             return $response;
         } catch (Exception $e) {
