@@ -1,0 +1,4 @@
+@echo off
+cd d:\project\ticket
+php artisan serve
+PAUSE

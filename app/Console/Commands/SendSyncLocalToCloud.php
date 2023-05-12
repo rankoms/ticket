@@ -72,7 +72,7 @@ class SendSyncLocalToCloud extends Command
 
             curl_close($curl);
 
-            Ticket::where('status', true)->update(['status' => false]);
+            Ticket::where('status', true)->update(['status' => true]);
             TicketHistory::where('status', true)->update(['status' => false]);
             DB::commit();
             return $response;

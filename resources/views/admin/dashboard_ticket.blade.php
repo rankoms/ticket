@@ -227,7 +227,7 @@
             // });
 
 
-        }, 10000);
+        }, 5000);
     </script>
     <script></script>
     <script>
