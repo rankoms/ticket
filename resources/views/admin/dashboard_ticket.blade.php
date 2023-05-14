@@ -125,8 +125,13 @@
                 </div>
                 <div class="row mt-4">
                     <div class="col-12 text-center">
-                        <a href="{{ route('excel_ticket', ['event' => $request->event]) }}"
-                            class="btn btn-success">Export Excel</a>
+                        @if (isset($is_current))
+                            <a href="{{ route('excel_ticket_current', ['event' => $request->event]) }}"
+                                class="btn btn-success">Export Excel</a>
+                        @else
+                            <a href="{{ route('excel_ticket', ['event' => $request->event]) }}"
+                                class="btn btn-success">Export Excel</a>
+                        @endif
                     </div>
                 </div>
             </div>

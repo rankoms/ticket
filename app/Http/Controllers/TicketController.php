@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\TicketCurrentExport;
 use App\Exports\TicketExport;
 use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
@@ -60,6 +61,70 @@ class TicketController extends Controller
         $tanggal = format_hari_tanggal(date('Y-m-d H:i:s'));
 
         return view('admin.dashboard_ticket', compact('kategory_aset', 'jumlah_pending', 'jumlah_checkin', 'jumlah_checkout', 'ticket', 'event', 'request', 'ticket_not_valid', 'data_ticket_history', 'label_ticket_history', 'tanggal'));
+    }
+
+    public function dashboard_ticket_current(Request $request)
+    {
+        $percent_report_current = config('scanner.percent_report_current');
+        $is_current = true;
+        $ticket = Ticket::orderBy('category', 'asc');
+        $ticket_not_valid = 0;
+        if ($request->event) {
+            $ticket = $ticket->where('event', $request->event);
+            $ticket_not_valid = TicketHistory::where('event', $request->event)->where('is_valid', 0)->get();
+            $ticket_not_valid = count($ticket_not_valid);
+        }
+        $ticket = $ticket->get();
+        /* START JUMLAH VARIABLE TICKET */
+        $jumlah_ticket = count($ticket);
+        $max_ticket = $jumlah_ticket * $percent_report_current / 100;
+        /* START JUMLAH VARIABLE TICKET */
+
+        $event = Ticket::groupBy('event')->select('event')->orderBy('event')->get();
+        $jumlah_pending = 0;
+        $jumlah_checkin = 0;
+        $jumlah_checkout = 0;
+        $kategory_aset = [];
+        foreach ($ticket as $key => $value) :
+            if ($key >= $max_ticket) {
+                break;
+            }
+            if ($value->checkin == null && $value->checkout == null) :
+                $jumlah_pending++;
+                isset($kategory_aset[$value->category]['pending']) ? $kategory_aset[$value->category]['pending']++ : $kategory_aset[$value->category]['pending'] = 1;
+            endif;
+            if ($value->checkin && $value->checkout == null) :
+                $jumlah_checkin++;
+                isset($kategory_aset[$value->category]['checkin']) ? $kategory_aset[$value->category]['checkin']++ : $kategory_aset[$value->category]['checkin'] = 1;
+            endif;
+            if ($value->checkout) :
+                $jumlah_checkout++;
+                isset($kategory_aset[$value->category]['checkout']) ? $kategory_aset[$value->category]['checkout']++ : $kategory_aset[$value->category]['checkout'] = 1;
+            endif;
+        endforeach;
+        $ticket_history = TicketHistory::select(DB::raw('count(id) as jumlah'), DB::raw("date_part('hour', created_at) as hour"))->groupBy(DB::raw("date_part('hour', created_at)"))->orderBy('hour', 'asc')->get();
+        $data_ticket_history = '';
+        $label_ticket_history = '';
+
+        /* START JUMLAH VARIABLE TICKET */
+        $jumlah_ticket_history = count($ticket_history);
+        $max_ticket_history = $jumlah_ticket_history * $percent_report_current / 100;
+        /* START JUMLAH VARIABLE TICKET */
+        foreach ($ticket_history as $key => $value) :
+            if ($key >= $max_ticket_history) {
+                break;
+            }
+            $data_ticket_history .= $value->jumlah . ',';
+            $label_ticket_history .= '"' . $value->hour . '",';
+        endforeach;
+        $data_ticket_history = substr($data_ticket_history, 0, -1);
+        $label_ticket_history = substr($label_ticket_history, 0, -1);
+
+        $tanggal = format_hari_tanggal(date('Y-m-d H:i:s'));
+
+
+
+        return view('admin.dashboard_ticket', compact('kategory_aset', 'jumlah_pending', 'jumlah_checkin', 'jumlah_checkout', 'ticket', 'event', 'request', 'ticket_not_valid', 'data_ticket_history', 'label_ticket_history', 'tanggal', 'is_current'));
     }
 
     public function post_dashboard_ticket(Request $request)
@@ -248,6 +313,11 @@ class TicketController extends Controller
     {
 
         return Excel::download(new TicketExport($request), 'Laporan Ticket ' . date('Y-m-d H_i') . '.xlsx');
+    }
+    public function excel_ticket_current(Request $request)
+    {
+
+        return Excel::download(new TicketCurrentExport($request), 'Laporan Ticket Current' . date('Y-m-d H_i') . '.xlsx');
     }
 
     public function store(Request $request)
