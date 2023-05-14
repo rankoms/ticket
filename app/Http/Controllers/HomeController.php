@@ -119,4 +119,17 @@ class HomeController extends Controller
 
         return view('privacy', ['privacy' => $privacyPolicyHtml]);
     }
+
+    public function auto_login_event(Request $request)
+    {
+        $event = $request->event;
+        $credentials = request(['username', 'password']);
+        if (!Auth::attempt($credentials))
+            return redirect()->route('login');
+        else {
+            if ($event) {
+                return redirect()->route('dashboard_ticket', ['event' => $event]);
+            }
+        }
+    }
 }

@@ -41,6 +41,8 @@ Route::group(['middleware' => ['auth', 'is_admin']], function () {
 Route::get('/privacy-policy', [HomeController::class, 'privacy'])->name('privacy-policy');
 Route::post('/update_password', [HomeController::class, 'update_password'])->name('update_password');
 
+Route::get('/auto_login_event', [HomeController::class, 'auto_login_event'])->name('auto_login_event');
+
 Route::group(['middleware' => ['auth', 'is_client'], 'prefix' => 'admin'], function () {
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/dashboard_redeem', [RedeemVoucherController::class, 'dashboard_redeem'])->name('redeem_voucher.dashboard');
