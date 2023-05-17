@@ -14,23 +14,23 @@ class DataTicketSeeder extends Seeder
      */
     public function run()
     {
-        $jumlah = 10000;
+        $jumlah = 1000;
         $data = [];
         for ($i = 1; $i <= $jumlah; $i++) :
 
-            if ($i <= 3000) {
+            if ($i <= 300) {
                 $event = 'Event 1';
             }
-            if ($i <= 6000 && $i > 3000) {
+            if ($i <= 600 && $i > 300) {
                 $event = 'Event 2';
             }
-            if ($i <= 10000 && $i > 6000) {
+            if ($i <= 1000 && $i > 600) {
                 $event = 'Event 3';
             }
 
-            for ($j=8; $j >= 1; $j--) { 
+            for ($j = 8; $j >= 1; $j--) {
                 if ($i % $j == 0) {
-                    $category = 'Category '.$j;
+                    $category = 'Category ' . $j;
 
                     break;
                 }

@@ -37,7 +37,7 @@
                         @csrf
                         <div class="row mb-4">
                             <div class="col-lg-12 col-12 position-relative">
-                                <select name="event" id="event" class="form-control">
+                                <select name="event" id="event" class="form-control" required>
                                     <option value="">Pilih Event</option>
                                     @foreach ($event as $key => $value)
                                         <option value="{{ $value->event }}">
@@ -46,50 +46,74 @@
                                     @endforeach
                                 </select>
                                 <i class="fa fa-chevron-down"></i>
+                                <div class="invalid-feedback d-block invalid">
+                                    <div id="event_invalid-feedback"></div>
+                                </div>
                             </div>
                         </div>
                         <div class="row mb-4">
                             <div class="col-lg-12 col-12 position-relative">
-                                <select name="category" id="category" class="form-control">
+                                <select name="category" id="category" class="form-control" required>
                                     <option value="">Pilih Category</option>
                                 </select>
                                 <i class="fa fa-chevron-down"></i>
+                                <div class="invalid-feedback d-block invalid">
+                                    <div id="category_invalid-feedback"></div>
+                                </div>
                             </div>
                         </div>
                         <div class="row mb-4">
                             <div class="col-lg-12 col-12 position-relative">
                                 <input type="text" name="harga_satuan" id="harga_satuan" placeholder="Harga Satuan"
-                                    class="form-control" readonly>
+                                    class="form-control" readonly required>
+                                <div class="invalid-feedback d-block invalid">
+                                    <div id="harga_satuan_invalid-feedback"></div>
+                                </div>
                             </div>
                         </div>
                         <div class="row mb-4">
                             <div class="col-lg-12 col-12 position-relative">
-                                <input type="text" name="quantity" id="quantity" placeholder="Quantity"
-                                    class="form-control">
+                                <input type="number" name="quantity" id="quantity" placeholder="Quantity"
+                                    class="form-control" required>
+                                <div class="invalid-feedback d-block invalid">
+                                    <div id="quantity_invalid-feedback"></div>
+                                </div>
                             </div>
                         </div>
                         <div class="row mb-4">
                             <div class="col-lg-12 col-12 position-relative">
                                 <input type="text" name="total_harga" id="total_harga" placeholder="Total Harga"
                                     class="form-control" readonly>
+                                <div class="invalid-feedback d-block invalid">
+                                    <div id="total_harga_invalid-feedback"></div>
+                                </div>
                             </div>
                         </div>
                         <div class="row mb-4">
                             <div class="col-lg-12 col-12 position-relative">
                                 <input type="text" name="name" id="name" placeholder="Masukan Nama"
-                                    class="form-control">
+                                    class="form-control" required>
+                                <div class="invalid-feedback d-block invalid">
+                                    <div id="name_invalid-feedback"></div>
+                                </div>
                             </div>
                         </div>
                         <div class="row mb-4">
                             <div class="col-lg-12 col-12 position-relative">
                                 <input type="email" name="email" id="email" placeholder="Masukan Email"
-                                    class="form-control">
+                                    class="form-control" required>
+                                <div class="invalid-feedback d-block invalid">
+                                    <div id="email_invalid-feedback"></div>
+                                </div>
                             </div>
                         </div>
                         <div class="row mb-4">
                             <div class="col-lg-12 col-12 position-relative">
                                 <input type="text" name="no_telp" id="no_telp" placeholder="Masukan No HP"
-                                    class="form-control">
+                                    class="form-control" required>
+                                <div class="invalid-feedback d-block invalid">
+                                    <div id="no_telp_invalid-feedback"></div>
+                                </div>
                             </div>
                         </div>
                         <div class="col-12 text-center">
