@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PosController;
+use App\Http\Controllers\PosTicketController;
 use App\Http\Controllers\RedeemVoucherController;
 use App\Http\Controllers\ScannerController;
 use App\Http\Controllers\ScannerDesktopController;
@@ -69,6 +70,15 @@ Route::group(['middleware' => ['is_admin']], function () {
         Route::get('/cetak/{id}', [PosController::class, 'cetak'])->name('pos.cetak');
         Route::post('/store', [PosController::class, 'store'])->name('pos.store');
         Route::get('/dashboard_pos', [PosController::class,  'dashboard_pos'])->name('pos.dashboard_pos');
+    });
+
+
+    Route::group(['prefix' => 'pos_ticket'], function () {
+        Route::get('/', [PosTicketController::class, 'index'])->name('pos_ticket.index');
+        Route::get('/cetak/{id}', [PosTicketController::class, 'cetak'])->name('pos_ticket.cetak');
+        Route::post('/store', [PosTicketController::class, 'store'])->name('pos_ticket.store');
+        Route::get('/dashboard', [PosTicketController::class,  'dashboard'])->name('pos_ticket.dashboard');
+        Route::post('/category_select', [PosTicketController::class, 'category_select'])->name('pos_ticket.category_select');
     });
     Route::group(['prefix' => 'scanner'], function () {
         Route::get('/store_pilih_event', [ScannerController::class, 'store_pilih_event'])->name('scanner.store_pilih_event');
