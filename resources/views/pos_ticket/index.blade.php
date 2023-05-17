@@ -207,8 +207,8 @@
 
                     } else if (result.isDenied) {
                         // Swal.fire('Changes are not saved', '', 'info')
-                        var url = "{{ route('pos.cetak', [':id']) }}";
-                        url = url.replace(':id', response.data.id);
+                        var url = "{{ route('pos_ticket.cetak', [':id']) }}";
+                        url = url.replace(':id', response.data.payment_code);
                         return window.location.href = url;
                     }
                 })
