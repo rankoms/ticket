@@ -16,6 +16,8 @@ class CreateEventCategoriesTable extends Migration
         Schema::create('event_categories', function (Blueprint $table) {
             $table->id();
             $table->string('event')->index();
+            $table->date('date')->index();
+            $table->string('vanue')->index();
             $table->string('category')->index();
             $table->double('harga_satuan')->index();
             $table->timestamps();

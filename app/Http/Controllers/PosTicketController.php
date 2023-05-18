@@ -106,6 +106,8 @@ class PosTicketController extends Controller
             $pos_ticket->harga_satuan = $harga_satuan;
             $pos_ticket->total_harga = $total_harga;
             $pos_ticket->user_id = $user_id;
+            $pos_ticket->date = $event_category->date;
+            $pos_ticket->vanue = $event_category->vanue;
             $pos_ticket->barcode_no = $this->generate_barcode();
             $pos_ticket->payment_code = $payment_code;
             $pos_ticket->save();

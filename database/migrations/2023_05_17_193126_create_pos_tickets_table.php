@@ -25,6 +25,8 @@ class CreatePosTicketsTable extends Migration
             $table->double('total_harga')->index();
             $table->string('barcode_no')->index();
             $table->string('payment_code')->index();
+            $table->date('date')->index();
+            $table->string('vanue')->index();
             $table->integer('user_id')->index()->nullable();
             $table->timestamps();
         });
