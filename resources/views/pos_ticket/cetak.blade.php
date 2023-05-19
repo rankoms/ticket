@@ -21,6 +21,7 @@
             height: 5.83in;
             margin: 0;
             padding: 0;
+            font-family: 'Arial';
         }
 
         #utama td {
@@ -50,6 +51,7 @@
                 height: 5.83in;
                 margin: 0;
                 padding: 0;
+                font-family: 'Arial';
             }
 
             .content {
@@ -63,12 +65,16 @@
 </head>
 
 <body>
+    <a id="non-printable" style="width:100%" href="{{ route('pos_ticket.index') }}">
+        <button>Kembali</button>
+    </a>
     @foreach ($pos_ticket as $key => $pos)
         <div class="content">
             {!! QrCode::size(110)->generate($pos->barcode_no) !!}
             <br>
             <br>
-            <img src="{{ $logo }}" alt="" width="110px" height="110px" style="margin-bottom: 20px">
+            <br>
+            <img src="{{ $logo }}" alt="" width="auto" height="70px" style="margin-bottom: 20px">
             <br>
             <table width="100%" id="utama">
                 <tr>
