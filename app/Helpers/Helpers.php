@@ -46,3 +46,8 @@ function format_hari_tanggal($waktu)
     //untuk menampilkan hari, tanggal bulan tahun
     return "$hari, $tanggal $bulan $tahun $jam";
 }
+
+function formatter_number($value)
+{
+    return number_format(floatval($value));
+}

@@ -23,13 +23,15 @@
             padding: 0;
         }
 
-        table td {
+        #utama td {
             text-align: left;
             padding-left: 20px;
+            padding-right: 10px
         }
 
-        table tr {
-            height: 60px;
+        #utama tr {
+            min-height: 80px;
+            height: 80px;
         }
 
         @media print {
@@ -51,10 +53,10 @@
             }
 
             .content {
-
                 text-align: center;
-                padding: 50px 0 0 0;
                 height: 100%;
+                padding: 0;
+                margin: 0;
             }
         }
     </style>
@@ -63,18 +65,12 @@
 <body>
     @foreach ($pos_ticket as $key => $pos)
         <div class="content">
-            <img src="{{ $logo }}" alt="" width="70px" height="70px" style="margin-bottom: 20px">
+            {!! QrCode::size(110)->generate($pos->barcode_no) !!}
             <br>
-            <h5>{{ $pos->category }}</h5>
-            {!! QrCode::size(70)->generate($pos->barcode_no) !!}
-            <p>{{ $pos->barcode_no }}</p>
-            {{-- <div>
-                RACER : {{ $pos->name }} <br>
-                CLUB : {{ $pos->club }} <br>
-                NO START : {{ $pos->no_start }}<br>
-                UNDIAN : {{ $pos->undian }}
-            </div> --}}
-            <table width="100%">
+            <br>
+            <img src="{{ $logo }}" alt="" width="110px" height="110px" style="margin-bottom: 20px">
+            <br>
+            <table width="100%" id="utama">
                 <tr>
                     <td>
                         <span>Event</span>
@@ -90,7 +86,7 @@
                         <br>
                         <span>{{ $pos->date }}</span>
                     </td>
-                    <td>Category
+                    <td>Kategori
                         <br>
                         <span>{{ $pos->category }}</span>
                     </td>
@@ -98,7 +94,7 @@
                 <tr>
                     <td>Harga
                         <br>
-                        <span>{{ $pos->harga_satuan }}</span>
+                        <span>Rp. {{ formatter_number($pos->harga_satuan) }}</span>
                     </td>
                     <td>ID Pesanan
                         <br>
@@ -106,6 +102,16 @@
                     </td>
                 </tr>
             </table>
+            {{-- <table width="100%">
+                <tr>
+                    <td>{!! QrCode::size(110)->generate($pos->barcode_no) !!}</td>
+                    <td>
+                        <img src="{{ $logo }}" alt="" width="55px" height="55px"
+                            style="margin-bottom: 20px">
+                    </td>
+                </tr>
+
+            </table> --}}
             <button onclick="window.print();" id="non-printable">Cetak Halaman</button>
         </div>
     @endforeach
