@@ -134,7 +134,8 @@
     window.onafterprint = back;
 
     function back() {
-        window.history.back();
+        // window.history.back();
+        window.location.href = "{{ route('pos_ticket.index') }}"
     }
 </script>
 
