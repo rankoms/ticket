@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PosController;
+use App\Http\Controllers\PosTicketController;
 use App\Http\Controllers\RedeemVoucherController;
 use App\Http\Controllers\ScannerController;
 use App\Http\Controllers\ScannerDesktopController;
@@ -41,14 +42,19 @@ Route::group(['middleware' => ['auth', 'is_admin']], function () {
 Route::get('/privacy-policy', [HomeController::class, 'privacy'])->name('privacy-policy');
 Route::post('/update_password', [HomeController::class, 'update_password'])->name('update_password');
 
+Route::get('/auto_login_event', [HomeController::class, 'auto_login_event'])->name('auto_login_event');
+
 Route::group(['middleware' => ['auth', 'is_client'], 'prefix' => 'admin'], function () {
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/dashboard_redeem', [RedeemVoucherController::class, 'dashboard_redeem'])->name('redeem_voucher.dashboard');
     Route::get('/dashboard_ticket', [TicketController::class, 'dashboard_ticket'])->name('dashboard_ticket');
-
+    /* START UNTUK MENAMBAHKAN VARIABLE DASHBOARD  */
+    Route::get('/dashboard_ticket_current', [TicketController::class, 'dashboard_ticket_current'])->name('dashboard_ticket_current');
+    /* END UNTUK MENAMBAHKAN VARIABLE DASHBOARD */
     Route::post('/dashboard_ticket', [TicketController::class, 'post_dashboard_ticket'])->name('post_dashboard_ticket');
 
     Route::get('/excel_ticket', [TicketController::class, 'excel_ticket'])->name('excel_ticket');
+    Route::get('/excel_ticket_current', [TicketController::class, 'excel_ticket_current'])->name('excel_ticket_current');
     Route::get('/excel_redeem', [RedeemVoucherController::class, 'excel_redeem'])->name('excel_redeem');
 
     Route::get('/change_password', [HomeController::class, 'change_password'])->name('change_password');
@@ -64,6 +70,15 @@ Route::group(['middleware' => ['is_admin']], function () {
         Route::get('/cetak/{id}', [PosController::class, 'cetak'])->name('pos.cetak');
         Route::post('/store', [PosController::class, 'store'])->name('pos.store');
         Route::get('/dashboard_pos', [PosController::class,  'dashboard_pos'])->name('pos.dashboard_pos');
+    });
+
+
+    Route::group(['prefix' => 'pos_ticket'], function () {
+        Route::get('/', [PosTicketController::class, 'index'])->name('pos_ticket.index');
+        Route::get('/cetak/{id}', [PosTicketController::class, 'cetak'])->name('pos_ticket.cetak');
+        Route::post('/store', [PosTicketController::class, 'store'])->name('pos_ticket.store');
+        Route::get('/dashboard', [PosTicketController::class,  'dashboard'])->name('pos_ticket.dashboard');
+        Route::post('/category_select', [PosTicketController::class, 'category_select'])->name('pos_ticket.category_select');
     });
     Route::group(['prefix' => 'scanner'], function () {
         Route::get('/store_pilih_event', [ScannerController::class, 'store_pilih_event'])->name('scanner.store_pilih_event');
