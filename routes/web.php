@@ -5,6 +5,7 @@ use App\Http\Controllers\TicketController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ImportController;
 use App\Http\Controllers\PosController;
 use App\Http\Controllers\PosTicketController;
 use App\Http\Controllers\RedeemVoucherController;
@@ -45,6 +46,13 @@ Route::post('/update_password', [HomeController::class, 'update_password'])->nam
 Route::get('/auto_login_event', [HomeController::class, 'auto_login_event'])->name('auto_login_event');
 
 Route::group(['middleware' => ['auth', 'is_client'], 'prefix' => 'admin'], function () {
+
+    Route::group(['prefix' => 'import'], function () {
+        Route::get('/ticket', [ImportController::class, 'get_ticket'])->name('import.get_ticket');
+        Route::post('/ticket', [ImportController::class, 'ticket'])->name('import.ticket');
+    });
+
+
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/dashboard_redeem', [RedeemVoucherController::class, 'dashboard_redeem'])->name('redeem_voucher.dashboard');
     Route::get('/dashboard_ticket', [TicketController::class, 'dashboard_ticket'])->name('dashboard_ticket');
