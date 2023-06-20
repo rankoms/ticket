@@ -22,7 +22,8 @@ class TicketController extends Controller
         request()->validate([
             'barcode_no' => [new ExceptSymbol()],
             'event' => ['required'],
-            'category' => ['required'],
+            'category' => ['nullable'],
+            'categories' => ['nullable', 'array', 'required_without:category'],
             'checkin_by' => ['nullable', 'numeric']
         ]);
         $request->merge(['gate' => 'Check In']);
@@ -30,13 +31,25 @@ class TicketController extends Controller
         $event = $request->event;
         $category = $request->category;
         $checkin_by = $request->checkin_by;
+        $categories = $request->categories ? $request->categories : [];
 
         $ticket = Ticket::where('barcode_no', $request->barcode_no)
             ->where('event', $event);
-        if ($category != 'All Category') :
-            $ticket = $ticket->where('category', $category);
+
+        if (count($categories) >= 1) :
+            $data_categories = [];
+            foreach ($categories as $hasil) :
+                array_push($data_categories, $hasil);
+            endforeach;
+            $ticket = $ticket->whereIn('category', $data_categories);
+        else :
+            if ($category != 'All Category') :
+                $ticket = $ticket->where('category', $category);
+            endif;
         endif;
         $ticket = $ticket->first();
+        $request->merge(['category' => $ticket ? $ticket->category : '']);
+
 
         $ticket_history = $this->scan_history($request, $ticket);
         if (!isset($ticket)) {
@@ -95,6 +108,7 @@ class TicketController extends Controller
             'barcode_no' => [new ExceptSymbol()],
             'event' => ['required'],
             'category' => ['required'],
+            'categories' => ['nullable', 'array', 'required_without:category'],
             'checkout_by' => ['nullable', 'numeric']
         ]);
         $request->merge(['gate' => 'Check Out']);
@@ -102,13 +116,24 @@ class TicketController extends Controller
         $event = $request->event;
         $category = $request->category;
         $checkout_by = $request->checkout_by;
+        $categories = $request->categories ? $request->categories : [];
 
         $ticket = Ticket::where('barcode_no', $request->barcode_no)
             ->where('event', $event);
-        if ($category != 'All Category') :
-            $ticket = $ticket->where('category', $category);
+
+        if (count($categories) >= 1) :
+            $data_categories = [];
+            foreach ($categories as $hasil) :
+                array_push($data_categories, $hasil);
+            endforeach;
+            $ticket = $ticket->whereIn('category', $data_categories);
+        else :
+            if ($category != 'All Category') :
+                $ticket = $ticket->where('category', $category);
+            endif;
         endif;
         $ticket = $ticket->first();
+        $request->merge(['category' => $ticket ? $ticket->category : '']);
         $ticket_history = $this->scan_history($request, $ticket);
         if (!$ticket) {
             return ResponseFormatter::error(null, 'This QR Code is Invalid', 400);
