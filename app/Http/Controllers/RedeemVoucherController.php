@@ -29,6 +29,10 @@ class RedeemVoucherController extends Controller
         return view('redeem_voucher_v2');
     }
 
+    public function ticket()
+    {
+        return view('redeem_voucher_ticket');
+    }
     public function summary_redeem()
     {
         $redeem_voucher = RedeemVoucher::orderBy('kategory', 'asc')->get();
@@ -102,6 +106,16 @@ class RedeemVoucherController extends Controller
 
         return ResponseFormatter::success(null, 'Redeem E-Ticket Berhasil');
     }
+    public function redeem_voucher_update_ticket(Request $request)
+    {
+        $redeem_voucher_update = $this->redeem_voucher_update($request);
+
+
+        $ticket = new TicketController();
+        $request->merge(['barcode_no' => $this->generate_barcode()]);
+        $ticket = $ticket->store($request);
+        return ResponseFormatter::success(null, 'Redeem E-Ticket Berhasil');
+    }
 
 
     public function redeem_voucher_update_v2(Request $request)
@@ -148,6 +162,20 @@ class RedeemVoucherController extends Controller
     {
 
         return Excel::download(new VoucherRedeemExport($request), 'Laporan Voucher Redeem ' . date('Y-m-d H_i') . '.xlsx');
+    }
+    public function generate_barcode($prefix = 'T', $length = 7)
+    {
+        $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'; // daftar karakter yang diizinkan
+        $characters_length = strlen($characters);
+        $result = '';
+        for ($i = 0; $i < $length; $i++) {
+            $result .= $characters[rand(0, $characters_length - 1)];
+        }
+        $result = $prefix . $result;
+        if (PosTicket::where('barcode_no', $result)->first()) {
+            $this->generate_barcode();
+        }
+        return $result;
     }
 
     /**

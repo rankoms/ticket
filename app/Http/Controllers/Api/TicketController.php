@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ScannerController;
+use App\Models\EventGate;
 use App\Models\Ticket;
 use App\Models\TicketHistory;
 use App\Models\User;
@@ -23,6 +24,7 @@ class TicketController extends Controller
             'barcode_no' => [new ExceptSymbol()],
             'event' => ['required'],
             'category' => ['nullable'],
+            'gate_pintu' => ['nullable'],
             'categories' => ['nullable', 'array', 'required_without:category'],
             'checkin_by' => ['nullable', 'numeric']
         ]);
@@ -31,6 +33,7 @@ class TicketController extends Controller
         $event = $request->event;
         $category = $request->category;
         $checkin_by = $request->checkin_by;
+        $gate_pintu = $request->gate_pintu;
         $categories = $request->categories ? $request->categories : [];
 
         $ticket = Ticket::where('barcode_no', $request->barcode_no)
@@ -70,6 +73,7 @@ class TicketController extends Controller
         }
         $ticket->checkin_by = $checkin_by;
         $ticket->checkin = $now;
+        $ticket->gate_pintu_checkin = $gate_pintu;
         $ticket->checkout = null;
         $ticket->checkout_by = null;
         $ticket->checkin_count = $ticket->checkin_count + 1;
@@ -107,13 +111,15 @@ class TicketController extends Controller
         request()->validate([
             'barcode_no' => [new ExceptSymbol()],
             'event' => ['required'],
-            'category' => ['required'],
+            'category' => ['nullable'],
+            'gate_pintu' => ['nullable'],
             'categories' => ['nullable', 'array', 'required_without:category'],
             'checkout_by' => ['nullable', 'numeric']
         ]);
         $request->merge(['gate' => 'Check Out']);
         $now = date('Y-m-d H:i:s');
         $event = $request->event;
+        $gate_pintu = $request->gate_pintu;
         $category = $request->category;
         $checkout_by = $request->checkout_by;
         $categories = $request->categories ? $request->categories : [];
@@ -148,6 +154,7 @@ class TicketController extends Controller
             return ResponseFormatter::error($ticket, 'Checkin First', 403);
         }
         $ticket->checkout = $now;
+        $ticket->gate_pintu_checkout = $gate_pintu;
         $ticket->checkout_by = $checkout_by;
         $ticket->checkin_count = $ticket->checkin_count  > 0 ? $ticket->checkin_count - 1 : $ticket->checkin_count;
         $ticket->status = true;
@@ -219,6 +226,7 @@ class TicketController extends Controller
                                 $ticket->checkin_by = isset($request['tickets'][$i]['checkin_by']) ? $request['tickets'][$i]['checkin_by'] : null;
                                 $ticket->checkout_by = isset($request['tickets'][$i]['checkout_by']) ? $request['tickets'][$i]['checkout_by'] : null;
                                 $ticket->checkout = $request['tickets'][$i]['checkout'];
+                                $ticket->gate_pintu = $request['tickets'][$i]['gate_pintu'];
                                 $ticket->is_bypass = $request['tickets'][$i]['is_bypass'];
                                 $ticket->max_checkin = $request['tickets'][$i]['max_checkin'];
                                 $ticket->checkin_count = $request['tickets'][$i]['checkin_count'];
@@ -237,6 +245,7 @@ class TicketController extends Controller
                     $ticket_history->barcode_no = $value['barcode_no'];
                     $ticket_history->scanned_by = $value['scanned_by'];
                     $ticket_history->event = $value['event'];
+                    $ticket_history->gate_pintu = isset($value['gate_pintu']) ? $value['gate_pintu'] : '';
                     $ticket_history->category = $value['category'];
                     $ticket_history->gate = $value['gate'];
                     $ticket_history->is_valid = $value['is_valid'];
@@ -259,6 +268,7 @@ class TicketController extends Controller
         $scanned_by = $scanned_by ? $scanned_by : 1;
         $history = new TicketHistory();
         $history->barcode_no = $request->barcode_no;
+        $history->gate_pintu = $request->gate_pintu;
         $history->scanned_by = $scanned_by;
         $history->is_valid = $ticket ? 1 : 0;
         $history->event = $request->event;
@@ -299,10 +309,17 @@ class TicketController extends Controller
             endforeach;
         endforeach;
 
+        $gate = EventGate::get();
+        $event_gate_final = [];
+        foreach ($gate as $key => $value) :
+            $event_gate_final[] = ['event' => $value->event, 'name' => $value->name];
+        endforeach;
+
 
         $array = [
             "event" => $event_final,
             "category" => $category_final,
+            "gate" => $event_gate_final,
         ];
         return ResponseFormatter::success($array);
     }
