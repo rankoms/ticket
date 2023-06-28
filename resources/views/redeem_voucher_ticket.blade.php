@@ -41,6 +41,7 @@
     <link href="{{ url('css/style.css') }}" rel="stylesheet">
     <!-- We use those styles to show code examples, you should remove them in your application.-->
     <link rel="stylesheet" href="{{ url('css/prism.css') }}">
+    <link rel="stylesheet" href="{{ url('adminlte') }}/plugins/fontawesome-free/css/all.min.css">
     <link href="{{ url('css/examples.css') }}" rel="stylesheet">
     <style>
         @font-face {
@@ -73,7 +74,8 @@
         }
 
         .swal-wide .container-form {
-            margin-top: 43px;
+            /* margin-top: 43px; */
+            padding: 53px;
         }
 
         .swal-wide .btn-success {
@@ -87,6 +89,26 @@
             color: #dc3545 !important;
             border: 1px solid #dc3545 !important;
             background: #fff !important;
+        }
+
+        .swal-wide label {
+            margin-bottom: 10px;
+            font-family: 'Poppins';
+            font-weight: 900;
+            font-size: 16px;
+        }
+
+        .swal-wide input {
+            font-family: 'Poppins';
+            font-weight: 900;
+            font-size: 16px;
+        }
+
+        .swal-wide .btn-primary {
+            background: #0069C9 !important;
+            color: #fff !important;
+            padding: 13px 67px;
+            font-family: 'Poppins';
         }
 
         .transaction-success {
@@ -107,7 +129,7 @@
 
             font-family: 'Poppins';
             font-style: normal;
-            font-weight: 400;
+            font-weight: 300;
             font-size: 15px;
             line-height: 22px;
             /* identical to box height */
@@ -187,6 +209,21 @@
             border-radius: 15px;
             background: #6DD36B;
         }
+
+        .qrcode {
+            margin-bottom: 14px;
+            text-align: initial;
+            margin-left: 60px;
+            font-weight: 700;
+        }
+
+        .no_qrcode {
+            color: #000;
+            font-size: 12px;
+            font-family: Poppins;
+            font-weight: 700;
+            margin-top: 7px;
+        }
     </style>
 </head>
 
@@ -242,6 +279,53 @@
     var onBtnClose = () => {
         Swal.close();
     };
+
+
+    var onSubmit = (id) => {
+        Swal.close();
+        var data = getJSON(
+            "{{ route('redeem_voucher.redeem_voucher_update_ticket') }}", {
+                _token: '{{ csrf_token() }}',
+                id: id
+            });
+
+
+        Swal.fire({
+            imageUrl: '{{ asset('images/redeem/print.png') }}',
+            customClass: 'swal-wide',
+            imageAlt: 'Custom image',
+            imageWidth: 300,
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            html: `
+            <h3 class="transaction-success">Print your ticket</h3>
+            <div class="please-check">Please print your ticket for entry into the venue. Enjoy the event!</div>
+            <hr>
+            <div class="wrapper-button-swal">
+                <button onclick="onPrintNow('${id}')" class="btn btn-done swal2-success swal2-styled btn-primary"><i class="fa fa-ticket-alt me-3"></i>Print now</button>
+                <button onclick="onBtnClose()" class="btn btn-done swal2-deny swal2-styled btn-outline-danger">Cancel</button>
+            </div>`,
+            showCancelButton: false,
+            showConfirmButton: false,
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'Ticket Sudah Di gunakan',
+            showCloseButton: true,
+            allowOutsideClick: false,
+            background: 'rgba(255,255,255,0.4)',
+            backdrop: `
+						rgba(0,0,123,0.4)
+						url("/images/bg3.png")
+					`,
+            color: '#000'
+        }).then((result) => {
+            $('#voucher').val('');
+            $('#voucher').focus();
+            /* Read more about isConfirmed, isDenied below */
+            // window.location = "{{ route('redeem_voucher.index') }}/" + $('#voucher').val()
+        });
+
+    };
+
     $('#form-voucher').on('submit', function(e) {
         e.preventDefault();
         var data = getJSON("{{ route('redeem_voucher.cek_redeem_voucher') }}", {
@@ -291,15 +375,23 @@
                         <div class="col-12 p-0 m-0">
                             <label class="float-start">Full Name</label>
                             <input type="text" name="fullname" placeholder="Full Name"
-                            class="form-control" required readonly value="${$('#fullname').val()}">
+                            class="form-control" required readonly disabled value="${data.data.name}">
                         </div>
                         <div class="col-12 p-0 m-0">
                             <label class="float-start">Category</label>
-                            <input type="text" name="category" placeholder="Full Name" class="form-control" required readonly value="${$('#category').find(":selected").html()}">
+                            <input type="text" name="category" placeholder="Full Name" class="form-control" required readonly value="${data.data.kategory}" disabled>
                         </div>
                     </div>
                     <div class="col-4">
-                        {!! QrCode::size(110)->generate(11) !!}
+                        <div class="qrcode">
+                            QR Code
+                        </div>
+                        <div>
+                            ${data.data.barcode_image}
+                        </div>
+                        <div class="no_qrcode">
+                            ${data.data.barcode_no}
+                        </div>
                     </div>
                 </div>
                     
@@ -326,44 +418,66 @@
                     // window.location = "{{ route('redeem_voucher.index') }}/" + $('#voucher').val()
                 });
             } else {
-                id = data.data.id;
+
                 Swal.fire({
-                    title: data.data.name,
+                    imageUrl: '{{ asset('images/redeem/confirm.png') }}',
+                    customClass: 'swal-wide',
+                    imageAlt: 'Custom image',
+                    imageWidth: 300,
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    html: `
+            <h3 class="transaction-success">Data Confirmation</h3>
+            <div class="please-check">Please make sure the data created is correct</div>
+            <hr>
+            <div class="container container-form">
+                <div class="mb-4 row">
+                    <div class="row col-8 p-0 m-0">
+                        <div class="col-12 p-0 m-0">
+                            <label class="float-start">Full Name</label>
+                            <input type="text" name="fullname" placeholder="Full Name"
+                            class="form-control" required readonly disabled value="${data.data.name}">
+                        </div>
+                        <div class="col-12 p-0 m-0">
+                            <label class="float-start">Category</label>
+                            <input type="text" name="category" placeholder="Full Name" class="form-control" required readonly value="${data.data.kategory}" disabled>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="qrcode">
+                            QR Code
+                        </div>
+                        <div>
+                            ${data.data.barcode_image}
+                        </div>
+                        <div class="no_qrcode">
+                            ${data.data.barcode_no}
+                        </div>
+                    </div>
+                </div>
+                    
+            <div>
+            <div class="wrapper-button-swal">
+                <button onclick="onSubmit('${data.data.id}')" class="btn btn-done swal2-success swal2-styled btn-primary">Confirm</button>
+                <button onclick="onBtnClose()" class="btn btn-done swal2-deny swal2-styled btn-outline-danger">Cancel</button>
+            </div>`,
+                    showCancelButton: false,
+                    showConfirmButton: false,
+                    cancelButtonColor: '#d33',
+                    cancelButtonText: 'Ticket Sudah Di gunakan',
                     showCloseButton: true,
-                    icon: 'success',
+                    allowOutsideClick: false,
                     background: 'rgba(255,255,255,0.4)',
                     backdrop: `
-					rgba(0,0,123,0.4)
+						rgba(0,0,123,0.4)
 						url("/images/bg3.png")
 					`,
-                    color: '#000',
-                    html: `<p>${data.data.email}</p>
-								<p>${data.data.kategory}</p>
-						`,
-                    confirmButtonText: 'Redeem E-Ticket',
+                    color: '#000'
                 }).then((result) => {
-                    if (result.isConfirmed) {
-                        var data = getJSON(
-                            "{{ route('redeem_voucher.redeem_voucher_update_ticket') }}", {
-                                _token: '{{ csrf_token() }}',
-                                id: id
-                            });
-
-                        Swal.fire({
-                            timer: 2000,
-                            icon: 'success',
-                            title: data.meta.message,
-                            showConfirmButton: false,
-                            background: 'rgba(255,255,255,0.4)',
-                            backdrop: `
-							rgba(0,0,123,0.4)
-						url("/images/bg3.png")
-						`,
-                            color: '#000'
-                        })
-                    }
                     $('#voucher').val('');
                     $('#voucher').focus();
+                    /* Read more about isConfirmed, isDenied below */
+                    // window.location = "{{ route('redeem_voucher.index') }}/" + $('#voucher').val()
                 });
             }
         }

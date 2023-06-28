@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class RedeemVoucherController extends Controller
 {
@@ -86,8 +87,12 @@ class RedeemVoucherController extends Controller
             return ResponseFormatter::error(null, '');
         } else {
             if ($redeem_voucher->status == 1) {
+                $redeem_voucher->barcode_image = "" . QrCode::size(110)->generate($redeem_voucher->barcode_no) . "";
                 return ResponseFormatter::success($redeem_voucher, 'Data Sudah Digunakan');
             } else {
+                $redeem_voucher->barcode_no = $this->generate_barcode();
+                $redeem_voucher->barcode_image = "" . QrCode::size(110)->generate($redeem_voucher->barcode_no) . "";
+
                 return ResponseFormatter::success($redeem_voucher, 'Data Berhasil ada');
             }
         }
@@ -103,19 +108,21 @@ class RedeemVoucherController extends Controller
         $redeem_voucher->redeem_by = Auth::user()->id;
         $redeem_voucher->redeem_date = date('Y-m-d H:i:s');
         $redeem_voucher->status = 1;
+        $redeem_voucher->barcode_no = $request->barcode_no;
         $redeem_voucher->save();
 
         return ResponseFormatter::success($redeem_voucher, 'Redeem E-Ticket Berhasil');
     }
     public function redeem_voucher_update_ticket(Request $request)
     {
+        $barcode_no = $this->generate_barcode();
+        $request->merge(['barcode_no' => $barcode_no]);
         $redeem_voucher_update = $this->redeem_voucher_update($request)->getData()->data;
 
 
         $ticket = new TicketController();
 
         $request->merge([
-            'barcode_no' => $this->generate_barcode(),
             'event' => $redeem_voucher_update->event,
             'name' => $redeem_voucher_update->name,
             'category' => $redeem_voucher_update->kategory,
