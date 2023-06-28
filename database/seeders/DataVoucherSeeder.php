@@ -19,6 +19,7 @@ class DataVoucherSeeder extends Seeder
         $data = [
             [
                 'nama_perusahaan' => 'a',
+                'event' => 'a',
                 'kategory' => 1,
                 'seat' => 1,
                 'kode' => 1,
@@ -35,6 +36,7 @@ class DataVoucherSeeder extends Seeder
                 [
 
                     'nama_perusahaan' => 'a',
+                    'event' => 'a',
                     'kategory' => 1,
                     'seat' => 1,
                     'kode' => $i,

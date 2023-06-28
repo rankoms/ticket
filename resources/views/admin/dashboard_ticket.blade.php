@@ -105,6 +105,8 @@
                             <thead>
                                 <tr>
                                     <th>Kategory</th>
+                                    {{-- <th>Gate Check In</th>
+                                    <th>Gate Check Out</th> --}}
                                     <th>Pending</th>
                                     <th>Check-in</th>
                                     <th>Check-out</th>
@@ -114,6 +116,8 @@
                                 @foreach ($kategory_aset as $key => $value)
                                     <tr>
                                         <th>{{ $key }}</th>
+                                        {{-- <th></th>
+                                        <th></th> --}}
                                         <th>{{ isset($value['pending']) ? $value['pending'] : 0 }}</th>
                                         <th>{{ isset($value['checkin']) ? $value['checkin'] : 0 }}</th>
                                         <th>{{ isset($value['checkout']) ? $value['checkout'] : 0 }}</th>

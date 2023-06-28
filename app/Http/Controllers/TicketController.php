@@ -46,6 +46,9 @@ class TicketController extends Controller
                 $jumlah_checkout++;
                 isset($kategory_aset[$value->category]['checkout']) ? $kategory_aset[$value->category]['checkout']++ : $kategory_aset[$value->category]['checkout'] = 1;
             endif;
+            if ($value->gate_pintu_checkin) :
+
+            endif;
         endforeach;
         $ticket_history = TicketHistory::select(DB::raw('count(id) as jumlah'), DB::raw("date_part('hour', created_at) as hour"))->groupBy(DB::raw("date_part('hour', created_at)"))->orderBy('hour', 'asc')->get();
         $data_ticket_history = '';
