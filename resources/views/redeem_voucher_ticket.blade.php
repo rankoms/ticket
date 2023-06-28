@@ -54,20 +54,85 @@
             font-weight: 700;
         }
 
-        .swal2-popup {
-            font-size: 1.4rem !important;
-            font-family: cursive !important;
+        .swal2-modal {
+            width: 393px !important;
         }
 
-        .swal2-popup .btn,
-        .swal2-popup .swal2-confirm {
+        .swal-print .swal2-image {
+            margin: 0 !important;
+            height: auto;
             width: 100%;
         }
 
-        .swal2-popup .swal2-success-circular-line-left,
-        .swal2-popup .swal2-success-circular-line-right,
-        .swal2-popup .swal2-success-fix {
-            background-color: transparent !important;
+        .swal-wide {
+            width: 850px !important;
+        }
+
+        .swal-wide .swal2-html-container {
+            margin: 0 !important;
+        }
+
+        .swal-wide .container-form {
+            margin-top: 43px;
+        }
+
+        .swal-wide .btn-success {
+
+            background: #34B53A !important;
+            border-radius: 10px;
+        }
+
+        .swal-wide .btn-outline-danger {
+
+            color: #dc3545 !important;
+            border: 1px solid #dc3545 !important;
+            background: #fff !important;
+        }
+
+        .transaction-success {
+            margin-top: 12px;
+            font-family: 'Poppins';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 27px;
+            line-height: 40px;
+            /* identical to box height */
+
+            letter-spacing: -1px;
+
+            color: #000000;
+        }
+
+        .please-check {
+
+            font-family: 'Poppins';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 15px;
+            line-height: 22px;
+            /* identical to box height */
+
+            letter-spacing: -1px;
+
+            color: #C2C2C2;
+        }
+
+        .wrapper-button-swal {
+
+            margin-top: 25px;
+        }
+
+        .swal2-confirm {
+            font-family: 'Poppins';
+            background-color: #34B53A;
+            width: 200px;
+        }
+
+        .swal2-deny {
+
+            font-family: 'Poppins';
+            width: 200px;
+            background: #992320;
         }
 
         body {
@@ -174,6 +239,9 @@
     setInterval(() => {
         document.getElementById("voucher").focus();
     }, 500);
+    var onBtnClose = () => {
+        Swal.close();
+    };
     $('#form-voucher').on('submit', function(e) {
         e.preventDefault();
         var data = getJSON("{{ route('redeem_voucher.cek_redeem_voucher') }}", {
@@ -207,13 +275,38 @@
             if (data.data.status == 1) {
 
                 Swal.fire({
-                    title: data.data.name,
-                    icon: 'error',
-                    html: `<p>${data.data.email}</p>
-								<p>${data.data.kategory}</p>
-								<p>E-Ticket Sudah di Redeem Pada ${data.data.redeem_date}</p>
-								<button disabled class="btn btn-danger">E-Ticket Sudah Di Redeem</button>
-						`,
+                    imageUrl: '{{ asset('images/redeem/already.png') }}',
+                    customClass: 'swal-wide',
+                    imageAlt: 'Custom image',
+                    imageWidth: 400,
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    html: `
+            <h3 class="transaction-success">Your e-ticket has been redeemed</h3>
+            <div class="please-check">Please return to the previous page</div>
+            <hr>
+            <div class="container container-form">
+                <div class="mb-4 row">
+                    <div class="row col-8 p-0 m-0">
+                        <div class="col-12 p-0 m-0">
+                            <label class="float-start">Full Name</label>
+                            <input type="text" name="fullname" placeholder="Full Name"
+                            class="form-control" required readonly value="${$('#fullname').val()}">
+                        </div>
+                        <div class="col-12 p-0 m-0">
+                            <label class="float-start">Category</label>
+                            <input type="text" name="category" placeholder="Full Name" class="form-control" required readonly value="${$('#category').find(":selected").html()}">
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        {!! QrCode::size(110)->generate(11) !!}
+                    </div>
+                </div>
+                    
+            <div>
+            <div class="wrapper-button-swal">
+                <button onclick="onBtnClose()" class="btn btn-done swal2-deny swal2-styled btn-outline-danger">Back</button>
+            </div>`,
                     showCancelButton: false,
                     showConfirmButton: false,
                     cancelButtonColor: '#d33',

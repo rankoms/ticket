@@ -7,6 +7,7 @@ use App\Helpers\ResponseFormatter;
 use App\Models\Event;
 use App\Models\RedeemHistory;
 use App\Models\RedeemVoucher;
+use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -104,15 +105,24 @@ class RedeemVoucherController extends Controller
         $redeem_voucher->status = 1;
         $redeem_voucher->save();
 
-        return ResponseFormatter::success(null, 'Redeem E-Ticket Berhasil');
+        return ResponseFormatter::success($redeem_voucher, 'Redeem E-Ticket Berhasil');
     }
     public function redeem_voucher_update_ticket(Request $request)
     {
-        $redeem_voucher_update = $this->redeem_voucher_update($request);
+        $redeem_voucher_update = $this->redeem_voucher_update($request)->getData()->data;
 
 
         $ticket = new TicketController();
-        $request->merge(['barcode_no' => $this->generate_barcode()]);
+
+        $request->merge([
+            'barcode_no' => $this->generate_barcode(),
+            'event' => $redeem_voucher_update->event,
+            'name' => $redeem_voucher_update->name,
+            'category' => $redeem_voucher_update->kategory,
+            'email' => $redeem_voucher_update->email,
+
+
+        ]);
         $ticket = $ticket->store($request);
         return ResponseFormatter::success(null, 'Redeem E-Ticket Berhasil');
     }
@@ -172,7 +182,7 @@ class RedeemVoucherController extends Controller
             $result .= $characters[rand(0, $characters_length - 1)];
         }
         $result = $prefix . $result;
-        if (PosTicket::where('barcode_no', $result)->first()) {
+        if (Ticket::where('barcode_no', $result)->first()) {
             $this->generate_barcode();
         }
         return $result;

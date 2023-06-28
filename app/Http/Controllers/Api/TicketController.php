@@ -270,7 +270,8 @@ class TicketController extends Controller
         $scanned_by = $scanned_by ? $scanned_by : 1;
         $history = new TicketHistory();
         $history->barcode_no = $request->barcode_no;
-        $history->gate_pintu = $request->gate_pintu;
+        $history->gate_pintu_checkin = $request->gate_pintu_checkin;
+        $history->gate_pintu_checkout = $request->gate_pintu_checkout;
         $history->scanned_by = $scanned_by;
         $history->is_valid = $ticket ? 1 : 0;
         $history->event = $request->event;
