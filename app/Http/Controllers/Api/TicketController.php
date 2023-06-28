@@ -24,7 +24,7 @@ class TicketController extends Controller
             'barcode_no' => [new ExceptSymbol()],
             'event' => ['required'],
             'category' => ['nullable'],
-            'gate_pintu' => ['nullable'],
+            'gate_pintu_checkin' => ['nullable'],
             'categories' => ['nullable', 'array', 'required_without:category'],
             'checkin_by' => ['nullable', 'numeric']
         ]);
@@ -33,7 +33,7 @@ class TicketController extends Controller
         $event = $request->event;
         $category = $request->category;
         $checkin_by = $request->checkin_by;
-        $gate_pintu = $request->gate_pintu;
+        $gate_pintu_checkin = $request->gate_pintu_checkin;
         $categories = $request->categories ? $request->categories : [];
 
         $ticket = Ticket::where('barcode_no', $request->barcode_no)
@@ -73,7 +73,7 @@ class TicketController extends Controller
         }
         $ticket->checkin_by = $checkin_by;
         $ticket->checkin = $now;
-        $ticket->gate_pintu_checkin = $gate_pintu;
+        $ticket->gate_pintu_checkin = $gate_pintu_checkin;
         $ticket->checkout = null;
         $ticket->checkout_by = null;
         $ticket->checkin_count = $ticket->checkin_count + 1;
@@ -112,14 +112,14 @@ class TicketController extends Controller
             'barcode_no' => [new ExceptSymbol()],
             'event' => ['required'],
             'category' => ['nullable'],
-            'gate_pintu' => ['nullable'],
+            'gate_pintu_checkout' => ['nullable'],
             'categories' => ['nullable', 'array', 'required_without:category'],
             'checkout_by' => ['nullable', 'numeric']
         ]);
         $request->merge(['gate' => 'Check Out']);
         $now = date('Y-m-d H:i:s');
         $event = $request->event;
-        $gate_pintu = $request->gate_pintu;
+        $gate_pintu_checkout = $request->gate_pintu_checkout;
         $category = $request->category;
         $checkout_by = $request->checkout_by;
         $categories = $request->categories ? $request->categories : [];
@@ -154,7 +154,7 @@ class TicketController extends Controller
             return ResponseFormatter::error($ticket, 'Checkin First', 403);
         }
         $ticket->checkout = $now;
-        $ticket->gate_pintu_checkout = $gate_pintu;
+        $ticket->gate_pintu_checkout = $gate_pintu_checkout;
         $ticket->checkout_by = $checkout_by;
         $ticket->checkin_count = $ticket->checkin_count  > 0 ? $ticket->checkin_count - 1 : $ticket->checkin_count;
         $ticket->status = true;
@@ -226,7 +226,8 @@ class TicketController extends Controller
                                 $ticket->checkin_by = isset($request['tickets'][$i]['checkin_by']) ? $request['tickets'][$i]['checkin_by'] : null;
                                 $ticket->checkout_by = isset($request['tickets'][$i]['checkout_by']) ? $request['tickets'][$i]['checkout_by'] : null;
                                 $ticket->checkout = $request['tickets'][$i]['checkout'];
-                                $ticket->gate_pintu = $request['tickets'][$i]['gate_pintu'];
+                                $ticket->gate_pintu_checkin = isset($request['tickets'][$i]['gate_pintu_checkin']) ? $request['tickets'][$i]['gate_pintu_checkin'] : '';
+                                $ticket->gate_pintu_checkout = isset($request['tickets'][$i]['gate_pintu_checkout']) ? $request['tickets'][$i]['gate_pintu_checkout'] : '';
                                 $ticket->is_bypass = $request['tickets'][$i]['is_bypass'];
                                 $ticket->max_checkin = $request['tickets'][$i]['max_checkin'];
                                 $ticket->checkin_count = $request['tickets'][$i]['checkin_count'];
