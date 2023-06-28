@@ -15,7 +15,8 @@ class AddGatePintuToTicketHistories extends Migration
     {
         Schema::table('ticket_histories', function (Blueprint $table) {
             //
-            $table->string('gate_pintu')->nullable()->index();
+            $table->string('gate_pintu_checkin')->nullable()->index();
+            $table->string('gate_pintu_checkout')->nullable()->index();
         });
     }
 

@@ -246,7 +246,8 @@ class TicketController extends Controller
                     $ticket_history->barcode_no = $value['barcode_no'];
                     $ticket_history->scanned_by = $value['scanned_by'];
                     $ticket_history->event = $value['event'];
-                    $ticket_history->gate_pintu = isset($value['gate_pintu']) ? $value['gate_pintu'] : '';
+                    $ticket_history->gate_pintu_checkin = isset($value['gate_pintu_checkin']) ? $value['gate_pintu_checkin'] : '';
+                    $ticket_history->gate_pintu_checkout = isset($value['gate_pintu_checkout']) ? $value['gate_pintu_checkout'] : '';
                     $ticket_history->category = $value['category'];
                     $ticket_history->gate = $value['gate'];
                     $ticket_history->is_valid = $value['is_valid'];
