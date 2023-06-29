@@ -105,8 +105,6 @@
                             <thead>
                                 <tr>
                                     <th>Kategory</th>
-                                    {{-- <th>Gate Check In</th>
-                                    <th>Gate Check Out</th> --}}
                                     <th>Pending</th>
                                     <th>Check-in</th>
                                     <th>Check-out</th>
@@ -116,9 +114,25 @@
                                 @foreach ($kategory_aset as $key => $value)
                                     <tr>
                                         <th>{{ $key }}</th>
-                                        {{-- <th></th>
-                                        <th></th> --}}
                                         <th>{{ isset($value['pending']) ? $value['pending'] : 0 }}</th>
+                                        <th>{{ isset($value['checkin']) ? $value['checkin'] : 0 }}</th>
+                                        <th>{{ isset($value['checkout']) ? $value['checkout'] : 0 }}</th>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        <table id="gate_table" class="display" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Gate</th>
+                                    <th>Check-in</th>
+                                    <th>Check-out</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($gate_aset as $key => $value)
+                                    <tr>
+                                        <th>{{ $key }}</th>
                                         <th>{{ isset($value['checkin']) ? $value['checkin'] : 0 }}</th>
                                         <th>{{ isset($value['checkout']) ? $value['checkout'] : 0 }}</th>
                                     </tr>
@@ -243,6 +257,15 @@
         $(document).ready(function() {
 
             $('#example').DataTable({
+                order: [
+                    [0, 'desc']
+                ],
+                dom: 'Bfrtip',
+                buttons: [
+                    'excel'
+                ]
+            });
+            $('#gate_table').DataTable({
                 order: [
                     [0, 'desc']
                 ],
