@@ -65,6 +65,11 @@
             width: 100%;
         }
 
+        .swal-small {
+
+            width: 500px !important;
+        }
+
         .swal-wide {
             width: 850px !important;
         }
@@ -78,34 +83,49 @@
             padding: 53px;
         }
 
-        .swal-wide .btn-success {
+        .swal-wide .btn-success,
+        .swal-small .btn-success {
 
             background: #34B53A !important;
             border-radius: 10px;
         }
 
-        .swal-wide .btn-outline-danger {
+        .swal-wide .btn-outline-danger,
+        .swal-small .btn-outline-danger {
 
             color: #dc3545 !important;
             border: 1px solid #dc3545 !important;
             background: #fff !important;
         }
 
-        .swal-wide label {
+
+
+        .swal-wide label,
+        .swal-small label {
             margin-bottom: 10px;
             font-family: 'Poppins';
             font-weight: 900;
             font-size: 16px;
         }
 
-        .swal-wide input {
+        .swal-wide input,
+        .swal-small input {
             font-family: 'Poppins';
             font-weight: 900;
             font-size: 16px;
         }
 
-        .swal-wide .btn-primary {
+        .swal-wide .btn-primary,
+        .swal-small .btn-primary {
             background: #0069C9 !important;
+            color: #fff !important;
+            padding: 13px 67px;
+            font-family: 'Poppins';
+        }
+
+        .swal-wide .btn-orange,
+        .swal-small .btn-orange {
+            background: #FFA500 !important;
             color: #fff !important;
             padding: 13px 67px;
             font-family: 'Poppins';
@@ -294,7 +314,7 @@
             imageUrl: '{{ asset('images/redeem/print.png') }}',
             customClass: 'swal-wide',
             imageAlt: 'Custom image',
-            imageWidth: 300,
+            imageWidth: 250,
             allowOutsideClick: false,
             showConfirmButton: false,
             html: `
@@ -334,26 +354,38 @@
         });
 
         if (data.meta.code != 200) {
-            Swal.fire(
-                'Gagal',
-                data.meta.message,
-                'error'
-            )
             Swal.fire({
-                title: 'E-Ticket Tidak Terdaftar',
-                text: data.meta.message,
-                icon: 'error',
+                imageUrl: '{{ asset('images/redeem/not_valid.png') }}',
+                customClass: 'swal-wide, swal-small',
+                imageAlt: 'Custom image',
+                imageWidth: 300,
+                timer: 3000,
+                allowOutsideClick: false,
                 showConfirmButton: false,
+                html: `
+            <h3 class="transaction-success">E-ticket are not valid</h3>
+            <div class="please-check">Please try again</div>
+            <hr>
+            <div class="wrapper-button-swal">
+                <button onClick="onBtnClose()" class="btn btn-back swal2-success swal2-styled btn-orange">Back</button>
+            </div>`,
+                showCancelButton: false,
+                showConfirmButton: false,
+                cancelButtonColor: '#d33',
                 showCloseButton: true,
-
+                allowOutsideClick: false,
                 background: 'rgba(255,255,255,0.4)',
                 backdrop: `
-					rgba(0,0,123,0.4)
-					url("/images/bg3.png")
-				`,
-                color: '#000',
-                showCloseButton: true,
-            })
+						rgba(0,0,123,0.4)
+						url("/images/bg3.png")
+					`,
+                color: '#000'
+            }).then((result) => {
+                $('#voucher').val('');
+                $('#voucher').focus();
+                /* Read more about isConfirmed, isDenied below */
+                // window.location = "{{ route('redeem_voucher.index') }}/" + $('#voucher').val()
+            });
 
         } else {
             if (data.data.status == 1) {
@@ -362,7 +394,8 @@
                     imageUrl: '{{ asset('images/redeem/already.png') }}',
                     customClass: 'swal-wide',
                     imageAlt: 'Custom image',
-                    imageWidth: 400,
+                    imageWidth: 250,
+                    timer: 3000,
                     allowOutsideClick: false,
                     showConfirmButton: false,
                     html: `
@@ -423,7 +456,7 @@
                     imageUrl: '{{ asset('images/redeem/confirm.png') }}',
                     customClass: 'swal-wide',
                     imageAlt: 'Custom image',
-                    imageWidth: 300,
+                    imageWidth: 250,
                     allowOutsideClick: false,
                     showConfirmButton: false,
                     html: `
