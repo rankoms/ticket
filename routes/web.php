@@ -55,6 +55,7 @@ Route::group(['middleware' => ['auth', 'is_client'], 'prefix' => 'admin'], funct
 
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/dashboard_redeem', [RedeemVoucherController::class, 'dashboard_redeem'])->name('redeem_voucher.dashboard');
+    Route::get('/dashboard_redeem_list', [RedeemVoucherController::class, 'dashboard_redeem_list'])->name('redeem_voucher.dashboard_redeem_list');
     Route::get('/dashboard_ticket', [TicketController::class, 'dashboard_ticket'])->name('dashboard_ticket');
     /* START UNTUK MENAMBAHKAN VARIABLE DASHBOARD  */
     Route::get('/dashboard_ticket_current', [TicketController::class, 'dashboard_ticket_current'])->name('dashboard_ticket_current');

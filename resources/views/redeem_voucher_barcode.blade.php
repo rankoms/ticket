@@ -59,6 +59,10 @@
             width: 393px !important;
         }
 
+        .swal2-popup {
+            padding: 0 !important;
+        }
+
         .swal-print .swal2-image {
             margin: 0 !important;
             height: auto;
@@ -71,7 +75,7 @@
         }
 
         .swal-wide {
-            width: 850px !important;
+            width: 650px !important;
         }
 
         .swal-wide .swal2-html-container {
@@ -79,8 +83,7 @@
         }
 
         .swal-wide .container-form {
-            /* margin-top: 43px; */
-            padding: 53px;
+            padding: 15px 37px;
         }
 
         .swal-wide .btn-success,
@@ -117,26 +120,26 @@
         .swal-small .btn-primary {
             background: #0069C9 !important;
             color: #fff !important;
-            padding: 13px 67px;
+            padding: 8px 47px;
             font-family: 'Poppins';
+            font-size: 14px;
         }
 
         .swal-wide .btn-orange,
         .swal-small .btn-orange {
             background: #FFA500 !important;
             color: #fff !important;
-            padding: 13px 67px;
+            padding: 8px 47px;
             font-family: 'Poppins';
         }
 
         .transaction-success {
-            margin-top: 12px;
+            margin: 0;
+            padding: 0;
             font-family: 'Poppins';
             font-style: normal;
             font-weight: 600;
-            font-size: 27px;
-            line-height: 40px;
-            /* identical to box height */
+            font-size: 19px;
 
             letter-spacing: -1px;
 
@@ -159,7 +162,7 @@
 
         .wrapper-button-swal {
 
-            margin-top: 25px;
+            /* margin-top: 25px; */
         }
 
         .swal2-confirm {
@@ -169,7 +172,7 @@
         }
 
         .swal2-deny {
-
+            font-size: 14px !important;
             font-family: 'Poppins';
             width: 200px;
             background: #992320;
@@ -230,8 +233,7 @@
 
         .qrcode {
             margin-bottom: 14px;
-            text-align: initial;
-            margin-left: 60px;
+            text-align: center;
             font-weight: 700;
         }
 
@@ -253,7 +255,7 @@
             <div class="row justify-content-center text-center wrapping-logo">
 
                 <div class="col">
-                    <img src="{{ asset('images/redeem/logo.png') }}" alt="Logo" height="91px" width="166px" />
+                    <img src="{{ asset('/') . Auth::user()->logo }}" alt="Logo" height="91px" width="auto" />
                     <div class="logo-text">
                         Redeem System
                     </div>
@@ -319,8 +321,8 @@
                 imageUrl: '{{ asset('images/redeem/not_valid.png') }}',
                 customClass: 'swal-wide, swal-small',
                 imageAlt: 'Custom image',
-                imageWidth: 300,
-                timer: 3000,
+                imageWidth: 200,
+                timer: 5000,
                 allowOutsideClick: false,
                 showConfirmButton: false,
                 html: `
@@ -355,15 +357,16 @@
                     imageUrl: '{{ asset('images/redeem/already.png') }}',
                     customClass: 'swal-wide',
                     imageAlt: 'Custom image',
-                    imageWidth: 250,
+                    imageWidth: 200,
                     allowOutsideClick: false,
                     showConfirmButton: false,
                     html: `
             <h3 class="transaction-success">Your e-ticket has been redeemed</h3>
+            <h3 class="transaction-success">${data.data.redeem_date}</h3>
             <div class="please-check">Please return to the previous page</div>
             <hr>
             <div class="container container-form">
-                <div class="mb-4 row">
+                <div class="row">
                     <div class="row col-8 p-0 m-0">
                         <div class="col-12 p-0 m-0 mb-3">
                             <label class="float-start">Full Name</label>
@@ -382,13 +385,13 @@
                     </div>
                     <div class="col-4">
                         <div class="qrcode">
-                            QR Code
+                            QR Code E-Voucher
                         </div>
                         <div>
                             ${data.data.barcode_image}
                         </div>
                         <div class="no_qrcode">
-                            ${data.data.barcode_no}
+                            ${data.data.kode}
                         </div>
                     </div>
                 </div>
@@ -420,7 +423,7 @@
                     imageUrl: '{{ asset('images/redeem/confirm.png') }}',
                     customClass: 'swal-wide',
                     imageAlt: 'Custom image',
-                    imageWidth: 250,
+                    imageWidth: 200,
                     allowOutsideClick: false,
                     showConfirmButton: false,
                     html: `
@@ -429,7 +432,7 @@
             <hr>
             <div class="container container-form">
                 <form id="form-redeem-barcode">
-                    <div class="mb-4 row">
+                    <div class="row">
                         <div class="row col-8 p-0 m-0">
                             <div class="col-12 p-0 m-0 mb-3">
                                 <label class="float-start">Full Name</label>
@@ -447,13 +450,13 @@
                         </div>
                         <div class="col-4">
                             <div class="qrcode">
-                                QR Code
+                                QR Code E-Voucher
                             </div>
                             <div>
                                 ${data.data.barcode_image}
                             </div>
                             <div class="no_qrcode">
-                                ${data.data.barcode_no}
+                                ${data.data.kode}
                             </div>
                         </div>
                     </div>
@@ -501,8 +504,8 @@
                         imageUrl: '{{ asset('images/redeem/success.png') }}',
                         customClass: 'swal-wide, swal-small',
                         imageAlt: 'Custom image',
-                        imageWidth: 300,
-                        timer: 3000,
+                        imageWidth: 200,
+                        timer: 5000,
                         allowOutsideClick: false,
                         showConfirmButton: false,
                         html: `

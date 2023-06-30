@@ -59,6 +59,10 @@
             width: 393px !important;
         }
 
+        .swal2-popup {
+            padding: 0 !important;
+        }
+
         .swal-print .swal2-image {
             margin: 0 !important;
             height: auto;
@@ -71,7 +75,7 @@
         }
 
         .swal-wide {
-            width: 850px !important;
+            width: 650px !important;
         }
 
         .swal-wide .swal2-html-container {
@@ -79,8 +83,7 @@
         }
 
         .swal-wide .container-form {
-            /* margin-top: 43px; */
-            padding: 23px 53px;
+            padding: 15px 37px;
         }
 
         .swal-wide .btn-success,
@@ -97,8 +100,6 @@
             border: 1px solid #dc3545 !important;
             background: #fff !important;
         }
-
-
 
         .swal-wide label,
         .swal-small label {
@@ -119,26 +120,26 @@
         .swal-small .btn-primary {
             background: #0069C9 !important;
             color: #fff !important;
-            padding: 13px 47px;
+            padding: 8px 47px;
             font-family: 'Poppins';
+            font-size: 14px;
         }
 
         .swal-wide .btn-orange,
         .swal-small .btn-orange {
             background: #FFA500 !important;
             color: #fff !important;
-            padding: 13px 47px;
+            padding: 8px 47px;
             font-family: 'Poppins';
         }
 
         .transaction-success {
-            margin-top: 12px;
+            margin: 0;
+            padding: 0;
             font-family: 'Poppins';
             font-style: normal;
             font-weight: 600;
-            font-size: 27px;
-            line-height: 40px;
-            /* identical to box height */
+            font-size: 19px;
 
             letter-spacing: -1px;
 
@@ -172,6 +173,7 @@
 
         .swal2-deny {
 
+            font-size: 14px !important;
             font-family: 'Poppins';
             width: 200px;
             background: #992320;
@@ -232,8 +234,7 @@
 
         .qrcode {
             margin-bottom: 14px;
-            text-align: initial;
-            margin-left: 60px;
+            text-align: center;
             font-weight: 700;
         }
 
@@ -366,7 +367,7 @@
                 customClass: 'swal-wide, swal-small',
                 imageAlt: 'Custom image',
                 imageWidth: 200,
-                timer: 3000,
+                timer: 5000,
                 allowOutsideClick: false,
                 showConfirmButton: false,
                 html: `
@@ -402,11 +403,12 @@
                     customClass: 'swal-wide',
                     imageAlt: 'Custom image',
                     imageWidth: 200,
-                    timer: 3000,
+                    timer: 5000,
                     allowOutsideClick: false,
                     showConfirmButton: false,
                     html: `
             <h3 class="transaction-success">Your e-ticket has been redeemed</h3>
+            <h3 class="transaction-success">${data.data.redeem_date}</h3>
             <div class="please-check">Please return to the previous page</div>
             <hr>
             <div class="container container-form">
@@ -424,13 +426,13 @@
                     </div>
                     <div class="col-4">
                         <div class="qrcode">
-                            QR Code
+                            QR Code E-Voucher
                         </div>
                         <div>
                             ${data.data.barcode_image}
                         </div>
                         <div class="no_qrcode">
-                            ${data.data.barcode_no}
+                            ${data.data.kode}
                         </div>
                     </div>
                 </div>
@@ -485,7 +487,7 @@
                     </div>
                     <div class="col-4">
                         <div class="qrcode">
-                            QR Code
+                            QR Code E-Voucher
                         </div>
                         <div>
                             ${data.data.barcode_image}

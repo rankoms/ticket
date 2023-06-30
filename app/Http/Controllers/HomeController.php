@@ -84,6 +84,10 @@ class HomeController extends Controller
         if ($request->report == 'redeem_voucher') {
             return redirect()->route('redeem_voucher.dashboard');
         }
+
+        if ($request->report == 'redeem_voucher_list') {
+            return redirect()->route('redeem_voucher.dashboard_redeem_list');
+        }
         return view('admin.dashboard', compact('event'));
     }
 
