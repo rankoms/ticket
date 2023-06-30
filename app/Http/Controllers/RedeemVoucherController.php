@@ -79,6 +79,28 @@ class RedeemVoucherController extends Controller
         endforeach;
         return view('admin.dashboard_redeem', compact('kategory_aset', 'jumlah_belum', 'jumlah_sudah', 'redeem_voucher', 'redeem_not_valid'));
     }
+    public function dashboard_redeem_list(Request $request)
+    {
+        $redeem_voucher = RedeemVoucher::orderBy('redeem_date', 'desc');
+        $redeem_voucher_success = RedeemVoucher::orderBy('redeem_date', 'desc')->where('status', 1);
+        $redeem_voucher_success = $redeem_voucher_success->get();
+        $redeem_voucher = $redeem_voucher->get();
+
+        $redeem_not_valid = RedeemHistory::where('is_valid', 0)->get()->count();
+        $jumlah_belum = 0;
+        $jumlah_sudah = 0;
+        $kategory_aset = [];
+        foreach ($redeem_voucher as $key => $value) :
+            if ($value->status == 0) :
+                $jumlah_belum++;
+                isset($kategory_aset[$value->kategory]['belum']) ? $kategory_aset[$value->kategory]['belum']++ : $kategory_aset[$value->kategory]['belum'] = 1;
+            else :
+                $jumlah_sudah++;
+                isset($kategory_aset[$value->kategory]['sudah']) ? $kategory_aset[$value->kategory]['sudah']++ : $kategory_aset[$value->kategory]['sudah'] = 1;
+            endif;
+        endforeach;
+        return view('admin.dashboard_redeem_list', compact('kategory_aset', 'jumlah_belum', 'jumlah_sudah', 'redeem_voucher', 'redeem_not_valid', 'redeem_voucher_success'));
+    }
 
     public function cek_redeem_voucher(Request $request)
     {
@@ -95,11 +117,11 @@ class RedeemVoucherController extends Controller
             return ResponseFormatter::error(null, '');
         } else {
             if ($redeem_voucher->status == 1) {
-                $redeem_voucher->barcode_image = "" . QrCode::size(110)->generate($redeem_voucher->barcode_no) . "";
+                $redeem_voucher->barcode_image = "" . QrCode::size(110)->generate($redeem_voucher->kode) . "";
                 return ResponseFormatter::success($redeem_voucher, 'Data Sudah Digunakan');
             } else {
                 $redeem_voucher->barcode_no = $redeem_voucher->kode;
-                $redeem_voucher->barcode_image = "" . QrCode::size(110)->generate($redeem_voucher->barcode_no) . "";
+                $redeem_voucher->barcode_image = "" . QrCode::size(110)->generate($redeem_voucher->kode) . "";
 
                 return ResponseFormatter::success($redeem_voucher, 'Data Berhasil ada');
             }
