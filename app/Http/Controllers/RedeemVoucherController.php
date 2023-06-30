@@ -81,7 +81,10 @@ class RedeemVoucherController extends Controller
     }
     public function dashboard_redeem_list(Request $request)
     {
-        $redeem_voucher = RedeemVoucher::orderBy('kategory', 'asc')->get();
+        $redeem_voucher = RedeemVoucher::orderBy('redeem_date', 'desc');
+        $redeem_voucher_success = RedeemVoucher::orderBy('redeem_date', 'desc')->where('status', 1);
+        $redeem_voucher_success = $redeem_voucher_success->get();
+        $redeem_voucher = $redeem_voucher->get();
 
         $redeem_not_valid = RedeemHistory::where('is_valid', 0)->get()->count();
         $jumlah_belum = 0;
@@ -96,7 +99,7 @@ class RedeemVoucherController extends Controller
                 isset($kategory_aset[$value->kategory]['sudah']) ? $kategory_aset[$value->kategory]['sudah']++ : $kategory_aset[$value->kategory]['sudah'] = 1;
             endif;
         endforeach;
-        return view('admin.dashboard_redeem_list', compact('kategory_aset', 'jumlah_belum', 'jumlah_sudah', 'redeem_voucher', 'redeem_not_valid'));
+        return view('admin.dashboard_redeem_list', compact('kategory_aset', 'jumlah_belum', 'jumlah_sudah', 'redeem_voucher', 'redeem_not_valid', 'redeem_voucher_success'));
     }
 
     public function cek_redeem_voucher(Request $request)

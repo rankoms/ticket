@@ -75,18 +75,30 @@
                         <table id="example" class="display" style="width:100%">
                             <thead>
                                 <tr>
+                                    <th>No</th>
+                                    <th>Event</th>
                                     <th>Category</th>
-                                    <th>Redeem</th>
-                                    <th>Pending</th>
+                                    <th>E-voucher</th>
+                                    <th>Nama</th>
+                                    <th>Ticket</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($kategory_aset as $key => $value)
+                                @php
+                                    $i = 1;
+                                @endphp
+                                @foreach ($redeem_voucher_success as $key => $value)
                                     <tr>
-                                        <th>{{ $key }}</th>
-                                        <th>{{ isset($value['sudah']) ? $value['sudah'] : 0 }}</th>
-                                        <th>{{ isset($value['belum']) ? $value['belum'] : 0 }}</th>
+                                        <th>{{ $i }}</th>
+                                        <th>{{ $value->event }}</th>
+                                        <th>{{ $value->kategory }}</th>
+                                        <th>{{ $value->kode }}</th>
+                                        <th>{{ $value->name }}</th>
+                                        <th>{{ $value->barcode_no }}</th>
                                     </tr>
+                                    @php
+                                        $i++;
+                                    @endphp
                                 @endforeach
                             </tbody>
                         </table>
@@ -141,9 +153,6 @@
         $(document).ready(function() {
 
             $('#example').DataTable({
-                order: [
-                    [0, 'desc']
-                ],
                 dom: 'Bfrtip',
                 buttons: [
                     'excel'
