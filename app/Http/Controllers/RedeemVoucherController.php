@@ -25,6 +25,14 @@ class RedeemVoucherController extends Controller
     {
         return view('redeem_voucher');
     }
+    public function choose()
+    {
+        return view('redeem_voucher_choose');
+    }
+    public function barcode()
+    {
+        return view('redeem_voucher_barcode');
+    }
 
     public function index_v2()
     {
@@ -90,7 +98,7 @@ class RedeemVoucherController extends Controller
                 $redeem_voucher->barcode_image = "" . QrCode::size(110)->generate($redeem_voucher->barcode_no) . "";
                 return ResponseFormatter::success($redeem_voucher, 'Data Sudah Digunakan');
             } else {
-                $redeem_voucher->barcode_no = $this->generate_barcode();
+                $redeem_voucher->barcode_no = $redeem_voucher->kode;
                 $redeem_voucher->barcode_image = "" . QrCode::size(110)->generate($redeem_voucher->barcode_no) . "";
 
                 return ResponseFormatter::success($redeem_voucher, 'Data Berhasil ada');
@@ -112,6 +120,13 @@ class RedeemVoucherController extends Controller
         $redeem_voucher->save();
 
         return ResponseFormatter::success($redeem_voucher, 'Redeem E-Ticket Berhasil');
+    }
+
+    public function redeem_voucher_update_barcode(Request $request)
+    {
+        $redeem_voucher_update = $this->redeem_voucher_update($request)->getData()->data;
+
+        return ResponseFormatter::success($redeem_voucher_update, 'Redeem E-Ticket Berhasil');
     }
     public function redeem_voucher_update_ticket(Request $request)
     {

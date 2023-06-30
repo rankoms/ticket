@@ -98,8 +98,6 @@
             background: #fff !important;
         }
 
-
-
         .swal-wide label,
         .swal-small label {
             margin-bottom: 10px;
@@ -294,57 +292,18 @@
 
 <script>
     setInterval(() => {
-        document.getElementById("voucher").focus();
+        if (Swal.getPopup()) {
+            document.getElementById("barcode_no").focus();
+
+        } else {
+
+            document.getElementById("voucher").focus();
+        }
     }, 500);
     var onBtnClose = () => {
         Swal.close();
     };
 
-
-    var onSubmit = (id) => {
-        Swal.close();
-        var data = getJSON(
-            "{{ route('redeem_voucher.redeem_voucher_update_ticket') }}", {
-                _token: '{{ csrf_token() }}',
-                id: id
-            });
-
-
-        Swal.fire({
-            imageUrl: '{{ asset('images/redeem/print.png') }}',
-            customClass: 'swal-wide',
-            imageAlt: 'Custom image',
-            imageWidth: 250,
-            allowOutsideClick: false,
-            showConfirmButton: false,
-            html: `
-            <h3 class="transaction-success">Print your ticket</h3>
-            <div class="please-check">Please print your ticket for entry into the venue. Enjoy the event!</div>
-            <hr>
-            <div class="wrapper-button-swal">
-                <button onclick="onPrintNow('${id}')" class="btn btn-done swal2-success swal2-styled btn-primary"><i class="fa fa-ticket-alt me-3"></i>Print now</button>
-                <button onclick="onBtnClose()" class="btn btn-done swal2-deny swal2-styled btn-outline-danger">Cancel</button>
-            </div>`,
-            showCancelButton: false,
-            showConfirmButton: false,
-            cancelButtonColor: '#d33',
-            cancelButtonText: 'Ticket Sudah Di gunakan',
-            showCloseButton: true,
-            allowOutsideClick: false,
-            background: 'rgba(255,255,255,0.4)',
-            backdrop: `
-						rgba(0,0,123,0.4)
-						url("/images/bg3.png")
-					`,
-            color: '#000'
-        }).then((result) => {
-            $('#voucher').val('');
-            $('#voucher').focus();
-            /* Read more about isConfirmed, isDenied below */
-            // window.location = "{{ route('redeem_voucher.index') }}/" + $('#voucher').val()
-        });
-
-    };
 
     $('#form-voucher').on('submit', function(e) {
         e.preventDefault();
@@ -354,6 +313,8 @@
         });
 
         if (data.meta.code != 200) {
+
+
             Swal.fire({
                 imageUrl: '{{ asset('images/redeem/not_valid.png') }}',
                 customClass: 'swal-wide, swal-small',
@@ -395,7 +356,6 @@
                     customClass: 'swal-wide',
                     imageAlt: 'Custom image',
                     imageWidth: 250,
-                    timer: 3000,
                     allowOutsideClick: false,
                     showConfirmButton: false,
                     html: `
@@ -405,14 +365,19 @@
             <div class="container container-form">
                 <div class="mb-4 row">
                     <div class="row col-8 p-0 m-0">
-                        <div class="col-12 p-0 m-0">
+                        <div class="col-12 p-0 m-0 mb-3">
                             <label class="float-start">Full Name</label>
                             <input type="text" name="fullname" placeholder="Full Name"
                             class="form-control" required readonly disabled value="${data.data.name}">
                         </div>
-                        <div class="col-12 p-0 m-0">
+                        <div class="col-12 p-0 m-0 mb-3">
                             <label class="float-start">Category</label>
                             <input type="text" name="category" placeholder="Full Name" class="form-control" required readonly value="${data.data.kategory}" disabled>
+                        </div>
+                        
+                        <div class="col-12 p-0 m-0 mb-3">
+                            <label class="float-start">QR Code Wristband</label>
+                            <input type="text" name="barcode_no" id="barcode_no" placeholder="QR Code Wristband" class="form-control" required readonly value="${data.data.barcode_no}" disabled>
                         </div>
                     </div>
                     <div class="col-4">
@@ -451,7 +416,6 @@
                     // window.location = "{{ route('redeem_voucher.index') }}/" + $('#voucher').val()
                 });
             } else {
-
                 Swal.fire({
                     imageUrl: '{{ asset('images/redeem/confirm.png') }}',
                     customClass: 'swal-wide',
@@ -464,36 +428,43 @@
             <div class="please-check">Please make sure the data created is correct</div>
             <hr>
             <div class="container container-form">
-                <div class="mb-4 row">
-                    <div class="row col-8 p-0 m-0">
-                        <div class="col-12 p-0 m-0">
-                            <label class="float-start">Full Name</label>
-                            <input type="text" name="fullname" placeholder="Full Name"
-                            class="form-control" required readonly disabled value="${data.data.name}">
+                <form id="form-redeem-barcode">
+                    <div class="mb-4 row">
+                        <div class="row col-8 p-0 m-0">
+                            <div class="col-12 p-0 m-0 mb-3">
+                                <label class="float-start">Full Name</label>
+                                <input type="text" name="fullname" placeholder="Full Name"
+                                class="form-control" required readonly disabled value="${data.data.name}">
+                            </div>
+                            <div class="col-12 p-0 m-0 mb-3">
+                                <label class="float-start">Category</label>
+                                <input type="text" name="category" placeholder="Full Name" class="form-control" required readonly value="${data.data.kategory}" disabled>
+                            </div>
+                            <div class="col-12 p-0 m-0 mb-3">
+                                <label class="float-start">QR Code Wristband</label>
+                                <input type="text" name="barcode_no" id="barcode_no" placeholder="QR Code Wristband" class="form-control" required autofocus>
+                            </div>
                         </div>
-                        <div class="col-12 p-0 m-0">
-                            <label class="float-start">Category</label>
-                            <input type="text" name="category" placeholder="Full Name" class="form-control" required readonly value="${data.data.kategory}" disabled>
+                        <div class="col-4">
+                            <div class="qrcode">
+                                QR Code
+                            </div>
+                            <div>
+                                ${data.data.barcode_image}
+                            </div>
+                            <div class="no_qrcode">
+                                ${data.data.barcode_no}
+                            </div>
                         </div>
                     </div>
-                    <div class="col-4">
-                        <div class="qrcode">
-                            QR Code
-                        </div>
-                        <div>
-                            ${data.data.barcode_image}
-                        </div>
-                        <div class="no_qrcode">
-                            ${data.data.barcode_no}
-                        </div>
+                    <div class="wrapper-button-swal">
+                        <button class="btn btn-done swal2-success swal2-styled btn-primary">Confirm</button>
+                        <button onclick="onBtnClose()" class="btn btn-done swal2-deny swal2-styled btn-outline-danger">Cancel</button>
                     </div>
-                </div>
-                    
+                </form>
             <div>
-            <div class="wrapper-button-swal">
-                <button onclick="onSubmit('${data.data.id}')" class="btn btn-done swal2-success swal2-styled btn-primary">Confirm</button>
-                <button onclick="onBtnClose()" class="btn btn-done swal2-deny swal2-styled btn-outline-danger">Cancel</button>
-            </div>`,
+
+            `,
                     showCancelButton: false,
                     showConfirmButton: false,
                     cancelButtonColor: '#d33',
@@ -512,6 +483,55 @@
                     /* Read more about isConfirmed, isDenied below */
                     // window.location = "{{ route('redeem_voucher.index') }}/" + $('#voucher').val()
                 });
+
+
+                $('#form-redeem-barcode').on('submit', function(e) {
+                    e.preventDefault();
+                    // alert('oke');
+
+                    Swal.close();
+                    var result = getJSON(
+                        "{{ route('redeem_voucher.redeem_voucher_update_barcode') }}", {
+                            _token: '{{ csrf_token() }}',
+                            id: data.data.id,
+                            barcode_no: $('#barcode_no').val()
+                        });
+
+                    Swal.fire({
+                        imageUrl: '{{ asset('images/redeem/success.png') }}',
+                        customClass: 'swal-wide, swal-small',
+                        imageAlt: 'Custom image',
+                        imageWidth: 300,
+                        timer: 3000,
+                        allowOutsideClick: false,
+                        showConfirmButton: false,
+                        html: `
+            <h3 class="transaction-success">Redemption was successful</h3>
+            <div class="please-check">Ticket has been successfully entered</div>
+            <hr>
+            <div class="wrapper-button-swal">
+                <button onClick="onBtnClose()" class="btn btn-done swal2-success swal2-styled btn-primary">Done</button>
+            </div>`,
+                        showCancelButton: false,
+                        showConfirmButton: false,
+                        cancelButtonColor: '#d33',
+                        cancelButtonText: 'Done',
+                        showCloseButton: true,
+                        allowOutsideClick: false,
+                        background: 'rgba(255,255,255,0.4)',
+                        backdrop: `
+						rgba(0,0,123,0.4)
+						url("/images/bg3.png")
+					`,
+                        color: '#000'
+                    }).then((result) => {
+                        $('#voucher').val('');
+                        $('#voucher').focus();
+                        /* Read more about isConfirmed, isDenied below */
+                        // window.location = "{{ route('redeem_voucher.index') }}/" + $('#voucher').val()
+                    });
+
+                })
             }
         }
         $('#voucher').focus();
