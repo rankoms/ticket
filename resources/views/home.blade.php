@@ -152,7 +152,7 @@
                 </div>
             </div>
             <div class="col-xl-3 col-sm-12 p-2 m-0 position-relative full">
-                <a href="{{ route('redeem_voucher.index') }}">
+                <a href="{{ route('redeem_voucher.choose') }}">
                     <div class="bg-yellow full wrapper">
                         <div class="">
                             <img src="{{ asset('images/home/redeem_ticket.svg') }}" alt="POS" width="77px"

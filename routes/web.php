@@ -55,6 +55,7 @@ Route::group(['middleware' => ['auth', 'is_client'], 'prefix' => 'admin'], funct
 
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/dashboard_redeem', [RedeemVoucherController::class, 'dashboard_redeem'])->name('redeem_voucher.dashboard');
+    Route::get('/dashboard_redeem_list', [RedeemVoucherController::class, 'dashboard_redeem_list'])->name('redeem_voucher.dashboard_redeem_list');
     Route::get('/dashboard_ticket', [TicketController::class, 'dashboard_ticket'])->name('dashboard_ticket');
     /* START UNTUK MENAMBAHKAN VARIABLE DASHBOARD  */
     Route::get('/dashboard_ticket_current', [TicketController::class, 'dashboard_ticket_current'])->name('dashboard_ticket_current');
@@ -115,7 +116,12 @@ Route::group(['middleware' => ['auth', 'is_admin'], 'prefix' => 'admin'], functi
     Route::get('/home', [HomeController::class, 'index'])->name('home.index');
     Route::group(['prefix' => 'redeem_voucher'], function () {
         Route::get('/', [RedeemVoucherController::class, 'index'])->name('redeem_voucher.index');
+        Route::get('/choose', [RedeemVoucherController::class, 'choose'])->name('redeem_voucher.choose');
+        Route::get('/barcode', [RedeemVoucherController::class, 'barcode'])->name('redeem_voucher.barcode');
         Route::get('/v2', [RedeemVoucherController::class, 'index_v2'])->name('redeem_voucher.index_v2');
+
+        Route::get('/ticket', [RedeemVoucherController::class, 'ticket'])->name('redeem_voucher.ticket');
+        Route::get('/cetak_ticket/{id}', [RedeemVoucherController::class, 'cetak_ticket'])->name('redeem_voucher.cetak_ticket');
     });
 
 
@@ -125,6 +131,8 @@ Route::group(['middleware' => ['auth', 'is_admin'], 'prefix' => 'admin'], functi
     Route::get('/summary_redeem', [RedeemVoucherController::class, 'summary_redeem'])->name('redeem_voucher.summary_redeem');
     Route::post('/redeem_voucher_update', [RedeemVoucherController::class, 'redeem_voucher_update'])->name('redeem_voucher.redeem_voucher_update');
     Route::post('/redeem_voucher_update_v2', [RedeemVoucherController::class, 'redeem_voucher_update_v2'])->name('redeem_voucher.redeem_voucher_update_v2');
+    Route::post('/redeem_voucher_update_ticket', [RedeemVoucherController::class, 'redeem_voucher_update_ticket'])->name('redeem_voucher.redeem_voucher_update_ticket');
+    Route::post('/redeem_voucher_update_barcode', [RedeemVoucherController::class, 'redeem_voucher_update_barcode'])->name('redeem_voucher.redeem_voucher_update_barcode');
     Route::post('/cek_redeem_vouceher', [RedeemVoucherController::class, 'cek_redeem_voucher'])->name('redeem_voucher.cek_redeem_voucher');
     Route::resource('event', EventController::class);
     Route::resource('ticket', TicketController::class);
