@@ -120,6 +120,7 @@ Route::group(['middleware' => ['auth', 'is_admin'], 'prefix' => 'admin'], functi
         Route::get('/v2', [RedeemVoucherController::class, 'index_v2'])->name('redeem_voucher.index_v2');
 
         Route::get('/ticket', [RedeemVoucherController::class, 'ticket'])->name('redeem_voucher.ticket');
+        Route::get('/cetak_ticket/{id}', [RedeemVoucherController::class, 'cetak_ticket'])->name('redeem_voucher.cetak_ticket');
     });
 
 

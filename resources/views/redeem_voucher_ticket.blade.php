@@ -80,7 +80,7 @@
 
         .swal-wide .container-form {
             /* margin-top: 43px; */
-            padding: 53px;
+            padding: 23px 53px;
         }
 
         .swal-wide .btn-success,
@@ -119,7 +119,7 @@
         .swal-small .btn-primary {
             background: #0069C9 !important;
             color: #fff !important;
-            padding: 13px 67px;
+            padding: 13px 47px;
             font-family: 'Poppins';
         }
 
@@ -127,7 +127,7 @@
         .swal-small .btn-orange {
             background: #FFA500 !important;
             color: #fff !important;
-            padding: 13px 67px;
+            padding: 13px 47px;
             font-family: 'Poppins';
         }
 
@@ -255,7 +255,7 @@
             <div class="row justify-content-center text-center wrapping-logo">
 
                 <div class="col">
-                    <img src="{{ asset('images/redeem/logo.png') }}" alt="Logo" height="91px" width="166px" />
+                    <img src="{{ asset('/') . Auth::user()->logo }}" alt="Logo" height="91px" width="auto" />
                     <div class="logo-text">
                         Redeem System
                     </div>
@@ -301,6 +301,13 @@
     };
 
 
+    var onPrintNow = (id) => {
+        Swal.close();
+        var url = "{{ route('redeem_voucher.cetak_ticket', [':id']) }}";
+        url = url.replace(':id', id);
+        return window.location.href = url;
+    };
+
     var onSubmit = (id) => {
         Swal.close();
         var data = getJSON(
@@ -312,9 +319,9 @@
 
         Swal.fire({
             imageUrl: '{{ asset('images/redeem/print.png') }}',
-            customClass: 'swal-wide',
+            customClass: 'swal-wide, swal-small',
             imageAlt: 'Custom image',
-            imageWidth: 250,
+            imageWidth: 200,
             allowOutsideClick: false,
             showConfirmButton: false,
             html: `
@@ -358,7 +365,7 @@
                 imageUrl: '{{ asset('images/redeem/not_valid.png') }}',
                 customClass: 'swal-wide, swal-small',
                 imageAlt: 'Custom image',
-                imageWidth: 300,
+                imageWidth: 200,
                 timer: 3000,
                 allowOutsideClick: false,
                 showConfirmButton: false,
@@ -394,7 +401,7 @@
                     imageUrl: '{{ asset('images/redeem/already.png') }}',
                     customClass: 'swal-wide',
                     imageAlt: 'Custom image',
-                    imageWidth: 250,
+                    imageWidth: 200,
                     timer: 3000,
                     allowOutsideClick: false,
                     showConfirmButton: false,
@@ -456,7 +463,7 @@
                     imageUrl: '{{ asset('images/redeem/confirm.png') }}',
                     customClass: 'swal-wide',
                     imageAlt: 'Custom image',
-                    imageWidth: 250,
+                    imageWidth: 200,
                     allowOutsideClick: false,
                     showConfirmButton: false,
                     html: `

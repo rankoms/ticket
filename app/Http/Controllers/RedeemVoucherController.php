@@ -189,6 +189,19 @@ class RedeemVoucherController extends Controller
         return view('redeem_detail', compact('redeem_voucher'));
     }
 
+    public function cetak_ticket($id)
+    {
+        $redeem_voucher = RedeemVoucher::find($id);
+        $user_logo = Auth::user() ? Auth::user()->logo : '';
+        $logo = '';
+        if ($user_logo) {
+            $logo = asset('/') . $user_logo;
+        }
+        if (!$redeem_voucher) {
+            return view('404');
+        }
+        return view('redeem_voucher.cetak_ticket', compact('redeem_voucher', 'logo'));
+    }
 
     public function excel_redeem(Request $request)
     {
