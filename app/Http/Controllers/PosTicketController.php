@@ -23,6 +23,12 @@ class PosTicketController extends Controller
         $event = EventCategory::groupBy('event')->select('event')->orderBy('event')->get();
         return view('pos_ticket.index', compact('event'));
     }
+    public function name_pt()
+    {
+        $event = EventCategory::select('event', 'category')->groupBy('event', 'category')->first();
+        $event = $event ? $event->event : '';
+        return view('pos_ticket.name_pt', compact('event'));
+    }
 
     public function dashboard(Request $request)
     {
@@ -52,6 +58,17 @@ class PosTicketController extends Controller
             $logo = asset('/') . $user_logo;
         }
         return view('pos_ticket.cetak', compact('pos_ticket', 'logo'));
+    }
+
+    public function cetak_name_pt($id)
+    {
+        $pos_ticket = PosTicket::where('payment_code', $id)->get();
+        $user_logo = Auth::user() ? Auth::user()->logo : '';
+        $logo = '';
+        if ($user_logo) {
+            $logo = asset('/') . $user_logo;
+        }
+        return view('pos_ticket.cetak_name_pt', compact('pos_ticket', 'logo'));
     }
     /**
      * Show the form for creating a new resource.
@@ -116,6 +133,30 @@ class PosTicketController extends Controller
             $request->merge(['barcode_no' => $pos_ticket->barcode_no]);
             $ticket = $ticket->store($request);
         endfor;
+        return ResponseFormatter::success($pos_ticket, __('Success'));
+    }
+    public function store_name_pt(Request $request)
+    {
+        $event = $request->event;
+        $perusahaan = $request->perusahaan;
+        $name = $request->fullname;
+        $user_id = Auth::user()->id;
+        $date = date('Y-m-d');
+        $pos_ticket = new PosTicket();
+        $pos_ticket->event = $event;
+        $pos_ticket->name = $name;
+        $pos_ticket->email = '-';
+        $pos_ticket->no_telp = '-';
+        $pos_ticket->vanue = '-';
+        $pos_ticket->quantity = 1;
+        $pos_ticket->harga_satuan = 1;
+        $pos_ticket->total_harga = 1;
+        $pos_ticket->barcode_no = 1;
+        $pos_ticket->payment_code = $this->generate_payment();
+        $pos_ticket->category = $perusahaan;
+        $pos_ticket->user_id = $user_id;
+        $pos_ticket->date = $date;
+        $pos_ticket->save();
         return ResponseFormatter::success($pos_ticket, __('Success'));
     }
 
