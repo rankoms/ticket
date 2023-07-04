@@ -91,6 +91,7 @@ Route::group(['middleware' => ['is_admin']], function () {
         Route::post('/store_name_pt', [PosTicketController::class, 'store_name_pt'])->name('pos_ticket.store_name_pt');
         Route::get('/dashboard', [PosTicketController::class,  'dashboard'])->name('pos_ticket.dashboard');
         Route::post('/category_select', [PosTicketController::class, 'category_select'])->name('pos_ticket.category_select');
+        Route::get('/excel_pos', [PosTicketController::class, 'excel_pos'])->name('pos_ticket.excel_pos');
     });
     Route::group(['prefix' => 'scanner'], function () {
         Route::get('/store_pilih_event', [ScannerController::class, 'store_pilih_event'])->name('scanner.store_pilih_event');
