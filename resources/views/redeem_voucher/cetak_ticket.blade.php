@@ -7,9 +7,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Sofia Pro Bold:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
         rel="stylesheet">
     <style>
+        @font-face {
+            font-family: 'Sofia Pro Bold';
+            src: url('{{ asset('fonts/Sofia_Pro_Bold.otf') }}');
+
+        }
+
         .content {
 
             text-align: center;
@@ -26,7 +32,7 @@
             height: 5.83in;
             margin: 0;
             padding: 0;
-            font-family: 'Kanit', 'Arial';
+            font-family: 'Sofia Pro Bold', 'Arial';
         }
 
         #utama td {
@@ -66,7 +72,7 @@
                 height: 5.83in;
                 margin: 0;
                 padding: 0;
-                font-family: 'Kanit', 'Arial';
+                font-family: 'Sofia Pro Bold', 'Arial';
                 overflow: hidden;
             }
 
@@ -97,9 +103,18 @@
         <table width="100%" id="utama" style="margin-top: 370px;">
             <tr>
                 <td style="text-align: center ; font-size: 30px">
-                    {{ $redeem_voucher->name }}
+                    <div
+                        style="font-size: {{ strlen($redeem_voucher->name) >= 25 ? 20 : 30 }}px;line-height: 1;text-align:center;">
+                        <span>{{ $redeem_voucher->name }}</span>
+                    </div>
                     <hr>
-                    {{ $redeem_voucher->nama_perusahaan }}
+
+                    <div
+                        style="font-size: {{ strlen($redeem_voucher->nama_perusahaan) >= 40 ? 20 : 30 }}px;line-height: 1;text-align:center;">
+                        <span>
+                            {{ $redeem_voucher->nama_perusahaan }}
+                        </span>
+                    </div>
                 </td>
             </tr>
         </table>

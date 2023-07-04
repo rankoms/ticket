@@ -392,7 +392,7 @@
                     <div class="col-6">
                         <label class="float-left">Title</label>
                         <input type="text" name="fullname" placeholder="Full Name"
-                        class="form-control" required readonly value="${$('#fullname').val()}">
+                        class="form-control" required readonly value="${$('#title').val()}">
                     </div>
                 </div>
                 <div class="mb-4 row">
