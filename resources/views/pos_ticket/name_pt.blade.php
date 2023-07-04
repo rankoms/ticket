@@ -204,7 +204,7 @@
                                 <div class="col-lg-6 col-6 position-relative d-none wrapper-industry_other">
                                     <label for="industry_other">Industry Other</label>
                                     <input type="text" name="industry_other" id="industry_other"
-                                        placeholder="Industry Other" class="form-control" required>
+                                        placeholder="Industry Other" class="form-control">
                                     <div class="invalid-feedback d-block invalid">
                                         <div id="industry_other_invalid-feedback"></div>
                                     </div>
