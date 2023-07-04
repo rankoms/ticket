@@ -93,7 +93,7 @@
     </a>
     @foreach ($pos_ticket as $key => $pos)
         <div class="content">
-            <table width="100%" id="utama" style="margin-top: 300px;">
+            <table width="100%" id="utama" style="margin-top: 380px;">
                 <tr>
                     <td style="text-align: center">
                         {{ $pos->name }}

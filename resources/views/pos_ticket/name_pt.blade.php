@@ -12,10 +12,11 @@
 
 <style>
     body {
-        font-family: 'Poppins';
-        background: url('{{ asset('images/bg-pos.png') }}');
-        background-size: cover;
+        width: 100%;
         height: 100%;
+        background: url('../../images/redeem/panel.png') center top no-repeat;
+        background-size: cover;
+        position: relative;
     }
 
     .swal2-modal {
@@ -111,48 +112,131 @@
         font-size: 20px;
         line-height: 100%;
     }
+
+    .logo-text {
+        color: #FFF;
+        font-size: 40px;
+        font-family: Poppins;
+        font-weight: 600;
+        letter-spacing: -1px;
+        margin-top: 10px;
+    }
+
+    input,
+    select {
+        padding: 14px 39px !important;
+        border: 1px solid #ced4da;
+    }
 </style>
 
 <body>
 
     <div class="container">
-        <div class="text-center" style="margin-top: 31px">
-            <img src="{{ asset('/') . Auth::user()->logo }}" alt="Logo" height="91px" width="auto" />
+        <div class="row justify-content-center text-center wrapping-logo">
+
+            <div class="col">
+                <img src="{{ asset('/') . Auth::user()->logo }}" alt="Logo" height="91px" width="auto" />
+                <div class="logo-text">
+                    Transaction
+                </div>
+            </div>
         </div>
         <div class="pb-4 d-flex align-items-center justify-content-center dashboard">
             <section class="">
                 <div class="row dashboard">
-                    <form id="form-pos">
-                        @csrf
-                        <input type="hidden" name="event" id="event" value="{{ $event }}">
-                        <div class="row mb-4">
-                            <div class="col-lg-12 col-12 position-relative">
-                                <label for="fullname">Nama</label>
-                                <input type="text" name="fullname" id="fullname" placeholder="Nama"
-                                    class="form-control" required>
-                                <div class="invalid-feedback d-block invalid">
-                                    <div id="fullname_invalid-feedback"></div>
+                    <div class="card p-4">
+                        <form id="form-pos">
+                            @csrf
+                            <input type="hidden" name="event" id="event" value="{{ $event }}">
+                            <div class="row mb-4">
+                                <div class="col-lg-6 col-6 position-relative">
+                                    <label for="fullname">Full Name</label>
+                                    <input type="text" name="fullname" id="fullname" placeholder="Full Name"
+                                        class="form-control" required>
+                                    <div class="invalid-feedback d-block invalid">
+                                        <div id="fullname_invalid-feedback"></div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-6 position-relative">
+                                    <label for="title">Title</label>
+                                    <input type="text" name="title" id="title" placeholder="Title"
+                                        class="form-control" required>
+                                    <div class="invalid-feedback d-block invalid">
+                                        <div id="title_invalid-feedback"></div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row mb-4">
-                            <div class="col-lg-12 col-12 position-relative">
-                                <label for="perusahaan">Perusahaan</label>
-                                <input type="text" name="perusahaan" id="perusahaan" placeholder="Perusahaan"
-                                    class="form-control" required>
-                                <div class="invalid-feedback d-block invalid">
-                                    <div id="perusahaan_invalid-feedback"></div>
+                            <div class="row mb-4">
+                                <div class="col-lg-6 col-6 position-relative">
+                                    <label for="perusahaan">Company</label>
+                                    <input type="text" name="perusahaan" id="perusahaan" placeholder="Company"
+                                        class="form-control" required>
+                                    <div class="invalid-feedback d-block invalid">
+                                        <div id="perusahaan_invalid-feedback"></div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-6 position-relative">
+                                    <label for="email">Email</label>
+                                    <input type="email" name="email" id="email" placeholder="email"
+                                        class="form-control" required>
+                                    <div class="invalid-feedback d-block invalid">
+                                        <div id="email_invalid-feedback"></div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-12 text-center">
-                            <button id="btn-submit" type="submit" class="button-search">Submit <i
-                                    class="fa fa-arrow-right ml-2"
-                                    style="
+                            <div class="row mb-4">
+                                <div class="col-lg-6 col-6 position-relative">
+                                    <label for="industry">Industry</label>
+                                    <select name="industry" id="industry" required>
+                                        <option value=""></option>
+                                        <option value="Fashion">Fashion</option>
+                                        <option value="FMCG">FMCG</option>
+                                        <option value="F&B">F&B</option>
+                                        <option value="Electronics">Electronics</option>
+                                        <option value="Lifestyle">Lifestyle</option>
+                                        <option value="Media & Agency">Media & Agency</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                    <div class="invalid-feedback d-block invalid">
+                                        <div id="industry_invalid-feedback"></div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-6 position-relative d-none wrapper-industry_other">
+                                    <label for="industry_other">Industry Other</label>
+                                    <input type="text" name="industry_other" id="industry_other"
+                                        placeholder="industry_other" class="form-control" required>
+                                    <div class="invalid-feedback d-block invalid">
+                                        <div id="industry_other_invalid-feedback"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-lg-12 col-12 position-relative">
+                                    <label for="experience">Experience</label>
+                                    <select name="experience" id="experience" required>
+                                        <option value=""></option>
+                                        <option value="Advertiser, Not Seller">Advertiser, Not Seller</option>
+                                        <option value="Seller, Not Advertiser">Seller, Not Advertiser</option>
+                                        <option value="Both Advertiser and Seller">Both Advertiser and Seller</option>
+                                        <option value="None of the above">None of the above</option>
+                                        <option value="Lifestyle">Lifestyle</option>
+                                        <option value="Media & Agency">Media & Agency</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                    <div class="invalid-feedback d-block invalid">
+                                        <div id="experience_invalid-feedback"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 text-center">
+                                <button id="btn-submit" type="submit" class="button-search">Submit <i
+                                        class="fa fa-arrow-right ml-2"
+                                        style="
                                 position: inherit;
                                 color: #fff;"></i></button>
-                        </div>
-                    </form>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </section>
         </div>
@@ -180,6 +264,10 @@
         }).responseText);
     }
 
+    $('#industry').on('change', function() {
+        $('.wrapper-industry_other').removeClass('d-none');
+        $('#industry_other').prop('required', true);
+    })
 
     function resetForm() {
         $('input').removeClass('invalid');
@@ -187,6 +275,8 @@
         $('.invalid-feedback div').html('');
         $('textarea').val('');
         $('select').val('');
+        $('.wrapper-industry_other').addClass('d-none')
+        $('#industry_other').prop('required', false);
         $("form").trigger("reset");
 
     }

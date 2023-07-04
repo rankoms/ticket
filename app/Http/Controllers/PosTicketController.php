@@ -140,12 +140,20 @@ class PosTicketController extends Controller
         $event = $request->event;
         $perusahaan = $request->perusahaan;
         $name = $request->fullname;
+        $email = $request->email;
+        $industry = $request->industry;
+        if ($industry == 'Other') {
+            $industry = $request->industry_other;
+        }
+        $experience = $request->experience;
         $user_id = Auth::user()->id;
         $date = date('Y-m-d');
         $pos_ticket = new PosTicket();
         $pos_ticket->event = $event;
         $pos_ticket->name = $name;
-        $pos_ticket->email = '-';
+        $pos_ticket->email = $email;
+        $pos_ticket->experience = $experience;
+        $pos_ticket->industry = $industry;
         $pos_ticket->no_telp = '-';
         $pos_ticket->vanue = '-';
         $pos_ticket->quantity = 1;
