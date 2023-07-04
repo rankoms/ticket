@@ -204,7 +204,7 @@
                                 <div class="col-lg-6 col-6 position-relative d-none wrapper-industry_other">
                                     <label for="industry_other">Industry Other</label>
                                     <input type="text" name="industry_other" id="industry_other"
-                                        placeholder="industry_other" class="form-control" required>
+                                        placeholder="Industry Other" class="form-control" required>
                                     <div class="invalid-feedback d-block invalid">
                                         <div id="industry_other_invalid-feedback"></div>
                                     </div>
@@ -219,9 +219,6 @@
                                         <option value="Seller, Not Advertiser">Seller, Not Advertiser</option>
                                         <option value="Both Advertiser and Seller">Both Advertiser and Seller</option>
                                         <option value="None of the above">None of the above</option>
-                                        <option value="Lifestyle">Lifestyle</option>
-                                        <option value="Media & Agency">Media & Agency</option>
-                                        <option value="other">Other</option>
                                     </select>
                                     <div class="invalid-feedback d-block invalid">
                                         <div id="experience_invalid-feedback"></div>
@@ -265,8 +262,10 @@
     }
 
     $('#industry').on('change', function() {
-        $('.wrapper-industry_other').removeClass('d-none');
-        $('#industry_other').prop('required', true);
+        if ($(this).val() == 'Other') {
+            $('.wrapper-industry_other').removeClass('d-none');
+            $('#industry_other').prop('required', true);
+        }
     })
 
     function resetForm() {
@@ -365,6 +364,11 @@
         var total_harga = formatRupiah(total_harga, 'Rp. ');
 
         var formData = $(this).serialize();
+
+        industry = $('#industry').val();
+        if ($('#industry').val() == 'Other') {
+            industry = $('#industry_other').val();
+        }
         Swal.fire({
             imageUrl: '{{ asset('/') . Auth::user()->logo }}',
             customClass: 'swal-wide',
@@ -380,16 +384,39 @@
             <hr>
             <div class="container container-form">
                 <div class="mb-4 row">
-                    <div class="col-12">
-                        <label class="float-left">Nama</label>
+                    <div class="col-6">
+                        <label class="float-left">Full Name</label>
+                        <input type="text" name="fullname" placeholder="Full Name"
+                        class="form-control" required readonly value="${$('#fullname').val()}">
+                    </div>
+                    <div class="col-6">
+                        <label class="float-left">Title</label>
                         <input type="text" name="fullname" placeholder="Full Name"
                         class="form-control" required readonly value="${$('#fullname').val()}">
                     </div>
                 </div>
                 <div class="mb-4 row">
-                    <div class="col-12">
-                        <label class="float-left">Perusahaan</label>
-                        <input type="text" name="payment_method" placeholder="Full Name" class="form-control" required readonly value="${$('#perusahaan').val()}">
+                    <div class="col-6">
+                        <label class="float-left">Company</label>
+                        <input type="text" name="fullname" placeholder="Full Name"
+                        class="form-control" required readonly value="${$('#perusahaan').val()}">
+                    </div>
+                    <div class="col-6">
+                        <label class="float-left">Email</label>
+                        <input type="text" name="fullname" placeholder="Full Name"
+                        class="form-control" required readonly value="${$('#email').val()}">
+                    </div>
+                </div>
+                <div class="mb-4 row">
+                    <div class="col-6">
+                        <label class="float-left">Industry</label>
+                        <input type="text" name="fullname" placeholder="Full Name"
+                        class="form-control" required readonly value="${industry}">
+                    </div>
+                    <div class="col-6">
+                        <label class="float-left">Experience</label>
+                        <input type="text" name="fullname" placeholder="Full Name"
+                        class="form-control" required readonly value="${$('#experience').val()}">
                     </div>
                 </div>
                     
