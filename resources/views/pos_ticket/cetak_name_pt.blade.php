@@ -49,7 +49,7 @@
             background-color: #000;
             border-top: 1px solid #000;
             margin-top: auto;
-    margin-bottom: auto;
+            margin-bottom: auto;
         }
 
         @media print {
@@ -99,9 +99,17 @@
             <table width="100%" id="utama" style="margin-top: 370px;">
                 <tr>
                     <td style="text-align: center ; font-size: 30px">
-                        {{ $pos->name }}
+                        <div
+                            style="font-size: {{ strlen($pos->name) >= 25 ? 20 : 30 }}px;line-height: 1;text-align:center;">
+                            <span>{{ $pos->name }}</span>
+                        </div>
                         <hr>
-                        {{ $pos->category }}
+                        <div
+                            style="font-size: {{ strlen($pos->category) >= 40 ? 20 : 30 }}px;line-height: 1;text-align:center;">
+                            <span>
+                                {{ $pos->category }}
+                            </span>
+                        </div>
                     </td>
                 </tr>
             </table>

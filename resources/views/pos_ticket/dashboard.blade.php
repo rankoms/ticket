@@ -54,7 +54,7 @@
                     <div class="col-lg-10 col-sm-12">
                         <div class="row gx-1">
                             <div class="col-lg-12 col-sm-12 pl-2 pr-1">
-                                <div class="small-box bg-sold justify-content-around d-flex">
+                                <div class="small-box bg-ijo justify-content-around d-flex">
                                     <div class="inner text-center pt-3">
                                         <p>TOTAL REGISTRATION</p>
                                         <h3>{{ number_format($tiket_sold, 0, ',', '.') }}</h3>
@@ -112,7 +112,7 @@
                                         <th>{{ $value->email }}</th>
                                         <th>{{ $value->industry }}</th>
                                         <th>{{ $value->experience }}</th>
-                                        <th><a href="{{ route('pos_ticket.cetak_name_pt', ['id' => $value->id]) }}"
+                                        <th><a href="{{ route('pos_ticket.cetak_name_pt', ['id' => $value->payment_code]) }}"
                                                 target="_blank" class="btn btn-success">Cetak</a>
                                         </th>
                                     </tr>
