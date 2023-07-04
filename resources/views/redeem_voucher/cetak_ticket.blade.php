@@ -110,7 +110,7 @@
                     <hr>
 
                     <div
-                        style="font-size: {{ strlen($redeem_voucher->nama_perusahaan) >= 40 ? 20 : 30 }}px;line-height: 1;text-align:center;">
+                        style="font-size: {{ strlen($redeem_voucher->nama_perusahaan) >= 20 ? 20 : 30 }}px;line-height: 1;text-align:center;">
                         <span>
                             {{ $redeem_voucher->nama_perusahaan }}
                         </span>

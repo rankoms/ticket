@@ -105,7 +105,7 @@
                         </div>
                         <hr>
                         <div
-                            style="font-size: {{ strlen($pos->category) >= 40 ? 20 : 30 }}px;line-height: 1;text-align:center;">
+                            style="font-size: {{ strlen($pos->category) >= 20 ? 20 : 30 }}px;line-height: 1;text-align:center;">
                             <span>
                                 {{ $pos->category }}
                             </span>
