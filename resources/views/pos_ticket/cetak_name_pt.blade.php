@@ -33,8 +33,8 @@
 
         #utama td {
             text-align: left;
-            padding-left: 20px;
-            padding-right: 10px
+            /* padding-left: 10px;
+            padding-right: 10px; */
         }
 
         #utama tr {
@@ -48,6 +48,8 @@
             border-radius: 100%;
             background-color: #000;
             border-top: 1px solid #000;
+            margin-top: auto;
+    margin-bottom: auto;
         }
 
         @media print {
@@ -72,7 +74,7 @@
 
             .content {
                 text-align: center;
-                height: 100%;
+                height: 300%;
                 padding: 0;
                 margin: 0;
             }
@@ -94,9 +96,9 @@
     </a>
     @foreach ($pos_ticket as $key => $pos)
         <div class="content">
-            <table width="100%" id="utama" style="margin-top: 380px;">
+            <table width="100%" id="utama" style="margin-top: 370px;">
                 <tr>
-                    <td style="text-align: center">
+                    <td style="text-align: center ; font-size: 30px">
                         {{ $pos->name }}
                         <hr>
                         {{ $pos->category }}

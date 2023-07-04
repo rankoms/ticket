@@ -194,7 +194,7 @@
                                         <option value="F&B">F&B</option>
                                         <option value="Electronics">Electronics</option>
                                         <option value="Lifestyle">Lifestyle</option>
-                                        <option value="Media & Agency">Media & Agency</option>
+                                        <option value="Media & Agency">Media / Agency</option>
                                         <option value="Other">Other</option>
                                     </select>
                                     <div class="invalid-feedback d-block invalid">

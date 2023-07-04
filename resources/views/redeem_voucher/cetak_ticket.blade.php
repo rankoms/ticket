@@ -46,6 +46,8 @@
             border-radius: 100%;
             background-color: #000;
             border-top: 1px solid #000;
+            margin-top: auto;
+            margin-bottom: auto;
         }
 
         @media print {
@@ -92,9 +94,9 @@
         <button>Kembali</button>
     </a>
     <div class="content">
-        <table width="100%" id="utama" style="margin-top: 300px;">
+        <table width="100%" id="utama" style="margin-top: 370px;">
             <tr>
-                <td style="text-align: center">
+                <td style="text-align: center ; font-size: 30px">
                     {{ $redeem_voucher->name }}
                     <hr>
                     {{ $redeem_voucher->nama_perusahaan }}
