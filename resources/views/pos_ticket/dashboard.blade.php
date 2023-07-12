@@ -17,7 +17,7 @@
     body {
         width: 100%;
         height: 100%;
-        background: url('../../images/redeem/panel.png') center top no-repeat;
+        background: url('../../images/redeem/panelreport.png') center top no-repeat;
         background-size: cover;
         position: relative;
     }

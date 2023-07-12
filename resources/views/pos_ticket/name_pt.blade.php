@@ -137,7 +137,7 @@
             <div class="col">
                 <img src="{{ asset('/') . Auth::user()->logo }}" alt="Logo" height="91px" width="auto" />
                 <div class="logo-text">
-                    Transaction
+                    POS System
                 </div>
             </div>
         </div>

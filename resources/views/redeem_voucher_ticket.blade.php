@@ -476,7 +476,7 @@
                             class="form-control" required readonly disabled value="${data.data.name}">
                         </div>
                         <div class="col-12 p-0 m-0">
-                            <label class="float-start">Category</label>
+                            <label class="float-start">Company</label>
                             <input type="text" name="category" placeholder="Full Name" class="form-control" required readonly value="${data.data.kategory}" disabled>
                         </div>
                     </div>
