@@ -112,7 +112,7 @@
     <div>
         <div class="row p-0 m-0" id="dashboard_new">
             <div class="col-xl-3 col-sm-12 p-2 m-0 position-relative full">
-                <a href="{{ route('pos_ticket.name_pt') }}">
+                <a href="{{ route('pos_ticket.index') }}">
                     <div class="bg-blue full wrapper">
                         <div>
                             <img src="{{ asset('images/home/pos.svg') }}" alt="POS" width="77px" height="77px">
