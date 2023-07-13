@@ -21,9 +21,10 @@ class PosTicketController extends Controller
      */
     public function index()
     {
-        // $event = Ticket::groupBy('event')->select('event')->orderBy('event')->get();
-        $event = EventCategory::groupBy('event')->select('event')->orderBy('event')->get();
-        return view('pos_ticket.index', compact('event'));
+        $event = EventCategory::select('event')->groupBy('event')->first();
+        $event = $event ? $event->event : '';
+        $category = EventCategory::groupBy('category', 'harga_satuan')->select('category', 'harga_satuan')->orderBy('category')->get();
+        return view('pos_ticket.index', compact('category', 'event'));
     }
     public function name_pt()
     {
@@ -127,19 +128,19 @@ class PosTicketController extends Controller
         //
         request()->validate([
             'event' => ['required'],
-            'name' => ['required'],
+            'fullname' => ['required'],
             'email' => ['required'],
             'category' => ['required'],
-            'no_telp' => ['required'],
+            'phone' => ['required'],
             'quantity' => ['required', 'numeric'],
-            'harga_satuan' => ['required'],
         ]);
         $event = $request->event;
-        $name = $request->name;
+        $fullname = $request->fullname;
         $email = $request->email;
         $category = $request->category;
-        $no_telp = $request->no_telp;
+        $phone = $request->phone;
         $quantity = $request->quantity;
+        $payment_method = $request->payment_method;
         $event_category = EventCategory::where('event', $event)->where('category', $category)->first();
         if (!$event_category) {
             return ResponseFormatter::error(null, __('Not Found !'));
@@ -151,15 +152,16 @@ class PosTicketController extends Controller
         for ($i = 0; $i < $quantity; $i++) :
             $pos_ticket = new PosTicket();
             $pos_ticket->event = $event;
-            $pos_ticket->name = $name;
+            $pos_ticket->name = $fullname;
             $pos_ticket->email = $email;
             $pos_ticket->category = $category;
-            $pos_ticket->no_telp = $no_telp;
+            $pos_ticket->no_telp = $phone;
             $pos_ticket->quantity = $quantity;
             $pos_ticket->harga_satuan = $harga_satuan;
             $pos_ticket->total_harga = $total_harga;
+            $pos_ticket->payment_method = $payment_method;
             $pos_ticket->user_id = $user_id;
-            $pos_ticket->date = $event_category->date;
+            $pos_ticket->date = date('Y-m-d');
             $pos_ticket->vanue = $event_category->vanue;
             $pos_ticket->barcode_no = $this->generate_barcode();
             $pos_ticket->payment_code = $payment_code;

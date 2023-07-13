@@ -11,119 +11,212 @@
 </head>
 
 <style>
+    @font-face {
+        font-family: 'Sofia Pro Bold';
+        src: url('{{ asset('fonts/Sofia_Pro_Bold.otf') }}');
+
+    }
+
     body {
-        /* background: url('{{ asset('bg-pos.jpg') }}'); */
-        background-repeat: round;
+        width: 100%;
         height: 100%;
+        background: url('../../images/redeem/panel.png') center top no-repeat;
+        background-size: cover;
+        position: relative;
+        font-family: 'Sofia Pro Bold';
+    }
+
+    .swal2-modal {
+        width: 393px !important;
+    }
+
+    .swal-print .swal2-image {
+        margin: 0 !important;
+        height: auto;
+        width: 100%;
+    }
+
+    .swal-wide {
+        width: 850px !important;
+    }
+
+    .swal-wide .swal2-html-container {
+        margin: 0 !important;
+    }
+
+    .swal-wide .container-form {
+        margin-top: 43px;
+    }
+
+    .swal-wide .btn-success {
+
+        background: #34B53A !important;
+        border-radius: 10px;
+    }
+
+    .swal-wide .btn-outline-danger {
+
+        color: #dc3545 !important;
+        border: 1px solid #dc3545 !important;
+        background: #fff !important;
+    }
+
+    .transaction-success {
+        margin-top: 12px;
+        font-family: 'Sofia Pro Bold';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 27px;
+        line-height: 40px;
+        /* identical to box height */
+
+        letter-spacing: -1px;
+
+        color: #000000;
+    }
+
+    .please-check {
+
+        font-family: 'Sofia Pro Bold';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 15px;
+        line-height: 22px;
+        /* identical to box height */
+
+        letter-spacing: -1px;
+
+        color: #C2C2C2;
+    }
+
+    .wrapper-button-swal {
+
+        margin-top: 25px;
+    }
+
+    .swal2-confirm {
+        font-family: 'Sofia Pro Bold';
+        background-color: #34B53A;
+        width: 200px;
+    }
+
+    .swal2-deny {
+
+        font-family: 'Sofia Pro Bold';
+        width: 200px;
+        background: #992320;
+    }
+
+    #btn-submit {
+
+        background: #992320;
+        border-radius: 10px;
+        border: none;
+        font-family: 'Sofia Pro Bold';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 100%;
     }
 </style>
 
 <body>
 
     <div class="container">
-        <div class="row mb-4 header">
-            <div class="col-lg-6 col-sm-12">
-                <h1>POS</h1>
-                <span>Masukan data pengunjung</span>
-            </div>
-            <div class="col-lg-6 col-sm-12 d-flex justify-content-end">
-                @include('partials.user_dropdown')
-            </div>
+        <div class="text-center" style="margin-top: 31px">
+            <img src="{{ asset('/') . Auth::user()->logo }}" alt="Logo POS" width="auto" height="200">
         </div>
         <div class="pb-4 d-flex align-items-center justify-content-center dashboard">
             <section class="">
                 <div class="row dashboard">
-                    <form id="form-pos">
-                        @csrf
-                        <div class="row mb-4">
-                            <div class="col-lg-12 col-12 position-relative">
-                                <select name="event" id="event" class="form-control" required>
-                                    <option value="">Pilih Event</option>
-                                    @foreach ($event as $key => $value)
-                                        <option value="{{ $value->event }}">
-                                            {{ $value->event }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                <i class="fa fa-chevron-down"></i>
-                                <div class="invalid-feedback d-block invalid">
-                                    <div id="event_invalid-feedback"></div>
+                    <div class="card p-4">
+                        <form id="form-pos">
+                            @csrf
+                            <input type="hidden" name="event" id="event" value="{{ $event }}">
+                            <div class="row mb-4">
+                                <div class="col-lg-12 col-12 position-relative">
+                                    <label for="fullname">Full Name</label>
+                                    <input type="text" name="fullname" id="fullname" placeholder="Full Name"
+                                        class="form-control" required>
+                                    <div class="invalid-feedback d-block invalid">
+                                        <div id="fullname_invalid-feedback"></div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row mb-4">
-                            <div class="col-lg-12 col-12 position-relative">
-                                <select name="category" id="category" class="form-control" required>
-                                    <option value="">Pilih Category</option>
-                                </select>
-                                <i class="fa fa-chevron-down"></i>
-                                <div class="invalid-feedback d-block invalid">
-                                    <div id="category_invalid-feedback"></div>
+                            <div class="row mb-4">
+                                <div class="col-lg-12 col-12 position-relative">
+                                    <label for="email">Email</label>
+                                    <input type="email" name="email" id="email" placeholder="Masukan Email"
+                                        class="form-control" required>
+                                    <div class="invalid-feedback d-block invalid">
+                                        <div id="email_invalid-feedback"></div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row mb-4">
-                            <div class="col-lg-12 col-12 position-relative">
-                                <input type="text" name="harga_satuan" id="harga_satuan" placeholder="Harga Satuan"
-                                    class="form-control" readonly required>
-                                <div class="invalid-feedback d-block invalid">
-                                    <div id="harga_satuan_invalid-feedback"></div>
+                            <div class="row mb-4">
+                                <div class="col-lg-12 col-12 position-relative">
+                                    <label for="phone">Phone</label>
+                                    <input type="text" name="phone" id="phone" placeholder="Number Phone"
+                                        class="form-control" required>
+                                    <div class="invalid-feedback d-block invalid">
+                                        <div id="phone_invalid-feedback"></div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row mb-4">
-                            <div class="col-lg-12 col-12 position-relative">
-                                <input type="number" name="quantity" id="quantity" placeholder="Quantity"
-                                    class="form-control" required>
-                                <div class="invalid-feedback d-block invalid">
-                                    <div id="quantity_invalid-feedback"></div>
+                            <div class="row mb-4">
+                                <div class="col-lg-6 col-6 position-relative">
+                                    <label for="category">Category</label>
+                                    <select name="category" id="category" class="form-control" required>
+                                        <option value="">Pilih Category</option>
+                                        @foreach ($category as $key => $value)
+                                            <option value="{{ $value->category }}"
+                                                data-harga_satuan="{{ $value->harga_satuan }}">{{ $value->category }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <i class="fa fa-chevron-down"></i>
+                                    <div class="invalid-feedback d-block invalid">
+                                        <div id="category_invalid-feedback"></div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-6 position-relative">
+                                    <label for="quantity">Quantity</label>
+                                    <input type="number" name="quantity" id="quantity" placeholder="Quantity"
+                                        class="form-control" required>
+                                    <div class="invalid-feedback d-block invalid">
+                                        <div id="quantity_invalid-feedback"></div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row mb-4">
-                            <div class="col-lg-12 col-12 position-relative">
-                                <input type="text" name="total_harga" id="total_harga" placeholder="Total Harga"
-                                    class="form-control" readonly>
-                                <div class="invalid-feedback d-block invalid">
-                                    <div id="total_harga_invalid-feedback"></div>
+                            <div class="row mb-4">
+                                <div class="col-lg-12 col-12 position-relative">
+                                    <label for="payment_method">Payment Method</label>
+                                    <select type="text" name="payment_method" id="payment_method"
+                                        class="form-control" required>
+                                        <option value="">Select Payment Method</option>
+                                        <option value="Cash">Cash</option>
+                                        <option value="EDC/QRIS">EDC/QRIS</option>
+                                    </select>
+                                    <div class="invalid-feedback d-block invalid">
+                                        <div id="payment_method_invalid-feedback"></div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row mb-4">
-                            <div class="col-lg-12 col-12 position-relative">
-                                <input type="text" name="name" id="name" placeholder="Masukan Nama"
-                                    class="form-control" required>
-                                <div class="invalid-feedback d-block invalid">
-                                    <div id="name_invalid-feedback"></div>
-                                </div>
+                            <div class="col-12 text-center">
+                                <button id="btn-submit" type="submit" class="button-search">Submit <i
+                                        class="fa fa-arrow-right ml-2"
+                                        style="
+                                position: inherit;
+                                color: #fff;"></i></button>
                             </div>
-                        </div>
-                        <div class="row mb-4">
-                            <div class="col-lg-12 col-12 position-relative">
-                                <input type="email" name="email" id="email" placeholder="Masukan Email"
-                                    class="form-control" required>
-                                <div class="invalid-feedback d-block invalid">
-                                    <div id="email_invalid-feedback"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mb-4">
-                            <div class="col-lg-12 col-12 position-relative">
-                                <input type="text" name="no_telp" id="no_telp" placeholder="Masukan No HP"
-                                    class="form-control" required>
-                                <div class="invalid-feedback d-block invalid">
-                                    <div id="no_telp_invalid-feedback"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 text-center">
-                            <button type="submit" class="button-search">Submit</button>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </section>
         </div>
     </div>
+    {{-- <a href="{{ route('admin.dashboard') }}" class="btn btn-info position-absolute"
+        style="bottom: 10px; left:10px">Report</a> --}}
     <script src="{{ asset('js/jquery.slim.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ url('mobile/js/jquery.min.js') }}"></script>
@@ -157,37 +250,6 @@
         });
     });
 
-    $('#category').on('change', function() {
-        $('#harga_satuan').val(formatRupiah($(this).find('option:selected').attr("data-harga_satuan")));
-    });
-    $('#quantity').on('change keyup keydown', function() {
-        var harga_satuan = remove_titik($('#harga_satuan').val());
-        var quantity = $(this).val();
-        var total_harga = parseInt(harga_satuan) * parseInt(quantity);
-        total_harga = total_harga ? total_harga : 0;
-        $('#total_harga').val(formatRupiah(total_harga));
-    });
-
-    function remove_titik(angka) {
-
-        var regex = /[.,\s]/g;
-
-        var result = angka.replace(regex, '');
-        return result;
-    }
-
-    function formatRupiah(bilangan) {
-        var number_string = bilangan.toString(),
-            sisa = number_string.length % 3,
-            rupiah = number_string.substr(0, sisa),
-            ribuan = number_string.substr(sisa).match(/\d{3}/g);
-
-        if (ribuan) {
-            separator = sisa ? '.' : '';
-            rupiah += separator + ribuan.join('.');
-        }
-        return rupiah
-    }
 
     function resetForm() {
         $('input').removeClass('invalid');
@@ -195,14 +257,18 @@
         $('.invalid-feedback div').html('');
         $('textarea').val('');
         $('select').val('');
-        $('input').val('');
+        $("form").trigger("reset");
 
     }
 
-    $('#form-pos').on('submit', function(e) {
+    var onBtnPrint = (id) => {
+        Swal.close();
+        var url = "{{ route('pos_ticket.cetak', [':id']) }}";
+        url = url.replace(':id', id);
+        return window.location.href = url;
+    };
 
-        e.preventDefault();
-        var formData = $(this).serialize();
+    var onBtnSubmit = (formData) => {
         $.ajax({
             url: "{{ route('pos_ticket.store') }}",
             method: 'POST',
@@ -218,23 +284,23 @@
                 resetForm();
                 $('#name').focus();
 
-                Swal.fire({
-                    title: meta.message,
-                    icon: 'success',
-                    showDenyButton: true,
-                    confirmButtonText: 'OK',
-                    denyButtonText: `Cetak Ticket`,
-                    denyButtonColor: '#3085d6',
-                }).then((result) => {
-                    /* Read more about isConfirmed, isDenied below */
-                    if (result.isConfirmed) {
 
-                    } else if (result.isDenied) {
-                        // Swal.fire('Changes are not saved', '', 'info')
-                        var url = "{{ route('pos_ticket.cetak', [':id']) }}";
-                        url = url.replace(':id', response.data.payment_code);
-                        return window.location.href = url;
-                    }
+                Swal.fire({
+                    imageUrl: '{{ asset('/') . Auth::user()->logo }}',
+                    imageAlt: 'Custom image',
+                    customClass: 'swal-print',
+                    showConfirmButton: false,
+                    imageHeight: 183,
+
+                    allowOutsideClick: false,
+                    html: `
+                        <h3 class="transaction-success">Transaction is successful</h3>
+                        <div class="please-check">Please check your e-ticket</div>
+                        <div class="wrapper-button-swal">
+                            <button onclick="onBtnPrint('${response.data.payment_code}')" class="btn btn-print-ticket swal2-confirm swal2-styled">Print Ticket <i class="fa fa-ticket-alt ml-2"></i></button></br>
+                            <button onclick="onBtnClose()" class="btn btn-done swal2-deny swal2-styled">Done</button>
+                        </div>
+                        `
                 })
             },
             error: function(error) {
@@ -265,7 +331,84 @@
                 }
             },
         });
+    };
+    var onBtnClose = () => {
+        Swal.close();
+    };
+
+
+    $('#form-pos').on('submit', function(e) {
+
+        e.preventDefault();
+        var quantity = $('#quantity').val();
+        var harga_satuan = $('#category').find(":selected").data('harga_satuan');
+        var total_harga = quantity * harga_satuan;
+        var total_harga = formatRupiah(total_harga, 'Rp. ');
+
+        var formData = $(this).serialize();
+        Swal.fire({
+            imageUrl: '{{ asset('/') . Auth::user()->logo }}',
+            customClass: 'swal-wide',
+            imageAlt: 'Custom image',
+            allowOutsideClick: false,
+            backdrop: true,
+            imageHeight: 183,
+            showConfirmButton: false,
+            html: `
+            <h3 class="transaction-success">Confirm Purchase</h3>
+            <div class="please-check">You are one step away from completing the purchase, are you sure?</div>
+            <hr>
+            <div class="container container-form">
+                <div class="mb-4 row">
+                    <div class="col-6">
+                        <label class="float-left">Full Name</label>
+                        <input type="text" name="fullname" placeholder="Full Name"
+                        class="form-control" required readonly value="${$('#fullname').val()}">
+                    </div>
+                    <div class="col-6">
+                        <label class="float-left">Category</label>
+                        <input type="text" name="category" placeholder="Full Name" class="form-control" required readonly value="${$('#category').find(":selected").html()}">
+                    </div>
+                </div>
+                <div class="mb-4 row">
+                    <div class="col-6">
+                        <label class="float-left">Total Quantity</label>
+                        <input type="text" name="total_quantity" placeholder="Full Name" class="form-control" required readonly value="${$('#quantity').val()}">
+                    </div>
+                    <div class="col-6">
+                        <label class="float-left">Total Price</label>
+                        <input type="text" name="total_price" id="total_price" placeholder="Full Name" class="form-control" required readonly value="${total_harga}">
+                    </div>
+                </div>
+                <div class="mb-4 row">
+                    <div class="col-12">
+                        <label class="float-left">Payment Method</label>
+                        <input type="text" name="payment_method" placeholder="Full Name" class="form-control" required readonly value="${$('#payment_method').val()}">
+                    </div>
+                </div>
+                    
+            <div>
+            <div class="wrapper-button-swal">
+                <button onclick="onBtnSubmit('${formData}')" class="btn btn-print-ticket swal2-confirm swal2-styled btn-success">Confirm</button>
+                <button onclick="onBtnClose()" class="btn btn-done swal2-deny swal2-styled btn-outline-danger">Cancel</button>
+            </div>
+            `
+        })
+
     });
+
+    function formatRupiah(angka, prefix) {
+        var number_string = angka.toString(),
+            sisa = number_string.length % 3,
+            rupiah = number_string.substr(0, sisa),
+            ribuan = number_string.substr(sisa).match(/\d{3}/g);
+
+        if (ribuan) {
+            separator = sisa ? '.' : '';
+            rupiah += separator + ribuan.join('.');
+        }
+        return prefix + rupiah;
+    }
 </script>
 
 </html>

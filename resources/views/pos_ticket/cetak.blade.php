@@ -23,10 +23,10 @@
         html,
         body {
             width: 4.13in;
-            height: 5.83in;
+            height: 7.50in;
             margin: 0;
             padding: 0;
-            font-family: 'Kanit', 'Arial';
+            font-family: 'Arial';
         }
 
         #utama td {
@@ -42,8 +42,9 @@
 
         @media print {
             @page {
-                size: 4.13in 5.83in;
+                size: 4.13in 7.50in;
                 margin: 0;
+
             }
 
             #non-printable {
@@ -53,10 +54,10 @@
             html,
             body {
                 width: 4.13in;
-                height: 5.83in;
+                height: 7.50in;
                 margin: 0;
                 padding: 0;
-                font-family: 'Kanit', 'Arial';
+                font-family: 'Arial';
             }
 
             .content {
@@ -69,23 +70,34 @@
     </style>
 </head>
 
-
 <body>
     <a id="non-printable" style="width:100%" href="{{ route('pos_ticket.index') }}">
         <button>Kembali</button>
     </a>
-    <div class="content">
-        <table width="100%" id="utama" style="margin-top: 300px;">
-            <tr>
-                <td style="text-align: center">
-                    {{ $redeem_voucher->name }}
-                    <hr>
-                    {{ $redeem_voucher->nama_perusahaan }}
-                </td>
-            </tr>
-        </table>
-        <button onclick="window.print();" id="non-printable">Cetak Halaman</button>
-    </div>
+    @foreach ($pos_ticket as $key => $pos)
+        <div class="content">
+            <div style="font-size: 36px">
+                {{ $pos->category }}
+            </div>
+            <br>
+            <br>
+            <br>
+            <table width="100%" style="font-size: 12px">
+                <tr>
+
+                    <th width="50%" align="left" style="padding-left:43px; padding-bottom: 67px">
+                        {{ \Carbon\Carbon::parse($pos->created_at)->format('l, F jS Y \a\t h:i:s A') }}
+                    </th>
+                    <th>
+
+                        {!! QrCode::size(110)->generate($pos->barcode_no) !!}
+                    </th>
+                </tr>
+            </table>
+            <br>
+            <button onclick="window.print();" id="non-printable">Cetak Halaman</button>
+        </div>
+    @endforeach
 
 
 </body>
