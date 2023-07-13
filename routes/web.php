@@ -120,6 +120,7 @@ Route::group(['middleware' => ['auth', 'is_admin'], 'prefix' => 'admin'], functi
     Route::get('/home', [HomeController::class, 'index'])->name('home.index');
     Route::group(['prefix' => 'redeem_voucher'], function () {
         Route::get('/', [RedeemVoucherController::class, 'index'])->name('redeem_voucher.index');
+        Route::get('/checkin_desktop', [RedeemVoucherController::class, 'checkin_desktop'])->name('checkin_desktop');
         Route::get('/choose', [RedeemVoucherController::class, 'choose'])->name('redeem_voucher.choose');
         Route::get('/barcode', [RedeemVoucherController::class, 'barcode'])->name('redeem_voucher.barcode');
         Route::get('/v2', [RedeemVoucherController::class, 'index_v2'])->name('redeem_voucher.index_v2');

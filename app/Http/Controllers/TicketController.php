@@ -89,6 +89,7 @@ class TicketController extends Controller
         $jumlah_checkin = 0;
         $jumlah_checkout = 0;
         $kategory_aset = [];
+        $gate_aset = [];
         foreach ($ticket as $key => $value) :
             if ($key >= $max_ticket) {
                 break;
@@ -100,10 +101,12 @@ class TicketController extends Controller
             if ($value->checkin && $value->checkout == null) :
                 $jumlah_checkin++;
                 isset($kategory_aset[$value->category]['checkin']) ? $kategory_aset[$value->category]['checkin']++ : $kategory_aset[$value->category]['checkin'] = 1;
+                isset($gate_aset[$value->gate_pintu_checkin]['checkin']) ? $gate_aset[$value->gate_pintu_checkin]['checkin']++ : $gate_aset[$value->gate_pintu_checkin]['checkin'] = 1;
             endif;
             if ($value->checkout) :
                 $jumlah_checkout++;
                 isset($kategory_aset[$value->category]['checkout']) ? $kategory_aset[$value->category]['checkout']++ : $kategory_aset[$value->category]['checkout'] = 1;
+                isset($gate_aset[$value->gate_pintu_checkout]['checkout']) ? $gate_aset[$value->gate_pintu_checkout]['checkout']++ : $gate_aset[$value->gate_pintu_checkout]['checkout'] = 1;
             endif;
         endforeach;
         $ticket_history = TicketHistory::select(DB::raw('count(id) as jumlah'), DB::raw("date_part('hour', created_at) as hour"))->groupBy(DB::raw("date_part('hour', created_at)"))->orderBy('hour', 'asc')->get();
@@ -128,7 +131,7 @@ class TicketController extends Controller
 
 
 
-        return view('admin.dashboard_ticket', compact('kategory_aset', 'jumlah_pending', 'jumlah_checkin', 'jumlah_checkout', 'ticket', 'event', 'request', 'ticket_not_valid', 'data_ticket_history', 'label_ticket_history', 'tanggal', 'is_current'));
+        return view('admin.dashboard_ticket', compact('kategory_aset', 'jumlah_pending', 'jumlah_checkin', 'jumlah_checkout', 'ticket', 'event', 'request', 'ticket_not_valid', 'data_ticket_history', 'label_ticket_history', 'tanggal', 'is_current', 'gate_aset'));
     }
 
     public function post_dashboard_ticket(Request $request)

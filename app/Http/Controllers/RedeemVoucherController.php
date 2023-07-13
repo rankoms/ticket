@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\VoucherRedeemExport;
 use App\Helpers\ResponseFormatter;
 use App\Models\Event;
+use App\Models\EventCategory;
 use App\Models\RedeemHistory;
 use App\Models\RedeemVoucher;
 use App\Models\Ticket;
@@ -32,6 +33,12 @@ class RedeemVoucherController extends Controller
     public function barcode()
     {
         return view('redeem_voucher_barcode');
+    }
+    public function checkin_desktop()
+    {
+        $event = EventCategory::groupBy('event')->select('event')->first()->event;
+        $category = 'All Category';
+        return view('checkin_desktop', compact('event', 'category'));
     }
 
     public function index_v2()

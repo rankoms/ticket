@@ -124,7 +124,7 @@
             <div class="col-xl-3 col-sm-12 p-0 m-0 position-relative full">
                 <div class="row p-0 m-0 position-relative">
                     <div class="col-6 col-xl-12 col-sm-6 half atas p-2 m-0 position-relative">
-                        <a href="{{ route('home') }}">
+                        <a href="{{ route('checkin_desktop') }}">
                             <div class="half atas bg-white">
                                 <div class="half half-atas-bg bg-yellow wrapper">
                                     <div class="">

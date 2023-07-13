@@ -30,8 +30,8 @@ Route::get('/user', [TicketController::class, 'user']);
 
 Route::get('/dashboard_ticket', [TicketController::class, 'dashboard_ticket']);
 Route::group(['prefix' => 'scanner'], function () {
-    Route::post('/checkin', [TicketController::class, 'checkin']);
-    Route::post('/checkout', [TicketController::class, 'checkout']);
+    Route::post('/checkin', [TicketController::class, 'checkin'])->name('api.ticket.checkin');
+    Route::post('/checkout', [TicketController::class, 'checkout'])->name('api.ticket.checkout');
 
     Route::post('/sync', [TicketController::class, 'sync']);
 });
