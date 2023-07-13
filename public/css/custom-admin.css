@@ -23,6 +23,13 @@ body {
     background-color: #34B5AD;
 }
 
+.bg-sold{
+    background-color: #992320;
+}
+
+.bg-sold-day{
+    background-color: #1E4161;
+}
 .header h1 {
     font-family: 'Poppins';
     font-style: normal;

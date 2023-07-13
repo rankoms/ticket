@@ -45,14 +45,9 @@
     <link href="{{ url('css/examples.css') }}" rel="stylesheet">
     <style>
         @font-face {
-            font-family: 'Poppins';
-            src: url('/fonts/Poppins/Poppins-Regular.ttf');
-        }
+            font-family: 'Sofia Pro Bold';
+            src: url('{{ asset('fonts/Sofia_Pro_Bold.otf') }}');
 
-        @font-face {
-            font-family: 'Poppins';
-            src: url('/fonts/Poppins/Poppins-SemiBold.ttf');
-            font-weight: 700;
         }
 
         .swal2-modal {
@@ -104,14 +99,14 @@
         .swal-wide label,
         .swal-small label {
             margin-bottom: 10px;
-            font-family: 'Poppins';
+            font-family: 'Sofia Pro Bold';
             font-weight: 900;
             font-size: 16px;
         }
 
         .swal-wide input,
         .swal-small input {
-            font-family: 'Poppins';
+            font-family: 'Sofia Pro Bold';
             font-weight: 900;
             font-size: 16px;
         }
@@ -121,7 +116,7 @@
             background: #0069C9 !important;
             color: #fff !important;
             padding: 8px 47px;
-            font-family: 'Poppins';
+            font-family: 'Sofia Pro Bold';
             font-size: 14px;
         }
 
@@ -130,13 +125,13 @@
             background: #FFA500 !important;
             color: #fff !important;
             padding: 8px 47px;
-            font-family: 'Poppins';
+            font-family: 'Sofia Pro Bold';
         }
 
         .transaction-success {
             margin: 0;
             padding: 0;
-            font-family: 'Poppins';
+            font-family: 'Sofia Pro Bold';
             font-style: normal;
             font-weight: 600;
             font-size: 19px;
@@ -148,7 +143,7 @@
 
         .please-check {
 
-            font-family: 'Poppins';
+            font-family: 'Sofia Pro Bold';
             font-style: normal;
             font-weight: 300;
             font-size: 15px;
@@ -166,7 +161,7 @@
         }
 
         .swal2-confirm {
-            font-family: 'Poppins';
+            font-family: 'Sofia Pro Bold';
             background-color: #34B53A;
             width: 200px;
         }
@@ -174,7 +169,7 @@
         .swal2-deny {
 
             font-size: 14px !important;
-            font-family: 'Poppins';
+            font-family: 'Sofia Pro Bold';
             width: 200px;
             background: #992320;
         }
@@ -194,7 +189,7 @@
         .logo-text {
             color: #FFF;
             font-size: 40px;
-            font-family: Poppins;
+            font-family: Sofia Pro Bold;
             font-weight: 600;
             letter-spacing: -1px;
             margin-top: 10px;
@@ -203,7 +198,7 @@
         h1 {
             color: #052440;
             font-size: 42px;
-            font-family: Poppins;
+            font-family: Sofia Pro Bold;
             font-weight: 700;
             letter-spacing: -1px;
             padding: 0;
@@ -217,14 +212,14 @@
         .text-scanner {
             color: #878787;
             font-size: 17px;
-            font-family: Poppins;
+            font-family: Sofia Pro Bold;
             text-align: center
         }
 
         #btn-submit {
             color: #FFF;
             font-size: 22px;
-            font-family: Poppins;
+            font-family: Sofia Pro Bold;
             font-weight: 600;
             line-height: 100%;
             padding: 15px;
@@ -241,7 +236,7 @@
         .no_qrcode {
             color: #000;
             font-size: 12px;
-            font-family: Poppins;
+            font-family: Sofia Pro Bold;
             font-weight: 700;
             margin-top: 7px;
         }
@@ -420,7 +415,7 @@
                             class="form-control" required readonly disabled value="${data.data.name}">
                         </div>
                         <div class="col-12 p-0 m-0">
-                            <label class="float-start">Category</label>
+                            <label class="float-start">Company</label>
                             <input type="text" name="category" placeholder="Full Name" class="form-control" required readonly value="${data.data.kategory}" disabled>
                         </div>
                     </div>
@@ -481,7 +476,7 @@
                             class="form-control" required readonly disabled value="${data.data.name}">
                         </div>
                         <div class="col-12 p-0 m-0">
-                            <label class="float-start">Category</label>
+                            <label class="float-start">Company</label>
                             <input type="text" name="category" placeholder="Full Name" class="form-control" required readonly value="${data.data.kategory}" disabled>
                         </div>
                     </div>

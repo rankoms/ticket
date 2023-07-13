@@ -4,11 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Cetak Ticket</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Sofia Pro Bold:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-        rel="stylesheet">
     <style>
         @font-face {
             font-family: 'Sofia Pro Bold';
@@ -33,12 +28,13 @@
             margin: 0;
             padding: 0;
             font-family: 'Sofia Pro Bold', 'Arial';
+            overflow: hidden;
         }
 
         #utama td {
             text-align: left;
-            padding-left: 20px;
-            padding-right: 10px
+            /* padding-left: 10px;
+            padding-right: 10px; */
         }
 
         #utama tr {
@@ -78,7 +74,7 @@
 
             .content {
                 text-align: center;
-                height: 100%;
+                height: 300%;
                 padding: 0;
                 margin: 0;
             }
@@ -90,36 +86,36 @@
                 background-color: #000;
                 border-top: 1px solid #000;
             }
-
         }
     </style>
 </head>
 
 <body>
-    <a id="non-printable" style="width:100%" href="{{ route('pos_ticket.index') }}">
+    <a id="non-printable" style="width:100%" href="{{ route('pos_ticket.name_pt') }}">
         <button>Kembali</button>
     </a>
-    <div class="content">
-        <table width="100%" id="utama" style="margin-top: 370px;">
-            <tr>
-                <td style="text-align: center ; font-size: 30px">
-                    <div
-                        style="font-size: {{ strlen($redeem_voucher->name) >= 25 ? 20 : 30 }}px;line-height: 1;text-align:center;">
-                        <span>{{ $redeem_voucher->name }}</span>
-                    </div>
-                    <hr>
-
-                    <div
-                        style="font-size: {{ strlen($redeem_voucher->nama_perusahaan) >= 20 ? 20 : 30 }}px;line-height: 1;text-align:center;">
-                        <span>
-                            {{ $redeem_voucher->nama_perusahaan }}
-                        </span>
-                    </div>
-                </td>
-            </tr>
-        </table>
-        <button onclick="window.print();" id="non-printable">Cetak Halaman</button>
-    </div>
+    @foreach ($pos_ticket as $key => $pos)
+        <div class="content">
+            <table width="100%" id="utama" style="margin-top: 370px;">
+                <tr>
+                    <td style="text-align: center ; font-size: 30px">
+                        <div
+                            style="font-size: {{ strlen($pos->name) >= 25 ? 20 : 30 }}px;line-height: 1;text-align:center;">
+                            <span>{{ $pos->name }}</span>
+                        </div>
+                        <hr>
+                        <div
+                            style="font-size: {{ strlen($pos->category) >= 20 ? 20 : 30 }}px;line-height: 1;text-align:center;">
+                            <span>
+                                {{ $pos->category }}
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <button onclick="window.print();" id="non-printable">Cetak Halaman</button>
+        </div>
+    @endforeach
 
 
 </body>
@@ -129,7 +125,7 @@
 
     function back() {
         // window.history.back();
-        window.location.href = "{{ route('redeem_voucher.ticket') }}"
+        window.location.href = "{{ route('pos_ticket.name_pt') }}"
     }
 </script>
 

@@ -33,6 +33,7 @@
                                     <option value="ticket">Ticket</option>
                                     <option value="redeem_voucher">Redeem (Count)</option>
                                     <option value="redeem_voucher_list">Redeem (List)</option>
+                                    <option value="pos">POS</option>
                                 </select>
                                 <i class="fa fa-chevron-down"></i>
                             </div>

@@ -84,10 +84,14 @@ Route::group(['middleware' => ['is_admin']], function () {
 
     Route::group(['prefix' => 'pos_ticket'], function () {
         Route::get('/', [PosTicketController::class, 'index'])->name('pos_ticket.index');
+        Route::get('/name_pt', [PosTicketController::class, 'name_pt'])->name('pos_ticket.name_pt');
         Route::get('/cetak/{id}', [PosTicketController::class, 'cetak'])->name('pos_ticket.cetak');
+        Route::get('/cetak_name_pt/{id}', [PosTicketController::class, 'cetak_name_pt'])->name('pos_ticket.cetak_name_pt');
         Route::post('/store', [PosTicketController::class, 'store'])->name('pos_ticket.store');
+        Route::post('/store_name_pt', [PosTicketController::class, 'store_name_pt'])->name('pos_ticket.store_name_pt');
         Route::get('/dashboard', [PosTicketController::class,  'dashboard'])->name('pos_ticket.dashboard');
         Route::post('/category_select', [PosTicketController::class, 'category_select'])->name('pos_ticket.category_select');
+        Route::get('/excel_pos', [PosTicketController::class, 'excel_pos'])->name('pos_ticket.excel_pos');
     });
     Route::group(['prefix' => 'scanner'], function () {
         Route::get('/store_pilih_event', [ScannerController::class, 'store_pilih_event'])->name('scanner.store_pilih_event');

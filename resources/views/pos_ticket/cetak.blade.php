@@ -69,63 +69,23 @@
     </style>
 </head>
 
+
 <body>
     <a id="non-printable" style="width:100%" href="{{ route('pos_ticket.index') }}">
         <button>Kembali</button>
     </a>
-    @foreach ($pos_ticket as $key => $pos)
-        <div class="content">
-            {!! QrCode::size(110)->generate($pos->barcode_no) !!}
-            <br>
-            <br>
-            <br>
-            <img src="{{ $logo }}" alt="" width="auto" height="70px" style="margin-bottom: 20px">
-            <br>
-            <table width="100%" id="utama">
-                <tr>
-                    <td>
-                        <span>Event</span>
-                        <br>
-                        <span>{{ $pos->event }}</span>
-                    </td>
-                    <td>Tempat<br>
-                        <span>{{ $pos->vanue }}</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Tanggal Event
-                        <br>
-                        <span>{{ $pos->date }}</span>
-                    </td>
-                    <td>Kategori
-                        <br>
-                        <span>{{ $pos->category }}</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Harga
-                        <br>
-                        <span>Rp. {{ formatter_number($pos->harga_satuan) }}</span>
-                    </td>
-                    <td>ID Pesanan
-                        <br>
-                        <span>{{ $pos->payment_code }}</span>
-                    </td>
-                </tr>
-            </table>
-            {{-- <table width="100%">
-                <tr>
-                    <td>{!! QrCode::size(110)->generate($pos->barcode_no) !!}</td>
-                    <td>
-                        <img src="{{ $logo }}" alt="" width="55px" height="55px"
-                            style="margin-bottom: 20px">
-                    </td>
-                </tr>
-
-            </table> --}}
-            <button onclick="window.print();" id="non-printable">Cetak Halaman</button>
-        </div>
-    @endforeach
+    <div class="content">
+        <table width="100%" id="utama" style="margin-top: 300px;">
+            <tr>
+                <td style="text-align: center">
+                    {{ $redeem_voucher->name }}
+                    <hr>
+                    {{ $redeem_voucher->nama_perusahaan }}
+                </td>
+            </tr>
+        </table>
+        <button onclick="window.print();" id="non-printable">Cetak Halaman</button>
+    </div>
 
 
 </body>
