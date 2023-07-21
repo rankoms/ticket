@@ -177,7 +177,7 @@
         body {
             width: 100%;
             height: 100%;
-            background: url('../../images/redeem/panel.png') center top no-repeat;
+            background: url('{{ asset('images/bg/' . Auth::user()->bg) }}') center top no-repeat;
             background-size: cover;
             position: relative;
         }
