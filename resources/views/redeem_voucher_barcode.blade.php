@@ -267,8 +267,8 @@
                                 <div class="text-scanner">Please scan the barcode or enter your e-ticket number.</div>
                             </div>
                         </div>
-                        <input class="form-control mb-3" id="voucher" name="voucher" size="16" type="text"
-                            placeholder="" autofocus autocomplete="off">
+                        <input class="form-control mb-3" id="voucher" name="voucher" type="text" placeholder=""
+                            autofocus autocomplete="off">
                         <button class="btn " style="width:100%" type="submit" id="btn-submit"
                             autofocus="false">Submit</button>
                     </div>
