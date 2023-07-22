@@ -373,7 +373,7 @@
                             <input type="text" name="category" placeholder="Full Name" class="form-control" required readonly value="${data.data.kategory}" disabled>
                         </div>
                         
-                        <div class="col-12 p-0 m-0 mb-3">
+                        <div class="col-12 p-0 m-0 mb-3" style="display:none">
                             <label class="float-start">QR Code Wristband</label>
                             <input type="text" name="barcode_no" id="barcode_no" placeholder="QR Code Wristband" class="form-control" required readonly value="${data.data.barcode_no}" disabled>
                         </div>
@@ -438,9 +438,9 @@
                                 <label class="float-start">Category</label>
                                 <input type="text" name="category" placeholder="Full Name" class="form-control" required readonly value="${data.data.kategory}" disabled>
                             </div>
-                            <div class="col-12 p-0 m-0 mb-3">
+                            <div class="col-12 p-0 m-0 mb-3" style="display:none">
                                 <label class="float-start">QR Code Wristband</label>
-                                <input type="text" name="barcode_no" id="barcode_no" placeholder="QR Code Wristband" class="form-control" required autofocus>
+                                <input type="text" name="barcode_no" id="barcode_no" placeholder="QR Code Wristband" class="form-control"  autofocus>
                             </div>
                         </div>
                         <div class="col-4">
