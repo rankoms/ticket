@@ -44,6 +44,7 @@ class TicketCurrentExport implements FromView
         $jumlah_checkin = 0;
         $jumlah_checkout = 0;
         $kategory_aset = [];
+        $gate_aset = [];
         foreach ($ticket as $key => $value) :
             if ($key >= $max_ticket) {
                 break;
@@ -55,10 +56,12 @@ class TicketCurrentExport implements FromView
             if ($value->checkin && $value->checkout == null) :
                 $jumlah_checkin++;
                 isset($kategory_aset[$value->category]['checkin']) ? $kategory_aset[$value->category]['checkin']++ : $kategory_aset[$value->category]['checkin'] = 1;
+                isset($gate_aset[$value->gate_pintu_checkin]['checkin']) ? $gate_aset[$value->gate_pintu_checkin]['checkin']++ : $gate_aset[$value->gate_pintu_checkin]['checkin'] = 1;
             endif;
             if ($value->checkout) :
                 $jumlah_checkout++;
                 isset($kategory_aset[$value->category]['checkout']) ? $kategory_aset[$value->category]['checkout']++ : $kategory_aset[$value->category]['checkout'] = 1;
+                isset($gate_aset[$value->gate_pintu_checkout]['checkout']) ? $gate_aset[$value->gate_pintu_checkout]['checkout']++ : $gate_aset[$value->gate_pintu_checkout]['checkout'] = 1;
             endif;
         endforeach;
 
@@ -69,7 +72,8 @@ class TicketCurrentExport implements FromView
             'event' => $request->event,
             'jumlah_pending' => $jumlah_pending,
             'jumlah_checkin' => $jumlah_checkin,
-            'jumlah_checkout' => $jumlah_checkout
+            'jumlah_checkout' => $jumlah_checkout,
+            'gate_aset' => $gate_aset
 
         ]);
     }
