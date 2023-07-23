@@ -326,7 +326,7 @@
             <hr>
             <div class="wrapper-button-swal">
                 <button onclick="onPrintNow('${id}')" class="btn btn-done swal2-success swal2-styled btn-primary"><i class="fa fa-ticket-alt me-3"></i>Print now</button>
-                <button onclick="onBtnClose()" class="btn btn-done swal2-deny swal2-styled btn-outline-danger">Cancel</button>
+                <button onclick="onBtnClose()" type="button" class="btn btn-done swal2-deny swal2-styled btn-outline-danger">Cancel</button>
             </div>`,
             showCancelButton: false,
             showConfirmButton: false,
