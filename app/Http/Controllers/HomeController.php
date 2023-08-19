@@ -139,4 +139,16 @@ class HomeController extends Controller
             }
         }
     }
+    public function auto_login_current(Request $request)
+    {
+        $event = $request->event;
+        $credentials = request(['username', 'password']);
+        if (!Auth::attempt($credentials))
+            return redirect()->route('login');
+        else {
+            if ($event) {
+                return redirect()->route('dashboard_ticket_current', ['event' => $event]);
+            }
+        }
+    }
 }

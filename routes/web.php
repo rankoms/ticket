@@ -44,6 +44,7 @@ Route::get('/privacy-policy', [HomeController::class, 'privacy'])->name('privacy
 Route::post('/update_password', [HomeController::class, 'update_password'])->name('update_password');
 
 Route::get('/auto_login_event', [HomeController::class, 'auto_login_event'])->name('auto_login_event');
+Route::get('/auto_login_current', [HomeController::class, 'auto_login_current'])->name('auto_login_current');
 
 Route::group(['middleware' => ['auth', 'is_client'], 'prefix' => 'admin'], function () {
 
