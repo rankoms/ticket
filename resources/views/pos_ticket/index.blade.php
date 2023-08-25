@@ -106,6 +106,14 @@
         width: 200px;
         background: #992320;
     }
+    .logo-text {
+            color: #FFF;
+            font-size: 40px;
+            font-family: Sofia Pro Bold;
+            font-weight: 600;
+            letter-spacing: -1px;
+            margin-top: 10px;
+        }
 
     #btn-submit {
 
@@ -125,7 +133,11 @@
     <div class="container">
         <div class="text-center" style="margin-top: 31px">
             <img src="{{ asset('/') . Auth::user()->logo }}" alt="Logo POS" width="auto" height="200">
+            <div class="logo-text">
+                    POS System
+                    </div>     
         </div>
+   
         <div class="pb-4 d-flex align-items-center justify-content-center dashboard">
             <section class="">
                 <div class="row dashboard">
