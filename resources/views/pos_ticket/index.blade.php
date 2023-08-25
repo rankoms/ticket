@@ -194,8 +194,8 @@
                                     <select type="text" name="payment_method" id="payment_method"
                                         class="form-control" required>
                                         <option value="">Select Payment Method</option>
-                                        <option value="Cash">Cash</option>
-                                        <option value="EDC/QRIS">EDC/QRIS</option>
+                                        <option value="Cash">QRIS</option>
+                                        <option value="EDC/QRIS">EDC</option>
                                     </select>
                                     <div class="invalid-feedback d-block invalid">
                                         <div id="payment_method_invalid-feedback"></div>

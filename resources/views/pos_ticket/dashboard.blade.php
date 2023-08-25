@@ -15,11 +15,11 @@
 </head>
 <style>
     body {
-        width: 100%;
-        height: 100%;
-        background: url('../../images/redeem/panelreport.png') center top no-repeat;
+        font-family: 'Poppins';
+        background: url('{{ asset('images/bg-pos.png') }}');
+        background-repeat: no-repeat;
         background-size: cover;
-        position: relative;
+        height: 100%;
     }
 </style>
 
@@ -53,21 +53,44 @@
                     </div>
                     <div class="col-lg-10 col-sm-12">
                         <div class="row gx-1">
-                            <div class="col-lg-12 col-sm-12 pl-2 pr-1">
-                                <div class="small-box bg-ijo justify-content-around d-flex">
+                            <div class="col-lg-4 col-sm-12 pl-2 pr-1">
+                                <div class="small-box bg-ijo text-center">
                                     <div class="inner text-center pt-3">
-                                        <p>TOTAL REGISTRATION</p>
+                                        <p>Total Revenue</p>
+                                        <h3>Rp. {{ number_format($total_revenue, 0, ',', '.') }}</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-sm-12 pl-2 pr-1">
+                                <div class="small-box bg-sold justify-content-around d-flex">
+                                    <div class="icon">
+                                        <i class="fa fa-shopping-cart"></i>
+                                    </div>
+                                    <div class="inner text-center pt-3">
+                                        <p>Total Ticket Sold</p>
                                         <h3>{{ number_format($tiket_sold, 0, ',', '.') }}</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-sm-12 pl-2">
+                                <div class="small-box bg-sold-day justify-content-around d-flex">
+                                    <div class="icon">
+                                        <i class="fa fa-ticket-alt"></i>
+                                    </div>
+                                    <div class="inner text-center">
+                                        <p>Ticket Sold / Day</p>
+                                        <h3>{{ number_format($tiket_sold_day, 0, ',', '.') }}</h3>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="mt-4 row card p-4">
+                <div class="mt-4 row">
                     <div class="col-sm-12">
                         <div class="row">
                             <div class="col-sm-3">
+
                                 <select name="user_id" id="user_id" class="form-control">
                                     <option value="">Pilih Admin</option>
                                     @foreach ($data_user as $key => $value)
@@ -90,12 +113,15 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Full Name</th>
-                                    <th>Title</th>
-                                    <th>Company</th>
+                                    <th>Name</th>
                                     <th>Email</th>
-                                    <th>Industry</th>
-                                    <th>Experience</th>
+                                    <th>Phone</th>
+                                    <th>Category</th>
+                                    <th>Qty</th>
+                                    <th>Date</th>
+                                    <th>Admin By</th>
+                                    <th>Total Harga</th>
+                                    <th>Payment Method</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -107,12 +133,15 @@
                                     <tr>
                                         <th>{{ $no++ }}</th>
                                         <th>{{ $value->name }}</th>
-                                        <th>{{ $value->title }}</th>
-                                        <th>{{ $value->category }}</th>
                                         <th>{{ $value->email }}</th>
-                                        <th>{{ $value->industry }}</th>
-                                        <th>{{ $value->experience }}</th>
-                                        <th><a href="{{ route('pos_ticket.cetak_name_pt', ['id' => $value->payment_code]) }}"
+                                        <th>{{ $value->no_telp }}</th>
+                                        <th>{{ $value->category }}</th>
+                                        <th>{{ $value->quantity }}</th>
+                                        <th>{{ $value->date_minutes }}</th>
+                                        <th>{{ $value->user->name }}</th>
+                                        <th>Rp. {{ number_format($value->total_harga, 0, ',', '.') }}</th>
+                                        <th>{{ $value->payment_method }}</th>
+                                        <th><a href="{{ route('pos_ticket.cetak', ['id' => $value->payment_code]) }}"
                                                 target="_blank" class="btn btn-success">Cetak</a>
                                         </th>
                                     </tr>

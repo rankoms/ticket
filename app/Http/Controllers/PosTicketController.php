@@ -43,7 +43,7 @@ class PosTicketController extends Controller
         $user_id = $request->user_id;
         $start_date = $request->start_date;
         $end_date = $request->end_date;
-        $pos = PosTicket::with('user')->orderBy('id', 'desc');
+        $pos = PosTicket::with('user')->select('name', 'event', 'category', 'email', 'no_telp', 'payment_code', 'total_harga', 'quantity', 'user_id', 'payment_method', 'date', DB::raw("DATE_TRUNC('minute', created_at) as date_minutes"))->groupBy('payment_code', 'email', 'name', 'event', 'category', 'no_telp', 'total_harga', 'quantity', 'user_id', 'payment_method', 'date', 'date_minutes')->orderBy('date_minutes', 'desc');
 
         $user = $pos;
         foreach ($user->get() as $key => $value) :
@@ -60,6 +60,7 @@ class PosTicketController extends Controller
 
         $pos = $pos->get();
 
+        // dd($pos[0]);
         $total_revenue = 0;
         $tiket_sold = 0;
         $tiket_sold_day = 0;
