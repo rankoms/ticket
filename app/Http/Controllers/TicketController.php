@@ -101,16 +101,72 @@ class TicketController extends Controller
 
     public function table_kategori_aset(Request $request)
     {
-
         $ticket = $this->get_ticket($request)['ticket'];
-        $kategory_aset = (array) $this->ticket($ticket)['kategory_aset'];
+        $kategory_aset = $this->ticket($ticket)['kategory_aset'];
+        $percent_report_current = $request->percent_report_current;
+        if ($percent_report_current) {
+            $kategory_aset = $this->current_kategori_aset($kategory_aset, $percent_report_current);
+        }
+        $data = [];
+        foreach ($kategory_aset as $key => $value) :
+            array_push($data, [
+                'kategory' => $key,
+                'pending' => isset($value['pending']) ? $value['pending'] : 0,
+                'checkin' => isset($value['checkin']) ? $value['checkin'] : 0,
+                'checkout' => isset($value['checkout']) ? $value['checkout'] : 0
+            ]);
+        endforeach;
         $json_data = array(
             "draw"            => intval($request->draw),
-            // "recordsTotal"    => intval($dataCount->count()),
-            // "recordsFiltered" => intval($dataCount->count()),
-            "data"            => json_encode($kategory_aset)
+            "data"            => $data
         );
+        return $json_data;
+    }
 
+    public function table_gate(Request $request)
+    {
+        $ticket = $this->get_ticket($request)['ticket'];
+        $gate_aset = $this->ticket($ticket)['gate_aset'];
+        $percent_report_current = $request->percent_report_current;
+        if ($percent_report_current) {
+            $gate_aset = $this->current_gate_aset($gate_aset, $percent_report_current);
+        }
+        $data = [];
+        foreach ($gate_aset as $key => $value) :
+            array_push($data, [
+                'gate' => $key,
+                'checkin' => isset($value['checkin']) ? $value['checkin'] : 0,
+                'checkout' => isset($value['checkout']) ? $value['checkout'] : 0
+            ]);
+        endforeach;
+        $json_data = array(
+            "draw"            => intval($request->draw),
+            "data"            => $data
+        );
+        return $json_data;
+    }
+
+    public function table_jenis_tiket(Request $request)
+    {
+        $ticket = $this->get_ticket($request)['ticket'];
+        $jenis_tiket = $this->ticket($ticket)['jenis_tiket'];
+        $percent_report_current = $request->percent_report_current;
+        if ($percent_report_current) {
+            $jenis_tiket = $this->current_jenis_tiket($jenis_tiket, $percent_report_current);
+        }
+        $data = [];
+        foreach ($jenis_tiket as $key => $value) :
+            array_push($data, [
+                'jenis_tiket' => $key,
+                'pending' => isset($value['pending']) ? $value['pending'] : 0,
+                'checkin' => isset($value['checkin']) ? $value['checkin'] : 0,
+                'checkout' => isset($value['checkout']) ? $value['checkout'] : 0
+            ]);
+        endforeach;
+        $json_data = array(
+            "draw"            => intval($request->draw),
+            "data"            => $data
+        );
         return $json_data;
     }
     private function get_ticket($request)
