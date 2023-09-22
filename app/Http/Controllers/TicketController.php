@@ -269,12 +269,13 @@ class TicketController extends Controller
         }
         $ticket = $ticket->get();
         $event = Ticket::groupBy('event')->select('event')->orderBy('event')->get();
-        $jumlah_pending = $this->ticket($ticket)['jumlah_pending'];
-        $jumlah_checkin = $this->ticket($ticket)['jumlah_checkin'];
-        $jumlah_checkout = $this->ticket($ticket)['jumlah_checkout'];
-        $kategory_aset = $this->ticket($ticket)['kategory_aset'];
-        $jenis_tiket = $this->ticket($ticket)['jenis_tiket'];
-        $gate_aset = $this->ticket($ticket)['gate_aset'];
+        $ticket = $this->ticket($ticket);
+        $jumlah_pending = $ticket['jumlah_pending'];
+        $jumlah_checkin = $ticket['jumlah_checkin'];
+        $jumlah_checkout = $ticket['jumlah_checkout'];
+        $kategory_aset = $ticket['kategory_aset'];
+        $jenis_tiket = $ticket['jenis_tiket'];
+        $gate_aset = $ticket['gate_aset'];
         $ticket_history = TicketHistory::select(DB::raw('count(id) as jumlah'), DB::raw("date_part('hour', created_at) as hour"))->groupBy(DB::raw("date_part('hour', created_at)"))->orderBy('hour', 'asc')->get();
         $data_ticket_history = [];
         $label_ticket_history = [];

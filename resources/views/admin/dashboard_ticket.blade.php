@@ -254,43 +254,43 @@
                 'excel'
             ],
             destroy: true,
-            ajax: {
-                url: "{{ route('dashboard_ticket.table_kategori_aset') }}",
-                data: {
-                    event: '{{ $request->event }}',
-                    percent_report_current: '{{ isset($percent_report_current) ? $percent_report_current : null }}'
-                },
-                type: "GET"
-            },
-            columns: [{
-                data: null,
-                className: "dt-left editor-delete",
-                orderable: false,
-                "mRender": function(data, type, row) {
-                    return data.kategory;
-                },
-            }, {
-                data: null,
-                className: "dt-center editor-delete",
-                orderable: false,
-                "mRender": function(data, type, row) {
-                    return data.pending;
-                },
-            }, {
-                data: null,
-                className: "dt-center editor-delete",
-                orderable: false,
-                "mRender": function(data, type, row) {
-                    return data.checkin;
-                },
-            }, {
-                data: null,
-                className: "dt-center editor-delete",
-                orderable: false,
-                "mRender": function(data, type, row) {
-                    return data.checkout;
-                },
-            }]
+            // ajax: {
+            //     url: "{{ route('dashboard_ticket.table_kategori_aset') }}",
+            //     data: {
+            //         event: '{{ $request->event }}',
+            //         percent_report_current: '{{ isset($percent_report_current) ? $percent_report_current : null }}'
+            //     },
+            //     type: "GET"
+            // },
+            // columns: [{
+            //     data: null,
+            //     className: "dt-left editor-delete",
+            //     orderable: false,
+            //     "mRender": function(data, type, row) {
+            //         return data.kategory;
+            //     },
+            // }, {
+            //     data: null,
+            //     className: "dt-center editor-delete",
+            //     orderable: false,
+            //     "mRender": function(data, type, row) {
+            //         return data.pending;
+            //     },
+            // }, {
+            //     data: null,
+            //     className: "dt-center editor-delete",
+            //     orderable: false,
+            //     "mRender": function(data, type, row) {
+            //         return data.checkin;
+            //     },
+            // }, {
+            //     data: null,
+            //     className: "dt-center editor-delete",
+            //     orderable: false,
+            //     "mRender": function(data, type, row) {
+            //         return data.checkout;
+            //     },
+            // }]
         });
         var table_gate = $('#gate_table').DataTable({
             order: [
@@ -301,36 +301,36 @@
                 'excel'
             ],
             destroy: true,
-            ajax: {
-                url: "{{ route('dashboard_ticket.table_gate') }}",
-                data: {
-                    event: '{{ $request->event }}',
-                    percent_report_current: '{{ isset($percent_report_current) ? $percent_report_current : null }}'
-                },
-                type: "GET"
-            },
-            columns: [{
-                data: null,
-                className: "dt-left editor-delete",
-                orderable: false,
-                "mRender": function(data, type, row) {
-                    return data.gate;
-                },
-            }, {
-                data: null,
-                className: "dt-center editor-delete",
-                orderable: false,
-                "mRender": function(data, type, row) {
-                    return data.checkin;
-                },
-            }, {
-                data: null,
-                className: "dt-center editor-delete",
-                orderable: false,
-                "mRender": function(data, type, row) {
-                    return data.checkout;
-                },
-            }]
+            // ajax: {
+            //     url: "{{ route('dashboard_ticket.table_gate') }}",
+            //     data: {
+            //         event: '{{ $request->event }}',
+            //         percent_report_current: '{{ isset($percent_report_current) ? $percent_report_current : null }}'
+            //     },
+            //     type: "GET"
+            // },
+            // columns: [{
+            //     data: null,
+            //     className: "dt-left editor-delete",
+            //     orderable: false,
+            //     "mRender": function(data, type, row) {
+            //         return data.gate;
+            //     },
+            // }, {
+            //     data: null,
+            //     className: "dt-center editor-delete",
+            //     orderable: false,
+            //     "mRender": function(data, type, row) {
+            //         return data.checkin;
+            //     },
+            // }, {
+            //     data: null,
+            //     className: "dt-center editor-delete",
+            //     orderable: false,
+            //     "mRender": function(data, type, row) {
+            //         return data.checkout;
+            //     },
+            // }]
         });
         var table_jenis_tiket = $('#jenis_tiket_table').DataTable({
             order: [
@@ -341,43 +341,43 @@
                 'excel'
             ],
             destroy: true,
-            ajax: {
-                url: "{{ route('dashboard_ticket.table_jenis_tiket') }}",
-                data: {
-                    event: '{{ $request->event }}',
-                    percent_report_current: '{{ isset($percent_report_current) ? $percent_report_current : null }}'
-                },
-                type: "GET"
-            },
-            columns: [{
-                data: null,
-                className: "dt-left editor-delete",
-                orderable: false,
-                "mRender": function(data, type, row) {
-                    return data.jenis_tiket;
-                },
-            }, {
-                data: null,
-                className: "dt-center editor-delete",
-                orderable: false,
-                "mRender": function(data, type, row) {
-                    return data.pending;
-                },
-            }, {
-                data: null,
-                className: "dt-center editor-delete",
-                orderable: false,
-                "mRender": function(data, type, row) {
-                    return data.checkin;
-                },
-            }, {
-                data: null,
-                className: "dt-center editor-delete",
-                orderable: false,
-                "mRender": function(data, type, row) {
-                    return data.checkout;
-                },
-            }]
+            // ajax: {
+            //     url: "{{ route('dashboard_ticket.table_jenis_tiket') }}",
+            //     data: {
+            //         event: '{{ $request->event }}',
+            //         percent_report_current: '{{ isset($percent_report_current) ? $percent_report_current : null }}'
+            //     },
+            //     type: "GET"
+            // },
+            // columns: [{
+            //     data: null,
+            //     className: "dt-left editor-delete",
+            //     orderable: false,
+            //     "mRender": function(data, type, row) {
+            //         return data.jenis_tiket;
+            //     },
+            // }, {
+            //     data: null,
+            //     className: "dt-center editor-delete",
+            //     orderable: false,
+            //     "mRender": function(data, type, row) {
+            //         return data.pending;
+            //     },
+            // }, {
+            //     data: null,
+            //     className: "dt-center editor-delete",
+            //     orderable: false,
+            //     "mRender": function(data, type, row) {
+            //         return data.checkin;
+            //     },
+            // }, {
+            //     data: null,
+            //     className: "dt-center editor-delete",
+            //     orderable: false,
+            //     "mRender": function(data, type, row) {
+            //         return data.checkout;
+            //     },
+            // }]
         });
         setInterval(() => {
             // window.location.reload();
