@@ -264,7 +264,7 @@
             },
             columns: [{
                 data: null,
-                className: "dt-center editor-delete",
+                className: "dt-left editor-delete",
                 orderable: false,
                 "mRender": function(data, type, row) {
                     return data.kategory;
@@ -311,7 +311,7 @@
             },
             columns: [{
                 data: null,
-                className: "dt-center editor-delete",
+                className: "dt-left editor-delete",
                 orderable: false,
                 "mRender": function(data, type, row) {
                     return data.gate;
@@ -351,7 +351,7 @@
             },
             columns: [{
                 data: null,
-                className: "dt-center editor-delete",
+                className: "dt-left editor-delete",
                 orderable: false,
                 "mRender": function(data, type, row) {
                     return data.jenis_tiket;
