@@ -380,34 +380,34 @@
             // }]
         });
         setInterval(() => {
-            // window.location.reload();
+            window.location.reload();
 
-            var data = getJSON('{{ route('post_dashboard_ticket') }}', {
-                _token: '{{ csrf_token() }}',
-                event: '{{ $request->event }}',
-                percent_report_current: '{{ isset($percent_report_current) ? $percent_report_current : null }}'
-            });
+            // var data = getJSON('{{ route('post_dashboard_ticket') }}', {
+            //     _token: '{{ csrf_token() }}',
+            //     event: '{{ $request->event }}',
+            //     percent_report_current: '{{ isset($percent_report_current) ? $percent_report_current : null }}'
+            // });
 
-            $('#time-now').html(data.data.tanggal);
-            $('#jumlah_pending').html(data.data.jumlah_pending);
-            $('#jumlah_checkin').html(data.data.jumlah_checkin);
-            $('#jumlah_checkout').html(data.data.jumlah_checkout);
-            $('#total_scan_ticket').html(parseInt(data.data.jumlah_checkout) + parseInt(data.data.jumlah_checkin));
-
-
+            // $('#time-now').html(data.data.tanggal);
+            // $('#jumlah_pending').html(data.data.jumlah_pending);
+            // $('#jumlah_checkin').html(data.data.jumlah_checkin);
+            // $('#jumlah_checkout').html(data.data.jumlah_checkout);
+            // $('#total_scan_ticket').html(parseInt(data.data.jumlah_checkout) + parseInt(data.data.jumlah_checkin));
 
 
-            piechart.updateSeries([data.data.jumlah_pending, data.data.jumlah_checkin, data.data.jumlah_checkout]);
 
 
-            chart.updateOptions({
-                xaxis: {
-                    categories: data.data.label_ticket_history
-                },
-                series: [{
-                    data: data.data.data_ticket_history
-                }],
-            });
+            // piechart.updateSeries([data.data.jumlah_pending, data.data.jumlah_checkin, data.data.jumlah_checkout]);
+
+
+            // chart.updateOptions({
+            //     xaxis: {
+            //         categories: data.data.label_ticket_history
+            //     },
+            //     series: [{
+            //         data: data.data.data_ticket_history
+            //     }],
+            // });
             // table_kategori.ajax.reload();
             // table_gate.ajax.reload();
             // table_jenis_tiket.ajax.reload();
