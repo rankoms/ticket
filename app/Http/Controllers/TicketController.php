@@ -20,15 +20,17 @@ class TicketController extends Controller
 
     public function dashboard_ticket(Request $request)
     {
-        $ticket = $this->get_ticket($request)['ticket'];
-        $ticket_not_valid = $this->get_ticket($request)['ticket_not_valid'];
+        $get_ticket = $this->get_ticket($request);
+        $ticket = $get_ticket['ticket'];
+        $ticket_not_valid = $get_ticket['ticket_not_valid'];
         $event = Ticket::groupBy('event')->select('event')->orderBy('event')->get();
-        $jumlah_pending = $this->ticket($ticket)['jumlah_pending'];
-        $jumlah_checkin = $this->ticket($ticket)['jumlah_checkin'];
-        $jumlah_checkout = $this->ticket($ticket)['jumlah_checkout'];
-        $kategory_aset = $this->ticket($ticket)['kategory_aset'];
-        $jenis_tiket = $this->ticket($ticket)['jenis_tiket'];
-        $gate_aset = $this->ticket($ticket)['gate_aset'];
+        $ticket = $this->ticket($ticket);
+        $jumlah_pending = $ticket['jumlah_pending'];
+        $jumlah_checkin = $ticket['jumlah_checkin'];
+        $jumlah_checkout = $ticket['jumlah_checkout'];
+        $kategory_aset = $ticket['kategory_aset'];
+        $jenis_tiket = $ticket['jenis_tiket'];
+        $gate_aset = $ticket['gate_aset'];
 
         // dd($gate_aset);
         $ticket_history = TicketHistory::select(DB::raw('count(id) as jumlah'), DB::raw("date_part('hour', created_at) as hour"))->groupBy(DB::raw("date_part('hour', created_at)"))->orderBy('hour', 'asc')->get();
@@ -51,8 +53,9 @@ class TicketController extends Controller
     {
         $percent_report_current = config('scanner.percent_report_current');
         $is_current = true;
-        $ticket = $this->get_ticket($request)['ticket'];
-        $ticket_not_valid = $this->get_ticket($request)['ticket_not_valid'];
+        $get_ticket = $this->get_ticket($request);
+        $ticket = $get_ticket['ticket'];
+        $ticket_not_valid = $get_ticket['ticket_not_valid'];
         /* START JUMLAH VARIABLE TICKET */
         $jumlah_ticket = count($ticket);
         $max_ticket = $jumlah_ticket * $percent_report_current / 100;
@@ -60,12 +63,13 @@ class TicketController extends Controller
         /* START JUMLAH VARIABLE TICKET */
 
         $event = Ticket::groupBy('event')->select('event')->orderBy('event')->get();
-        $jumlah_pending = $this->ticket($ticket)['jumlah_pending'];
-        $jumlah_checkin = $this->ticket($ticket)['jumlah_checkin'];
-        $jumlah_checkout = $this->ticket($ticket)['jumlah_checkout'];
-        $kategory_aset = $this->ticket($ticket)['kategory_aset'];
-        $jenis_tiket = $this->ticket($ticket)['jenis_tiket'];
-        $gate_aset = $this->ticket($ticket)['gate_aset'];
+        $ticket = $this->ticket($ticket);
+        $jumlah_pending = $ticket['jumlah_pending'];
+        $jumlah_checkin = $ticket['jumlah_checkin'];
+        $jumlah_checkout = $ticket['jumlah_checkout'];
+        $kategory_aset = $ticket['kategory_aset'];
+        $jenis_tiket = $ticket['jenis_tiket'];
+        $gate_aset = $ticket['gate_aset'];
 
 
         $ticket_history = TicketHistory::select(DB::raw('count(id) as jumlah'), DB::raw("date_part('hour', created_at) as hour"))->groupBy(DB::raw("date_part('hour', created_at)"))->orderBy('hour', 'asc')->get();

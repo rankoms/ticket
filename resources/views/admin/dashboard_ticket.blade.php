@@ -408,9 +408,9 @@
                     data: data.data.data_ticket_history
                 }],
             });
-            table_kategori.ajax.reload();
-            table_gate.ajax.reload();
-            table_jenis_tiket.ajax.reload();
+            // table_kategori.ajax.reload();
+            // table_gate.ajax.reload();
+            // table_jenis_tiket.ajax.reload();
 
 
         }, 5000);
