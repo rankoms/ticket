@@ -139,6 +139,26 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        <table id="jenis_tiket_table" class="display" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Jenis Tiket</th>
+                                    <th>Pending</th>
+                                    <th>Check-in</th>
+                                    <th>Check-out</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($jenis_tiket as $key => $value)
+                                    <tr>
+                                        <th>{{ $key }}</th>
+                                        <th>{{ isset($value['pending']) ? $value['pending'] : 0 }}</th>
+                                        <th>{{ isset($value['checkin']) ? $value['checkin'] : 0 }}</th>
+                                        <th>{{ isset($value['checkout']) ? $value['checkout'] : 0 }}</th>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 <div class="row mt-4">
@@ -266,6 +286,15 @@
                 ]
             });
             $('#gate_table').DataTable({
+                order: [
+                    [0, 'desc']
+                ],
+                dom: 'Bfrtip',
+                buttons: [
+                    'excel'
+                ]
+            });
+            $('#jenis_tiket_table').DataTable({
                 order: [
                     [0, 'desc']
                 ],

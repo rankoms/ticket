@@ -33,20 +33,24 @@ class TicketController extends Controller
         $jumlah_checkin = 0;
         $jumlah_checkout = 0;
         $kategory_aset = [];
+        $jenis_tiket = [];
         $gate_aset = [];
         foreach ($ticket as $key => $value) :
             if ($value->checkin == null && $value->checkout == null) :
                 $jumlah_pending++;
                 isset($kategory_aset[$value->category]['pending']) ? $kategory_aset[$value->category]['pending']++ : $kategory_aset[$value->category]['pending'] = 1;
+                isset($jenis_tiket[$value->jenis_tiket]['pending']) ? $jenis_tiket[$value->jenis_tiket]['pending']++ : $jenis_tiket[$value->jenis_tiket]['pending'] = 1;
             endif;
             if ($value->checkin && $value->checkout == null) :
                 $jumlah_checkin++;
                 isset($kategory_aset[$value->category]['checkin']) ? $kategory_aset[$value->category]['checkin']++ : $kategory_aset[$value->category]['checkin'] = 1;
+                isset($jenis_tiket[$value->jenis_tiket]['checkin']) ? $jenis_tiket[$value->jenis_tiket]['checkin']++ : $jenis_tiket[$value->jenis_tiket]['checkin'] = 1;
                 isset($gate_aset[$value->gate_pintu_checkin]['checkin']) ? $gate_aset[$value->gate_pintu_checkin]['checkin']++ : $gate_aset[$value->gate_pintu_checkin]['checkin'] = 1;
             endif;
             if ($value->checkout) :
                 $jumlah_checkout++;
                 isset($kategory_aset[$value->category]['checkout']) ? $kategory_aset[$value->category]['checkout']++ : $kategory_aset[$value->category]['checkout'] = 1;
+                isset($jenis_tiket[$value->jenis_tiket]['checkout']) ? $jenis_tiket[$value->jenis_tiket]['checkout']++ : $jenis_tiket[$value->jenis_tiket]['checkout'] = 1;
                 isset($gate_aset[$value->gate_pintu_checkout]['checkout']) ? $gate_aset[$value->gate_pintu_checkout]['checkout']++ : $gate_aset[$value->gate_pintu_checkout]['checkout'] = 1;
             endif;
         endforeach;
@@ -64,7 +68,7 @@ class TicketController extends Controller
 
         $tanggal = format_hari_tanggal(date('Y-m-d H:i:s'));
 
-        return view('admin.dashboard_ticket', compact('kategory_aset', 'jumlah_pending', 'jumlah_checkin', 'jumlah_checkout', 'ticket', 'event', 'request', 'ticket_not_valid', 'data_ticket_history', 'label_ticket_history', 'tanggal', 'gate_aset'));
+        return view('admin.dashboard_ticket', compact('kategory_aset', 'jumlah_pending', 'jumlah_checkin', 'jumlah_checkout', 'ticket', 'event', 'request', 'ticket_not_valid', 'data_ticket_history', 'label_ticket_history', 'tanggal', 'gate_aset', 'jenis_tiket'));
     }
 
     public function dashboard_ticket_current(Request $request)
