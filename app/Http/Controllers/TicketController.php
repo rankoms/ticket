@@ -20,36 +20,18 @@ class TicketController extends Controller
 
     public function dashboard_ticket(Request $request)
     {
-        $ticket = Ticket::orderBy('category', 'asc');
-        $ticket_not_valid = 0;
-        if ($request->event) {
-            $ticket = $ticket->where('event', $request->event);
-            $ticket_not_valid = TicketHistory::where('event', $request->event)->where('is_valid', 0)->get();
-            $ticket_not_valid = count($ticket_not_valid);
-        }
-        $ticket = $ticket->get();
+        $get_ticket = $this->get_ticket($request);
+        $ticket = $get_ticket['ticket'];
+        $ticket_not_valid = $get_ticket['ticket_not_valid'];
         $event = Ticket::groupBy('event')->select('event')->orderBy('event')->get();
-        $jumlah_pending = 0;
-        $jumlah_checkin = 0;
-        $jumlah_checkout = 0;
-        $kategory_aset = [];
-        $gate_aset = [];
-        foreach ($ticket as $key => $value) :
-            if ($value->checkin == null && $value->checkout == null) :
-                $jumlah_pending++;
-                isset($kategory_aset[$value->category]['pending']) ? $kategory_aset[$value->category]['pending']++ : $kategory_aset[$value->category]['pending'] = 1;
-            endif;
-            if ($value->checkin && $value->checkout == null) :
-                $jumlah_checkin++;
-                isset($kategory_aset[$value->category]['checkin']) ? $kategory_aset[$value->category]['checkin']++ : $kategory_aset[$value->category]['checkin'] = 1;
-                isset($gate_aset[$value->gate_pintu_checkin]['checkin']) ? $gate_aset[$value->gate_pintu_checkin]['checkin']++ : $gate_aset[$value->gate_pintu_checkin]['checkin'] = 1;
-            endif;
-            if ($value->checkout) :
-                $jumlah_checkout++;
-                isset($kategory_aset[$value->category]['checkout']) ? $kategory_aset[$value->category]['checkout']++ : $kategory_aset[$value->category]['checkout'] = 1;
-                isset($gate_aset[$value->gate_pintu_checkout]['checkout']) ? $gate_aset[$value->gate_pintu_checkout]['checkout']++ : $gate_aset[$value->gate_pintu_checkout]['checkout'] = 1;
-            endif;
-        endforeach;
+        $ticket = $this->ticket($ticket);
+        $jumlah_pending = $ticket['jumlah_pending'];
+        $jumlah_checkin = $ticket['jumlah_checkin'];
+        $jumlah_checkout = $ticket['jumlah_checkout'];
+        $kategory_aset = $ticket['kategory_aset'];
+        $jenis_tiket = $ticket['jenis_tiket'];
+        $gate_aset = $ticket['gate_aset'];
+
         // dd($gate_aset);
         $ticket_history = TicketHistory::select(DB::raw('count(id) as jumlah'), DB::raw("date_part('hour', created_at) as hour"))->groupBy(DB::raw("date_part('hour', created_at)"))->orderBy('hour', 'asc')->get();
         $data_ticket_history = '';
@@ -64,51 +46,32 @@ class TicketController extends Controller
 
         $tanggal = format_hari_tanggal(date('Y-m-d H:i:s'));
 
-        return view('admin.dashboard_ticket', compact('kategory_aset', 'jumlah_pending', 'jumlah_checkin', 'jumlah_checkout', 'ticket', 'event', 'request', 'ticket_not_valid', 'data_ticket_history', 'label_ticket_history', 'tanggal', 'gate_aset'));
+        return view('admin.dashboard_ticket', compact('kategory_aset', 'jumlah_pending', 'jumlah_checkin', 'jumlah_checkout', 'ticket', 'event', 'request', 'ticket_not_valid', 'data_ticket_history', 'label_ticket_history', 'tanggal', 'gate_aset', 'jenis_tiket'));
     }
 
     public function dashboard_ticket_current(Request $request)
     {
         $percent_report_current = config('scanner.percent_report_current');
         $is_current = true;
-        $ticket = Ticket::orderBy('category', 'asc');
-        $ticket_not_valid = 0;
-        if ($request->event) {
-            $ticket = $ticket->where('event', $request->event);
-            $ticket_not_valid = TicketHistory::where('event', $request->event)->where('is_valid', 0)->get();
-            $ticket_not_valid = count($ticket_not_valid);
-        }
-        $ticket = $ticket->get();
+        $get_ticket = $this->get_ticket($request);
+        $ticket = $get_ticket['ticket'];
+        $ticket_not_valid = $get_ticket['ticket_not_valid'];
         /* START JUMLAH VARIABLE TICKET */
         $jumlah_ticket = count($ticket);
         $max_ticket = $jumlah_ticket * $percent_report_current / 100;
+        // dd((int) floor($max_ticket));
         /* START JUMLAH VARIABLE TICKET */
 
         $event = Ticket::groupBy('event')->select('event')->orderBy('event')->get();
-        $jumlah_pending = 0;
-        $jumlah_checkin = 0;
-        $jumlah_checkout = 0;
-        $kategory_aset = [];
-        $gate_aset = [];
-        foreach ($ticket as $key => $value) :
-            if ($key >= $max_ticket) {
-                break;
-            }
-            if ($value->checkin == null && $value->checkout == null) :
-                $jumlah_pending++;
-                isset($kategory_aset[$value->category]['pending']) ? $kategory_aset[$value->category]['pending']++ : $kategory_aset[$value->category]['pending'] = 1;
-            endif;
-            if ($value->checkin && $value->checkout == null) :
-                $jumlah_checkin++;
-                isset($kategory_aset[$value->category]['checkin']) ? $kategory_aset[$value->category]['checkin']++ : $kategory_aset[$value->category]['checkin'] = 1;
-                isset($gate_aset[$value->gate_pintu_checkin]['checkin']) ? $gate_aset[$value->gate_pintu_checkin]['checkin']++ : $gate_aset[$value->gate_pintu_checkin]['checkin'] = 1;
-            endif;
-            if ($value->checkout) :
-                $jumlah_checkout++;
-                isset($kategory_aset[$value->category]['checkout']) ? $kategory_aset[$value->category]['checkout']++ : $kategory_aset[$value->category]['checkout'] = 1;
-                isset($gate_aset[$value->gate_pintu_checkout]['checkout']) ? $gate_aset[$value->gate_pintu_checkout]['checkout']++ : $gate_aset[$value->gate_pintu_checkout]['checkout'] = 1;
-            endif;
-        endforeach;
+        $ticket = $this->ticket($ticket);
+        $jumlah_pending = $ticket['jumlah_pending'];
+        $jumlah_checkin = $ticket['jumlah_checkin'];
+        $jumlah_checkout = $ticket['jumlah_checkout'];
+        $kategory_aset = $ticket['kategory_aset'];
+        $jenis_tiket = $ticket['jenis_tiket'];
+        $gate_aset = $ticket['gate_aset'];
+
+
         $ticket_history = TicketHistory::select(DB::raw('count(id) as jumlah'), DB::raw("date_part('hour', created_at) as hour"))->groupBy(DB::raw("date_part('hour', created_at)"))->orderBy('hour', 'asc')->get();
         $data_ticket_history = '';
         $label_ticket_history = '';
@@ -129,9 +92,170 @@ class TicketController extends Controller
 
         $tanggal = format_hari_tanggal(date('Y-m-d H:i:s'));
 
+        $kategory_aset = $this->current_kategori_aset($kategory_aset, $percent_report_current);
+        $gate_aset = $this->current_gate_aset($gate_aset, $percent_report_current);
+        $jenis_tiket = $this->current_jenis_tiket($jenis_tiket, $percent_report_current);
 
+        $jumlah_pending = (int) floor($jumlah_pending * $percent_report_current / 100);
+        $jumlah_checkin = (int) floor($jumlah_checkin * $percent_report_current / 100);
+        $jumlah_checkout = (int) floor($jumlah_checkout * $percent_report_current / 100);
 
-        return view('admin.dashboard_ticket', compact('kategory_aset', 'jumlah_pending', 'jumlah_checkin', 'jumlah_checkout', 'ticket', 'event', 'request', 'ticket_not_valid', 'data_ticket_history', 'label_ticket_history', 'tanggal', 'is_current', 'gate_aset'));
+        return view('admin.dashboard_ticket', compact('kategory_aset', 'jumlah_pending', 'jumlah_checkin', 'jumlah_checkout', 'ticket', 'event', 'request', 'ticket_not_valid', 'data_ticket_history', 'label_ticket_history', 'tanggal', 'is_current', 'gate_aset', 'jenis_tiket', 'percent_report_current'));
+    }
+
+    public function table_kategori_aset(Request $request)
+    {
+        $ticket = $this->get_ticket($request)['ticket'];
+        $kategory_aset = $this->ticket($ticket)['kategory_aset'];
+        $percent_report_current = $request->percent_report_current;
+        if ($percent_report_current) {
+            $kategory_aset = $this->current_kategori_aset($kategory_aset, $percent_report_current);
+        }
+        $data = [];
+        foreach ($kategory_aset as $key => $value) :
+            array_push($data, [
+                'kategory' => $key,
+                'pending' => isset($value['pending']) ? $value['pending'] : 0,
+                'checkin' => isset($value['checkin']) ? $value['checkin'] : 0,
+                'checkout' => isset($value['checkout']) ? $value['checkout'] : 0
+            ]);
+        endforeach;
+        $json_data = array(
+            "draw"            => intval($request->draw),
+            "data"            => $data
+        );
+        return $json_data;
+    }
+
+    public function table_gate(Request $request)
+    {
+        $ticket = $this->get_ticket($request)['ticket'];
+        $gate_aset = $this->ticket($ticket)['gate_aset'];
+        $percent_report_current = $request->percent_report_current;
+        if ($percent_report_current) {
+            $gate_aset = $this->current_gate_aset($gate_aset, $percent_report_current);
+        }
+        $data = [];
+        foreach ($gate_aset as $key => $value) :
+            array_push($data, [
+                'gate' => $key,
+                'checkin' => isset($value['checkin']) ? $value['checkin'] : 0,
+                'checkout' => isset($value['checkout']) ? $value['checkout'] : 0
+            ]);
+        endforeach;
+        $json_data = array(
+            "draw"            => intval($request->draw),
+            "data"            => $data
+        );
+        return $json_data;
+    }
+
+    public function table_jenis_tiket(Request $request)
+    {
+        $ticket = $this->get_ticket($request)['ticket'];
+        $jenis_tiket = $this->ticket($ticket)['jenis_tiket'];
+        $percent_report_current = $request->percent_report_current;
+        if ($percent_report_current) {
+            $jenis_tiket = $this->current_jenis_tiket($jenis_tiket, $percent_report_current);
+        }
+        $data = [];
+        foreach ($jenis_tiket as $key => $value) :
+            array_push($data, [
+                'jenis_tiket' => $key,
+                'pending' => isset($value['pending']) ? $value['pending'] : 0,
+                'checkin' => isset($value['checkin']) ? $value['checkin'] : 0,
+                'checkout' => isset($value['checkout']) ? $value['checkout'] : 0
+            ]);
+        endforeach;
+        $json_data = array(
+            "draw"            => intval($request->draw),
+            "data"            => $data
+        );
+        return $json_data;
+    }
+    private function get_ticket($request)
+    {
+
+        $ticket = Ticket::orderBy('category', 'asc');
+        $ticket_not_valid = 0;
+        if ($request->event) {
+            $ticket = $ticket->where('event', $request->event);
+            $ticket_not_valid = TicketHistory::where('event', $request->event)->where('is_valid', 0)->get();
+            $ticket_not_valid = count($ticket_not_valid);
+        }
+        $ticket = $ticket->get();
+        return ['ticket' => $ticket, 'ticket_not_valid' => $ticket_not_valid];
+    }
+
+    private function ticket($ticket)
+    {
+        $jumlah_pending = 0;
+        $jumlah_checkin = 0;
+        $jumlah_checkout = 0;
+        $kategory_aset = [];
+        $jenis_tiket = [];
+        $gate_aset = [];
+        foreach ($ticket as $key => $value) :
+            if ($value->checkin == null && $value->checkout == null) :
+                $jumlah_pending++;
+                isset($kategory_aset[$value->category]['pending']) ? $kategory_aset[$value->category]['pending']++ : $kategory_aset[$value->category]['pending'] = 1;
+                isset($jenis_tiket[$value->jenis_tiket]['pending']) ? $jenis_tiket[$value->jenis_tiket]['pending']++ : $jenis_tiket[$value->jenis_tiket]['pending'] = 1;
+            endif;
+            if ($value->checkin && $value->checkout == null) :
+                $jumlah_checkin++;
+                isset($kategory_aset[$value->category]['checkin']) ? $kategory_aset[$value->category]['checkin']++ : $kategory_aset[$value->category]['checkin'] = 1;
+                isset($jenis_tiket[$value->jenis_tiket]['checkin']) ? $jenis_tiket[$value->jenis_tiket]['checkin']++ : $jenis_tiket[$value->jenis_tiket]['checkin'] = 1;
+                isset($gate_aset[$value->gate_pintu_checkin]['checkin']) ? $gate_aset[$value->gate_pintu_checkin]['checkin']++ : $gate_aset[$value->gate_pintu_checkin]['checkin'] = 1;
+            endif;
+            if ($value->checkout) :
+                $jumlah_checkout++;
+                isset($kategory_aset[$value->category]['checkout']) ? $kategory_aset[$value->category]['checkout']++ : $kategory_aset[$value->category]['checkout'] = 1;
+                isset($jenis_tiket[$value->jenis_tiket]['checkout']) ? $jenis_tiket[$value->jenis_tiket]['checkout']++ : $jenis_tiket[$value->jenis_tiket]['checkout'] = 1;
+                isset($gate_aset[$value->gate_pintu_checkout]['checkout']) ? $gate_aset[$value->gate_pintu_checkout]['checkout']++ : $gate_aset[$value->gate_pintu_checkout]['checkout'] = 1;
+            endif;
+        endforeach;
+        return [
+            'jumlah_pending' => $jumlah_pending,
+            'jumlah_checkin' => $jumlah_checkin,
+            'jumlah_checkout' => $jumlah_checkout,
+            'kategory_aset' => $kategory_aset,
+            'jenis_tiket' => $jenis_tiket,
+            'gate_aset' => $gate_aset
+        ];
+    }
+
+    private function current_kategori_aset($kategory_aset2, $percent_report_current)
+    {
+        foreach ($kategory_aset2 as $key => $value) :
+            $hasil['pending'] = isset($value['pending']) ? (int) floor($value['pending'] * $percent_report_current / 100) : 0;
+            $hasil['checkin'] = isset($value['checkin']) ? (int) floor($value['checkin'] * $percent_report_current / 100) : 0;
+            $hasil['checkout'] = isset($value['checkout']) ? (int) floor($value['checkout'] * $percent_report_current / 100) : 0;
+            $kategory_aset[$key] = $hasil;
+        endforeach;
+        return $kategory_aset;
+    }
+
+    private function current_gate_aset($gate_aset2, $percent_report_current)
+    {
+        foreach ($gate_aset2 as $key => $value) :
+            $hasil['checkin'] = isset($value['checkin']) ? (int) floor($value['checkin'] * $percent_report_current / 100) : 0;
+            $hasil['checkout'] = isset($value['checkout']) ? (int) floor($value['checkout'] * $percent_report_current / 100) : 0;
+            $gate_aset[$key] = $hasil;
+        endforeach;
+        return $gate_aset;
+    }
+
+    private function current_jenis_tiket($jenis_tiket2, $percent_report_current)
+    {
+        foreach ($jenis_tiket2 as $key => $value) :
+
+            $hasil['pending'] = isset($value['pending']) ? (int) floor($value['pending'] * $percent_report_current / 100) : 0;
+            $hasil['checkin'] = isset($value['checkin']) ? (int) floor($value['checkin'] * $percent_report_current / 100) : 0;
+            $hasil['checkout'] = isset($value['checkout']) ? (int) floor($value['checkout'] * $percent_report_current / 100) : 0;
+
+            $jenis_tiket[$key] = $hasil;
+        endforeach;
+        return $jenis_tiket;
     }
 
     public function post_dashboard_ticket(Request $request)
@@ -145,39 +269,38 @@ class TicketController extends Controller
         }
         $ticket = $ticket->get();
         $event = Ticket::groupBy('event')->select('event')->orderBy('event')->get();
-        $jumlah_pending = 0;
-        $jumlah_checkin = 0;
-        $jumlah_checkout = 0;
-        $kategory_aset = [];
-        foreach ($ticket as $key => $value) :
-            if ($value->checkin == null && $value->checkout == null) :
-                $jumlah_pending++;
-                isset($kategory_aset[$value->category]['pending']) ? $kategory_aset[$value->category]['pending']++ : $kategory_aset[$value->category]['pending'] = 1;
-            endif;
-            if ($value->checkin && $value->checkout == null) :
-                $jumlah_checkin++;
-                isset($kategory_aset[$value->category]['checkin']) ? $kategory_aset[$value->category]['checkin']++ : $kategory_aset[$value->category]['checkin'] = 1;
-            endif;
-            if ($value->checkout) :
-                $jumlah_checkout++;
-                isset($kategory_aset[$value->category]['checkout']) ? $kategory_aset[$value->category]['checkout']++ : $kategory_aset[$value->category]['checkout'] = 1;
-            endif;
-        endforeach;
+        $ticket = $this->ticket($ticket);
+        $jumlah_pending = $ticket['jumlah_pending'];
+        $jumlah_checkin = $ticket['jumlah_checkin'];
+        $jumlah_checkout = $ticket['jumlah_checkout'];
+        $kategory_aset = $ticket['kategory_aset'];
+        $jenis_tiket = $ticket['jenis_tiket'];
+        $gate_aset = $ticket['gate_aset'];
         $ticket_history = TicketHistory::select(DB::raw('count(id) as jumlah'), DB::raw("date_part('hour', created_at) as hour"))->groupBy(DB::raw("date_part('hour', created_at)"))->orderBy('hour', 'asc')->get();
         $data_ticket_history = [];
         $label_ticket_history = [];
 
         foreach ($ticket_history as $key => $value) :
             array_push($data_ticket_history, $value->jumlah);
-
-            // $label_ticket_history .= '' . $value->hour . ',';
             array_push($label_ticket_history, $value->hour);
         endforeach;
+        $tanggal = format_hari_tanggal(date('Y-m-d H:i:s'));
+        $percent_report_current = $request->percent_report_current;
+        if ($percent_report_current) {
+
+            $kategory_aset = $this->current_kategori_aset($kategory_aset, $percent_report_current);
+            $gate_aset = $this->current_gate_aset($gate_aset, $percent_report_current);
+            $jenis_tiket = $this->current_jenis_tiket($jenis_tiket, $percent_report_current);
+
+            $jumlah_pending = (int) floor($jumlah_pending * $percent_report_current / 100);
+            $jumlah_checkin = (int) floor($jumlah_checkin * $percent_report_current / 100);
+            $jumlah_checkout = (int) floor($jumlah_checkout * $percent_report_current / 100);
+        }
 
         $data_return['jumlah_pending'] = $jumlah_pending;
         $data_return['jumlah_checkin'] = $jumlah_checkin;
         $data_return['jumlah_checkout'] = $jumlah_checkout;
-        $data_return['tanggal'] = date('Y-m-d H:i:s');
+        $data_return['tanggal'] = $tanggal;
         $data_return['label_ticket_history'] = $label_ticket_history;
         $data_return['data_ticket_history'] = $data_ticket_history;
         return ResponseFormatter::success($data_return);

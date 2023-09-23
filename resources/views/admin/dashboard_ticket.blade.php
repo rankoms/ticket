@@ -47,7 +47,7 @@
                                     </div>
                                     <div class="inner text-center">
                                         <p>Pending</p>
-                                        <h3>{{ $jumlah_pending }}</h3>
+                                        <h3 id="jumlah_pending">{{ $jumlah_pending }}</h3>
                                     </div>
                                 </div>
                             </div>
@@ -55,7 +55,7 @@
                                 <div class="small-box bg-ijo text-center">
                                     <div class="inner text-center pt-3">
                                         <p>Total Scan Ticket</p>
-                                        <h3>{{ $jumlah_checkin + $jumlah_checkout }}</h3>
+                                        <h3 id="total_scan_ticket">{{ $jumlah_checkin + $jumlah_checkout }}</h3>
                                     </div>
                                 </div>
                             </div>
@@ -66,7 +66,7 @@
                                     </div>
                                     <div class="inner text-center">
                                         <p>Check-in</p>
-                                        <h3>{{ $jumlah_checkin }}</h3>
+                                        <h3 id="jumlah_checkin">{{ $jumlah_checkin }}</h3>
                                     </div>
                                 </div>
                             </div>
@@ -77,7 +77,7 @@
                                     </div>
                                     <div class="inner text-center">
                                         <p>Check-out</p>
-                                        <h3>{{ $jumlah_checkout }}</h3>
+                                        <h3 id="jumlah_checkout">{{ $jumlah_checkout }}</h3>
                                     </div>
                                 </div>
                             </div>
@@ -101,7 +101,7 @@
                 </div>
                 <div class="mt-4 row">
                     <div class="col-sm-12">
-                        <table id="example" class="display" style="width:100%">
+                        <table id="table_kategori" class="display" style="width:100%">
                             <thead>
                                 <tr>
                                     <th>Kategory</th>
@@ -133,6 +133,26 @@
                                 @foreach ($gate_aset as $key => $value)
                                     <tr>
                                         <th>{{ $key }}</th>
+                                        <th>{{ isset($value['checkin']) ? $value['checkin'] : 0 }}</th>
+                                        <th>{{ isset($value['checkout']) ? $value['checkout'] : 0 }}</th>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        <table id="jenis_tiket_table" class="display" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Jenis Tiket</th>
+                                    <th>Pending</th>
+                                    <th>Check-in</th>
+                                    <th>Check-out</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($jenis_tiket as $key => $value)
+                                    <tr>
+                                        <th>{{ $key }}</th>
+                                        <th>{{ isset($value['pending']) ? $value['pending'] : 0 }}</th>
                                         <th>{{ isset($value['checkin']) ? $value['checkin'] : 0 }}</th>
                                         <th>{{ isset($value['checkout']) ? $value['checkout'] : 0 }}</th>
                                     </tr>
@@ -225,14 +245,154 @@
 
         var chart = new ApexCharts(document.querySelector("#line-chart"), options);
         chart.render();
+        var table_kategori = $('#table_kategori').DataTable({
+            order: [
+                [0, 'desc']
+            ],
+            dom: 'Bfrtip',
+            buttons: [
+                'excel'
+            ],
+            destroy: true,
+            // ajax: {
+            //     url: "{{ route('dashboard_ticket.table_kategori_aset') }}",
+            //     data: {
+            //         event: '{{ $request->event }}',
+            //         percent_report_current: '{{ isset($percent_report_current) ? $percent_report_current : null }}'
+            //     },
+            //     type: "GET"
+            // },
+            // columns: [{
+            //     data: null,
+            //     className: "dt-left editor-delete",
+            //     orderable: false,
+            //     "mRender": function(data, type, row) {
+            //         return data.kategory;
+            //     },
+            // }, {
+            //     data: null,
+            //     className: "dt-center editor-delete",
+            //     orderable: false,
+            //     "mRender": function(data, type, row) {
+            //         return data.pending;
+            //     },
+            // }, {
+            //     data: null,
+            //     className: "dt-center editor-delete",
+            //     orderable: false,
+            //     "mRender": function(data, type, row) {
+            //         return data.checkin;
+            //     },
+            // }, {
+            //     data: null,
+            //     className: "dt-center editor-delete",
+            //     orderable: false,
+            //     "mRender": function(data, type, row) {
+            //         return data.checkout;
+            //     },
+            // }]
+        });
+        var table_gate = $('#gate_table').DataTable({
+            order: [
+                [0, 'desc']
+            ],
+            dom: 'Bfrtip',
+            buttons: [
+                'excel'
+            ],
+            destroy: true,
+            // ajax: {
+            //     url: "{{ route('dashboard_ticket.table_gate') }}",
+            //     data: {
+            //         event: '{{ $request->event }}',
+            //         percent_report_current: '{{ isset($percent_report_current) ? $percent_report_current : null }}'
+            //     },
+            //     type: "GET"
+            // },
+            // columns: [{
+            //     data: null,
+            //     className: "dt-left editor-delete",
+            //     orderable: false,
+            //     "mRender": function(data, type, row) {
+            //         return data.gate;
+            //     },
+            // }, {
+            //     data: null,
+            //     className: "dt-center editor-delete",
+            //     orderable: false,
+            //     "mRender": function(data, type, row) {
+            //         return data.checkin;
+            //     },
+            // }, {
+            //     data: null,
+            //     className: "dt-center editor-delete",
+            //     orderable: false,
+            //     "mRender": function(data, type, row) {
+            //         return data.checkout;
+            //     },
+            // }]
+        });
+        var table_jenis_tiket = $('#jenis_tiket_table').DataTable({
+            order: [
+                [0, 'desc']
+            ],
+            dom: 'Bfrtip',
+            buttons: [
+                'excel'
+            ],
+            destroy: true,
+            // ajax: {
+            //     url: "{{ route('dashboard_ticket.table_jenis_tiket') }}",
+            //     data: {
+            //         event: '{{ $request->event }}',
+            //         percent_report_current: '{{ isset($percent_report_current) ? $percent_report_current : null }}'
+            //     },
+            //     type: "GET"
+            // },
+            // columns: [{
+            //     data: null,
+            //     className: "dt-left editor-delete",
+            //     orderable: false,
+            //     "mRender": function(data, type, row) {
+            //         return data.jenis_tiket;
+            //     },
+            // }, {
+            //     data: null,
+            //     className: "dt-center editor-delete",
+            //     orderable: false,
+            //     "mRender": function(data, type, row) {
+            //         return data.pending;
+            //     },
+            // }, {
+            //     data: null,
+            //     className: "dt-center editor-delete",
+            //     orderable: false,
+            //     "mRender": function(data, type, row) {
+            //         return data.checkin;
+            //     },
+            // }, {
+            //     data: null,
+            //     className: "dt-center editor-delete",
+            //     orderable: false,
+            //     "mRender": function(data, type, row) {
+            //         return data.checkout;
+            //     },
+            // }]
+        });
         setInterval(() => {
             window.location.reload();
 
             // var data = getJSON('{{ route('post_dashboard_ticket') }}', {
-            //     _token: '{{ csrf_token() }}'
+            //     _token: '{{ csrf_token() }}',
+            //     event: '{{ $request->event }}',
+            //     percent_report_current: '{{ isset($percent_report_current) ? $percent_report_current : null }}'
             // });
 
             // $('#time-now').html(data.data.tanggal);
+            // $('#jumlah_pending').html(data.data.jumlah_pending);
+            // $('#jumlah_checkin').html(data.data.jumlah_checkin);
+            // $('#jumlah_checkout').html(data.data.jumlah_checkout);
+            // $('#total_scan_ticket').html(parseInt(data.data.jumlah_checkout) + parseInt(data.data.jumlah_checkin));
 
 
 
@@ -248,6 +408,9 @@
             //         data: data.data.data_ticket_history
             //     }],
             // });
+            // table_kategori.ajax.reload();
+            // table_gate.ajax.reload();
+            // table_jenis_tiket.ajax.reload();
 
 
         }, 5000);
@@ -256,24 +419,6 @@
     <script>
         $(document).ready(function() {
 
-            $('#example').DataTable({
-                order: [
-                    [0, 'desc']
-                ],
-                dom: 'Bfrtip',
-                buttons: [
-                    'excel'
-                ]
-            });
-            $('#gate_table').DataTable({
-                order: [
-                    [0, 'desc']
-                ],
-                dom: 'Bfrtip',
-                buttons: [
-                    'excel'
-                ]
-            });
         });
 
         function getJSON(url, data, type = 'POST') {
