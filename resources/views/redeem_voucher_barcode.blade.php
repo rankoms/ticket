@@ -439,8 +439,8 @@
                                 <input type="text" name="category" placeholder="Full Name" class="form-control" required readonly value="${data.data.kategory}" disabled>
                             </div>
                             <div class="col-12 p-0 m-0 mb-3">
-                                <label class="float-start">QR Code Wristband</label>
-                                <input type="text" name="barcode_no" id="barcode_no" placeholder="QR Code Wristband" class="form-control" required>
+                                <label class="float-start">QR Code Wristband ssaarararr</label>
+                                <input type="text" name="barcode_no" id="barcode_no" placeholder="QR Code Wristband" class="form-control" required disabled>
                             </div>
                         </div>
                         <div class="col-4">
