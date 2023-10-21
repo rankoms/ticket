@@ -11,6 +11,7 @@ use App\Http\Controllers\PosTicketController;
 use App\Http\Controllers\RedeemVoucherController;
 use App\Http\Controllers\ScannerController;
 use App\Http\Controllers\ScannerDesktopController;
+use App\Http\Controllers\SeatingChairController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +31,11 @@ Auth::routes([
 ]);
 
 Route::get('test', [HomeController::class, 'test']);
+Route::group(['prefix' => 'seating'], function () {
+    Route::get('/', [SeatingChairController::class, 'index'])->name('seating.index');
+    Route::get('/get_seating_tree', [SeatingChairController::class, 'get_seating_tree'])->name('seating.get_seating_tree');
+    Route::get('/get_category', [SeatingChairController::class, 'get_category'])->name('seating.get_category');
+});
 
 Route::get('/', function () {
     return redirect()->route('login');
