@@ -148,6 +148,14 @@ class RedeemVoucherController extends Controller
         $redeem_voucher->barcode_no = $request->barcode_no;
         $redeem_voucher->save();
 
+
+        /*
+        START UPDATE SEATING CHAIR
+        */
+        $seating_chair = new SeatingChairController();
+        $seating_chair = $seating_chair->update_seating($request);
+        /* END UPDATE SEATING CHAIR */
+
         return ResponseFormatter::success($redeem_voucher, 'Redeem E-Ticket Berhasil');
     }
 
