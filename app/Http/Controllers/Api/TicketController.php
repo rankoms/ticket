@@ -78,6 +78,13 @@ class TicketController extends Controller
         $ticket->checkout_by = null;
         $ticket->checkin_count = $ticket->checkin_count + 1;
         $ticket->status = true;
+
+
+        /*
+        START UPDATE SEATING CHAIR
+        */
+
+        /* END UPDATE SEATING CHAIR */
         if ($ticket->save()) {
             // $section_selected = $this->count_gate($ticket->event_id, $ticket->category)->getData();
             return ResponseFormatter::success($ticket, 'This QR Code is Valid');

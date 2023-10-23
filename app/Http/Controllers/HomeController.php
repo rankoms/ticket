@@ -91,6 +91,9 @@ class HomeController extends Controller
         if ($request->report == 'pos') {
             return redirect()->route('pos_ticket.dashboard');
         }
+        if ($request->report == 'seating') {
+            return redirect()->route('seating.index');
+        }
         return view('admin.dashboard', compact('event'));
     }
 

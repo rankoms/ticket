@@ -200,13 +200,22 @@
         });
 
         $('#kategori').on('change', function() {
+            getData();
+        })
+
+        setInterval(() => {
+            getData();
+        }, 10000);
+
+        function getData() {
+
             category = $('#kategori').val();
             event = $('#event').val();
             getDataSeating({
                 'event': event,
                 'category': category
             });
-        })
+        }
 
         function getDataSeating(data) {
             var dataSeating = getJSON('{{ route('seating.get_seating_tree') }}', data, 'GET');
@@ -221,8 +230,8 @@
                 console.log(value.columns);
                 $.each(value.columns, function(key2, value2) {
                     columnSeating += `
-                    <div class="wrapping-seat">
-                        <div class="seat ${value2.barcode_no ? 'selected' : ''}">
+                    <div class="wrapping-seat" data-id="${value2.id}">
+                        <div class="seat ${value2.is_seating == 1 ? 'selected' : ''}">
                             ${value2.name}
                         </div>
                     </div>`

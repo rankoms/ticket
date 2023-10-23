@@ -22,6 +22,7 @@ class CreateSeatingChairsTable extends Migration
             $table->string('name', 50)->index()->nullable();
             $table->tinyInteger('status')->default(1);
             $table->string('barcode_no')->nullable()->index();
+            $table->tinyInteger('is_seating')->default(0);
             // $table->foreign('barcode_no')->references('barcode_no')->on("tickets");
             $table->timestamps();
         });

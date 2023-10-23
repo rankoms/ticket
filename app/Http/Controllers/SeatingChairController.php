@@ -50,6 +50,16 @@ class SeatingChairController extends Controller
         $data = ['data_seating' => $result_final, 'data_selected' => $data_selected, 'data_total' => $data_total];
         return ResponseFormatter::success($data);
     }
+
+    public function update_seating(Request $request)
+    {
+        request()->validate([
+            'barcode_no' => ['required']
+        ]);
+        $barcode_no = $request->barcode_no;
+        $seating = SeatingChair::where('barcode_no', $barcode_no)->update(['is_seating' => 1]);
+        return $seating;
+    }
     public function get_category(Request $request)
     {
         request()->validate([
