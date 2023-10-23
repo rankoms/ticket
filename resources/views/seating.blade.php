@@ -227,7 +227,7 @@
             $.each(dataSeating.data_seating, function(key, value) {
                 var columnSeating = '';
                 // $j == 10 ? 'd-none' : ''  $j == 3 ? 'selected' : '' 
-                console.log(value.columns);
+                // console.log(value.columns);
                 $.each(value.columns, function(key2, value2) {
                     columnSeating += `
                     <div class="wrapping-seat" data-id="${value2.id}">

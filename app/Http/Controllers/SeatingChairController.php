@@ -39,7 +39,7 @@ class SeatingChairController extends Controller
         foreach ($seating_column as $key => $value) :
             $hasil_column[$value->sort_row][] = $value;
             $data_total++;
-            if ($value->barcode_no) {
+            if ($value->is_seating == 1) {
                 $data_selected++;
             }
         endforeach;

@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             DataUserSeeder::class,
-            // DataTicketSeeder::class,
+            DataTicketSeeder::class,
             EventCategorySeeder::class,
             SeatingChairSeeder::class
         ]);

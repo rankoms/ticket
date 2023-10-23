@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ScannerController;
+use App\Http\Controllers\SeatingChairController;
 use App\Models\EventGate;
 use App\Models\Ticket;
 use App\Models\TicketHistory;
@@ -83,6 +84,8 @@ class TicketController extends Controller
         /*
         START UPDATE SEATING CHAIR
         */
+        $seating_chair = new SeatingChairController();
+        $seating_chair = $seating_chair->update_seating($request);
 
         /* END UPDATE SEATING CHAIR */
         if ($ticket->save()) {
@@ -240,6 +243,16 @@ class TicketController extends Controller
                                 $ticket->checkin_count = $request['tickets'][$i]['checkin_count'];
                                 $ticket->status = false;
                                 $ticket->save();
+
+
+                                /*
+                                START UPDATE SEATING CHAIR
+                                */
+                                $data_chair = $request_data;
+                                $data_chair->merge(['barcode_no' => $ticket->barcode_no]);
+                                $seating_chair = new SeatingChairController();
+                                $seating_chair = $seating_chair->update_seating($request_data);
+                                /* END UPDATE SEATING CHAIR */
                             }
                         endif;
                     }
