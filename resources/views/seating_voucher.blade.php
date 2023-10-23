@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Seating Chair Ticket</title>
+    <title>Seating Chair Voucher</title>
 </head>
 <style>
     @import url("https://fonts.googleapis.com/css2?family=Recursive&display=swap");
@@ -175,34 +175,32 @@
     <p class="text">
         You have selected <span id="count">0</span> <span id="total">0</span>
     </p>
-    <!-- <script src="script.js"></script> -->
-    <script src="script.js"></script>
 </body>
 
 <script src="{{ asset('js/jquery.slim.min.js') }}"></script>
-{{-- <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script> --}}
 <script src="{{ url('js/sweetalert2@11.js') }}"></script>
 <script src="{{ asset('mobile/js/jquery.min.js') }}"></script>
+
 <script>
     $(document).ready(function() {
 
 
         $('#event').on('change', function() {
-            var dataCategories = getJSON('{{ route('seating.get_category') }}', {
+            var dataCategories = getJSON('{{ route('seating.voucher.get_category') }}', {
                 'event': $(this).val()
             }, 'GET');
             $('#kategori option').remove();
             $('#kategori').append(`<option value="">Pilih Kategori</option>`)
             $.each(dataCategories.data, function(key, value) {
                 $('#kategori').append(`
-                <option value="${value.category}">${value.category}</option>
+                <option value="${value.kategory}">${value.kategory}</option>
                 `);
             })
         });
 
         $('#kategori').on('change', function() {
             getData();
-        })
+        });
 
         setInterval(() => {
             getData();
@@ -219,7 +217,7 @@
         }
 
         function getDataSeating(data) {
-            var dataSeating = getJSON('{{ route('seating.get_seating_tree') }}', data, 'GET');
+            var dataSeating = getJSON('{{ route('seating.voucher.get_seating_tree') }}', data, 'GET');
             var dataSeating = dataSeating.data;
             var dataSelected = dataSeating.data_selected;
             var dataTotal = dataSeating.data_total;
@@ -231,7 +229,7 @@
                 // console.log(value.columns);
                 $.each(value.columns, function(key2, value2) {
                     columnSeating += `
-                    <div class="wrapping-seat" >
+                    <div class="wrapping-seat">
                         <div data-id="${value2.id}" class="seat seat-click ${value2.is_seating == 1 ? 'selected' : ''}">
                             ${value2.name}
                         </div>
@@ -261,7 +259,7 @@
                 confirmButtonText: 'Ya masukan data seating!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    data = getJSON('{{ route('seating.update_seating_by_id') }}', {
+                    data = getJSON('{{ route('seating.voucher.update_seating_by_id') }}', {
                         '_token': '{{ csrf_token() }}',
                         'id': id
                     })

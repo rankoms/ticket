@@ -12,6 +12,7 @@ use App\Http\Controllers\RedeemVoucherController;
 use App\Http\Controllers\ScannerController;
 use App\Http\Controllers\ScannerDesktopController;
 use App\Http\Controllers\SeatingChairController;
+use App\Http\Controllers\SeatingChairVoucherController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -35,6 +36,13 @@ Route::group(['prefix' => 'seating'], function () {
     Route::get('/', [SeatingChairController::class, 'index'])->name('seating.index');
     Route::get('/get_seating_tree', [SeatingChairController::class, 'get_seating_tree'])->name('seating.get_seating_tree');
     Route::get('/get_category', [SeatingChairController::class, 'get_category'])->name('seating.get_category');
+    Route::post('/update_seating_by_id', [SeatingChairController::class, 'update_seating_by_id'])->name('seating.update_seating_by_id');
+    Route::group(['prefix' => 'voucher'], function () {
+        Route::get('/', [SeatingChairVoucherController::class, 'index'])->name('seating.voucher.index');
+        Route::get('/get_seating_tree', [SeatingChairVoucherController::class, 'get_seating_tree'])->name('seating.voucher.get_seating_tree');
+        Route::get('/get_category', [SeatingChairVoucherController::class, 'get_category'])->name('seating.voucher.get_category');
+        Route::post('/update_seating_by_id', [SeatingChairVoucherController::class, 'update_seating_by_id'])->name('seating.voucher.update_seating_by_id');
+    });
 });
 
 Route::get('/', function () {

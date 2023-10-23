@@ -152,7 +152,7 @@ class RedeemVoucherController extends Controller
         /*
         START UPDATE SEATING CHAIR
         */
-        $request->merge(['barcode_no' => $redeem_voucher->kode]);
+        $request->merge(['kode' => $redeem_voucher->kode]);
         $seating_chair = new SeatingChairController();
         $seating_chair = $seating_chair->update_seating($request);
         /* END UPDATE SEATING CHAIR */

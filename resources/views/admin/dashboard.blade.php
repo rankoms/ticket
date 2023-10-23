@@ -34,7 +34,8 @@
                                     <option value="redeem_voucher">Redeem (Count)</option>
                                     <option value="redeem_voucher_list">Redeem (List)</option>
                                     <option value="pos">POS</option>
-                                    <option value="seating">Seating Chair</option>
+                                    <option value="seating">Seating Chair Ticket</option>
+                                    <option value="seating_voucher">Seating Chair Voucher</option>
                                 </select>
                                 <i class="fa fa-chevron-down"></i>
                             </div>

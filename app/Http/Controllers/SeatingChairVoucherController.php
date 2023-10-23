@@ -3,17 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ResponseFormatter;
-use App\Models\SeatingChair;
-use App\Models\Ticket;
+use App\Models\RedeemVoucher;
+use App\Models\SeatingChairVoucher;
 use App\Rules\ExceptSymbol;
 use Illuminate\Http\Request;
 
-class SeatingChairController extends Controller
+class SeatingChairVoucherController extends Controller
 {
     public function index(Request $request)
     {
-        $event = Ticket::groupBy('event')->select('event')->orderBy('event')->get();
-        return view('seating', compact('event'));
+        $event = RedeemVoucher::groupBy('event')->select('event')->orderBy('event')->get();
+        return view('seating_voucher', compact('event'));
     }
 
     public function get_seating_tree(Request $request)
@@ -25,7 +25,7 @@ class SeatingChairController extends Controller
         $event = $request->event;
         $category = $request->category;
 
-        $seating_column = SeatingChair::orderBy('sort_row', 'asc')->orderBy('sort_column', 'asc');
+        $seating_column = SeatingChairVoucher::orderBy('sort_row', 'asc')->orderBy('sort_column', 'asc');
         if ($event) {
             $seating_column = $seating_column->where('event', $event);
         }
@@ -54,10 +54,10 @@ class SeatingChairController extends Controller
     public function update_seating(Request $request)
     {
         request()->validate([
-            'barcode_no' => ['required']
+            'kode' => ['required']
         ]);
-        $barcode_no = $request->barcode_no;
-        $seating = SeatingChair::where('barcode_no', $barcode_no)->update(['is_seating' => 1]);
+        $kode = $request->kode;
+        $seating = SeatingChairVoucher::where('kode', $kode)->update(['is_seating' => 1]);
         return $seating;
     }
     public function get_category(Request $request)
@@ -67,17 +67,18 @@ class SeatingChairController extends Controller
         ]);
         $event = $request->event;
 
-        $category = Ticket::select('category')->where('event', $event)->groupBy('category', 'event')->get();
+        $category = RedeemVoucher::select('kategory')->where('event', $event)->groupBy('kategory', 'event')->get();
         return ResponseFormatter::success($category);
         return $category;
     }
+
     public function update_seating_by_id(Request $request)
     {
         request()->validate([
             'id' => ['required', 'numeric']
         ]);
         $id = $request->id;
-        $seating_chair = SeatingChair::find($id);
+        $seating_chair = SeatingChairVoucher::find($id);
         if (!$seating_chair) {
             return ResponseFormatter::error(null, __('Not Found'));
         }
