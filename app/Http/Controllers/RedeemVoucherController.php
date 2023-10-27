@@ -146,14 +146,15 @@ class RedeemVoucherController extends Controller
         $redeem_voucher->redeem_date = date('Y-m-d H:i:s');
         $redeem_voucher->status = 1;
         $redeem_voucher->barcode_no = $request->barcode_no;
+        $redeem_voucher->seat_number = $request->seat_number;
         $redeem_voucher->save();
 
 
         /*
         START UPDATE SEATING CHAIR
         */
-        $request->merge(['kode' => $redeem_voucher->kode]);
-        $seating_chair = new SeatingChairController();
+        $request->merge(['kode' => $redeem_voucher->kode, 'seat_number' => $redeem_voucher->seat_number, 'category' => $redeem_voucher->kategory]);
+        $seating_chair = new SeatingChairVoucherController();
         $seating_chair = $seating_chair->update_seating($request);
         /* END UPDATE SEATING CHAIR */
 

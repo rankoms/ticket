@@ -444,7 +444,7 @@
                             </div>
                             <div class="col-12 p-0 m-0 mb-3">
                                 <label class="float-start">Seat Number</label>
-                                <input type="text" name="seat" id="seat" placeholder="Seat Number" class="form-control" required>
+                                <input type="text" name="seat_number" id="seat_number" placeholder="Seat Number" class="form-control" required>
                             </div>
                         </div>
                         <div class="col-4">
@@ -497,7 +497,7 @@
                             _token: '{{ csrf_token() }}',
                             id: data.data.id,
                             barcode_no: $('#barcode_no').val(),
-                            seat: $('#seat').val()
+                            seat_number: $('#seat_number').val()
                         });
 
                     Swal.fire({
