@@ -496,7 +496,8 @@
                         "{{ route('redeem_voucher.redeem_voucher_update_barcode') }}", {
                             _token: '{{ csrf_token() }}',
                             id: data.data.id,
-                            barcode_no: $('#barcode_no').val()
+                            barcode_no: $('#barcode_no').val(),
+                            seat: $('#seat').val()
                         });
 
                     Swal.fire({
