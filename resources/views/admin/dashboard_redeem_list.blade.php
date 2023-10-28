@@ -81,6 +81,7 @@
                                     <th>E-voucher</th>
                                     <th>Nama</th>
                                     <th>Ticket</th>
+                                    <th>Seat Number</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -95,6 +96,7 @@
                                         <th>{{ $value->kode }}</th>
                                         <th>{{ $value->name }}</th>
                                         <th>{{ $value->barcode_no }}</th>
+                                        <th>{{ $value->seat_number }}</th>
                                     </tr>
                                     @php
                                         $i++;

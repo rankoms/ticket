@@ -377,6 +377,11 @@
                             <label class="float-start">QR Code Wristband</label>
                             <input type="text" name="barcode_no" id="barcode_no" placeholder="QR Code Wristband" class="form-control" required readonly value="${data.data.barcode_no}" disabled>
                         </div>
+
+                        <div class="col-12 p-0 m-0 mb-3">
+                            <label class="float-start">Seat Number</label>
+                            <input type="text" name="seat_number" id="seat_number" placeholder="Seat Number" class="form-control" required readonly value="${data.data.seat_number}" disabled>
+                        </div>
                     </div>
                     <div class="col-4">
                         <div class="qrcode">
@@ -440,7 +445,11 @@
                             </div>
                             <div class="col-12 p-0 m-0 mb-3">
                                 <label class="float-start">QR Code Wristband</label>
-                                <input type="text" name="barcode_no" id="barcode_no" placeholder="QR Code Wristband" class="form-control" required disabled>
+                                <input type="text" name="barcode_no" id="barcode_no" placeholder="QR Code Wristband" class="form-control" required>
+                            </div>
+                            <div class="col-12 p-0 m-0 mb-3">
+                                <label class="float-start">Seat Number</label>
+                                <input type="text" name="seat_number" id="seat_number" placeholder="Seat Number" class="form-control" required>
                             </div>
                         </div>
                         <div class="col-4">
@@ -492,7 +501,8 @@
                         "{{ route('redeem_voucher.redeem_voucher_update_barcode') }}", {
                             _token: '{{ csrf_token() }}',
                             id: data.data.id,
-                            barcode_no: $('#barcode_no').val()
+                            barcode_no: $('#barcode_no').val(),
+                            seat_number: $('#seat_number').val()
                         });
 
                     Swal.fire({
