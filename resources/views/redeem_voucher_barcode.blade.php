@@ -449,7 +449,7 @@
                             </div>
                             <div class="col-12 p-0 m-0 mb-3">
                                 <label class="float-start">Seat Number</label>
-                                <input type="text" name="seat_number" id="seat_number" placeholder="Seat Number" class="form-control" required>
+                                <input type="text" name="seat_number" id="seat_number" placeholder="Seat Number" class="form-control" disabled>
                             </div>
                         </div>
                         <div class="col-4">
