@@ -104,11 +104,16 @@ body {
 }
 
 hr {
-  margin: 1rem 0;
+  margin: 10px 0;
   color: inherit;
   border: 0;
   border-top: 1px solid;
   opacity: 0.25;
+}
+
+.swal2-image{
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
 }
 
 h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1 {
