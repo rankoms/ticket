@@ -445,7 +445,7 @@
                             </div>
                             <div class="col-12 p-0 m-0 mb-3">
                                 <label class="float-start">QR Code Wristband</label>
-                                <input type="text" name="barcode_no" id="barcode_no" placeholder="QR Code Wristband" class="form-control" required>
+                                <input type="text" name="barcode_no" id="barcode_no" placeholder="QR Code Wristband" class="form-control" disabled>
                             </div>
                             <div class="col-12 p-0 m-0 mb-3">
                                 <label class="float-start">Seat Number</label>
