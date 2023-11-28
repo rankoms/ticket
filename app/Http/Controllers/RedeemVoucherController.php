@@ -22,17 +22,43 @@ class RedeemVoucherController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('redeem_voucher');
+        $event = $request->event;
+        $category = $request->category;
+        return view('redeem_voucher', compact('category', 'event'));
     }
     public function choose()
     {
         return view('redeem_voucher_choose');
     }
-    public function barcode()
+    public function choose_event_category(Request $request, $type)
     {
-        return view('redeem_voucher_barcode');
+        $request->merge(['type' => $type]);
+        request()->validate([
+            'type' => ['required', 'in:redeem_with_inject,redeem_with_voucher,redeem_only']
+        ]);
+
+        if ($request->event && $request->category) {
+            $type_route = type_route_array_redeem($request->event, $request->category)[$type];
+            return redirect($type_route);
+        }
+
+        $event = Ticket::groupBy('event')->select('event')->orderBy('event')->get();
+        return view('redeem_voucher_choose_event_category', compact('event', 'type'));
+    }
+    public function barcode(Request $request)
+    {
+        $event = $request->event;
+        $category = $request->category;
+        return view('redeem_voucher_barcode', compact('category', 'event'));
+    }
+    public function inject(Request $request)
+    {
+        $event = $request->event;
+        $category = $request->category;
+
+        return view('redeem_voucher_inject', compact('category', 'event'));
     }
     public function checkin_desktop()
     {
@@ -112,8 +138,17 @@ class RedeemVoucherController extends Controller
     public function cek_redeem_voucher(Request $request)
     {
         $voucher = $request->voucher;
+        $category = $request->category;
+        $event = $request->event;
+        $redeem_voucher = RedeemVoucher::where('kode', $voucher);
+        if ($event) {
+            $redeem_voucher = $redeem_voucher->where('event', $event);
+        }
+        if ($category && $category != 'All Category') {
+            $redeem_voucher = $redeem_voucher->where('kategory', $category);
+        }
 
-        $redeem_voucher = RedeemVoucher::where('kode', $voucher)->first();
+        $redeem_voucher = $redeem_voucher->first();
 
         $redeem_history = new RedeemHistory();
         $redeem_history->redeem_by = Auth::user()->id;
@@ -165,6 +200,20 @@ class RedeemVoucherController extends Controller
     {
         $redeem_voucher_update = $this->redeem_voucher_update($request)->getData()->data;
 
+        return ResponseFormatter::success($redeem_voucher_update, 'Redeem E-Ticket Berhasil');
+    }
+    public function redeem_voucher_inject_ticket(Request $request)
+    {
+        $redeem_voucher_update = $this->redeem_voucher_update($request)->getData()->data;
+        $request->merge([
+            'event' => $redeem_voucher_update->event,
+            'name' => $redeem_voucher_update->name,
+            'email' => $redeem_voucher_update->email,
+            'category' => $redeem_voucher_update->kategory,
+            'barcode_no' => $request->barcode_no,
+        ]);
+        $ticket = new TicketController();
+        $ticket = $ticket->store($request);
         return ResponseFormatter::success($redeem_voucher_update, 'Redeem E-Ticket Berhasil');
     }
     public function redeem_voucher_update_ticket(Request $request)
@@ -260,6 +309,18 @@ class RedeemVoucherController extends Controller
             $this->generate_barcode();
         }
         return $result;
+    }
+
+
+    public function category_select(Request $request)
+    {
+        request()->validate([
+            'event' => ['required']
+        ]);
+        $event = $request->event;
+
+        $category = RedeemVoucher::select('kategory')->where('event', $event)->groupBy('kategory')->get();
+        return ResponseFormatter::success($category);
     }
 
     /**

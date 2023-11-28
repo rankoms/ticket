@@ -323,12 +323,13 @@
                 allowOutsideClick: false,
                 showConfirmButton: false,
                 html: `
-            <h3 class="transaction-success">E-ticket are not valid</h3>
-            <div class="please-check">Please try again</div>
-            <hr>
-            <div class="wrapper-button-swal">
-                <button onClick="onBtnClose()" class="btn btn-back swal2-success swal2-styled btn-orange">Back</button>
-            </div>`,
+                    <h3 class="transaction-success">E-ticket are not valid</h3>
+                    <div class="please-check">Please try again</div>
+                    <hr>
+                    <div class="wrapper-button-swal">
+                        <button onClick="onBtnClose()" class="btn btn-back swal2-success swal2-styled btn-orange">Back</button>
+                    </div>
+                `,
                 showCancelButton: false,
                 showConfirmButton: false,
                 cancelButtonColor: '#d33',
@@ -358,50 +359,51 @@
                     allowOutsideClick: false,
                     showConfirmButton: false,
                     html: `
-            <h3 class="transaction-success">Your e-ticket has been redeemed</h3>
-            <h3 class="transaction-success">${data.data.redeem_date}</h3>
-            <div class="please-check">Please return to the previous page</div>
-            <hr>
-            <div class="container container-form">
-                <div class="row">
-                    <div class="row col-8 p-0 m-0">
-                        <div class="col-12 p-0 m-0 mb-3">
-                            <label class="float-start">Full Name</label>
-                            <input type="text" name="fullname" placeholder="Full Name"
-                            class="form-control" required readonly disabled value="${data.data.name}">
-                        </div>
-                        <div class="col-12 p-0 m-0 mb-3">
-                            <label class="float-start">Category</label>
-                            <input type="text" name="category" placeholder="Full Name" class="form-control" required readonly value="${data.data.kategory}" disabled>
-                        </div>
-                        
-                        <div class="col-12 p-0 m-0 mb-3">
-                            <label class="float-start">QR Code Wristband</label>
-                            <input type="text" name="barcode_no" id="barcode_no" placeholder="QR Code Wristband" class="form-control" required readonly value="${data.data.barcode_no}" disabled>
-                        </div>
+                        <h3 class="transaction-success">Your e-ticket has been redeemed</h3>
+                        <h3 class="transaction-success">${data.data.redeem_date}</h3>
+                        <div class="please-check">Please return to the previous page</div>
+                        <hr>
+                        <div class="container container-form">
+                            <div class="row">
+                                <div class="row col-8 p-0 m-0">
+                                    <div class="col-12 p-0 m-0 mb-3">
+                                        <label class="float-start">Full Name</label>
+                                        <input type="text" name="fullname" placeholder="Full Name"
+                                        class="form-control" required readonly disabled value="${data.data.name}">
+                                    </div>
+                                    <div class="col-12 p-0 m-0 mb-3">
+                                        <label class="float-start">Category</label>
+                                        <input type="text" name="category" placeholder="Full Name" class="form-control" required readonly value="${data.data.kategory}" disabled>
+                                    </div>
+                                    
+                                    <div class="col-12 p-0 m-0 mb-3">
+                                        <label class="float-start">QR Code Wristband</label>
+                                        <input type="text" name="barcode_no" id="barcode_no" placeholder="QR Code Wristband" class="form-control" required  value="${data.data.barcode_no}" disabled>
+                                    </div>
 
-                        <div class="col-12 p-0 m-0 mb-3">
-                            <label class="float-start">Seat Number</label>
-                            <input type="text" name="seat_number" id="seat_number" placeholder="Seat Number" class="form-control" required readonly value="${data.data.seat_number}" disabled>
-                        </div>
-                    </div>
-                    <div class="col-4">
-                        <div class="qrcode">
-                            QR Code E-Voucher
-                        </div>
+                                    <div class="col-12 p-0 m-0 mb-3">
+                                        <label class="float-start">Seat Number</label>
+                                        <input type="text" name="seat_number" id="seat_number" placeholder="Seat Number" class="form-control" required readonly value="${data.data.seat_number}" disabled>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="qrcode">
+                                        QR Code E-Voucher
+                                    </div>
+                                    <div>
+                                        ${data.data.barcode_image}
+                                    </div>
+                                    <div class="no_qrcode">
+                                        ${data.data.kode}
+                                    </div>
+                                </div>
+                            </div>
+                                
                         <div>
-                            ${data.data.barcode_image}
+                        <div class="wrapper-button-swal">
+                            <button onclick="onBtnClose()" class="btn btn-done swal2-deny swal2-styled btn-outline-danger">Back</button>
                         </div>
-                        <div class="no_qrcode">
-                            ${data.data.kode}
-                        </div>
-                    </div>
-                </div>
-                    
-            <div>
-            <div class="wrapper-button-swal">
-                <button onclick="onBtnClose()" class="btn btn-done swal2-deny swal2-styled btn-outline-danger">Back</button>
-            </div>`,
+                    `,
                     showCancelButton: false,
                     showConfirmButton: false,
                     cancelButtonColor: '#d33',
@@ -421,6 +423,8 @@
                     // window.location = "{{ route('redeem_voucher.index') }}/" + $('#voucher').val()
                 });
             } else {
+
+                $('#barcode_no').focus();
                 Swal.fire({
                     imageUrl: '{{ asset('images/redeem/confirm.png') }}',
                     customClass: 'swal-wide',
@@ -429,51 +433,51 @@
                     allowOutsideClick: false,
                     showConfirmButton: false,
                     html: `
-            <h3 class="transaction-success">Data Confirmation</h3>
-            <div class="please-check">Please make sure the data created is correct</div>
-            <hr>
-            <div class="container container-form">
-                <form id="form-redeem-barcode">
-                    <div class="row">
-                        <div class="row col-8 p-0 m-0">
-                            <div class="col-12 p-0 m-0 mb-3">
-                                <label class="float-start">Full Name</label>
-                                <input type="text" name="fullname" placeholder="Full Name"
-                                class="form-control" required readonly disabled value="${data.data.name}">
-                            </div>
-                            <div class="col-12 p-0 m-0 mb-3">
-                                <label class="float-start">Category</label>
-                                <input type="text" name="category" placeholder="Full Name" class="form-control" required readonly value="${data.data.kategory}" disabled>
-                            </div>
-                            <div class="col-12 p-0 m-0 mb-3">
-                                <label class="float-start">QR Code Wristband</label>
-                                <input type="text" name="barcode_no" id="barcode_no" placeholder="QR Code Wristband" class="form-control" disabled>
-                            </div>
-                            <div class="col-12 p-0 m-0 mb-3">
-                                <label class="float-start">Seat Number</label>
-                                <input type="text" name="seat_number" id="seat_number" placeholder="Seat Number" class="form-control" disabled>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="qrcode">
-                                QR Code E-Voucher
-                            </div>
-                            <div>
-                                ${data.data.barcode_image}
-                            </div>
-                            <div class="no_qrcode">
-                                ${data.data.kode}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="wrapper-button-swal">
-                        <button class="btn btn-done swal2-success swal2-styled btn-primary">Confirm</button>
-                        <button onclick="onBtnClose()" type="button" class="btn btn-done swal2-deny swal2-styled btn-outline-danger">Cancel</button>
-                    </div>
-                </form>
-            <div>
+                        <h3 class="transaction-success">Data Confirmation</h3>
+                        <div class="please-check">Please make sure the data created is correct</div>
+                        <hr>
+                        <div class="container container-form">
+                            <form id="form-redeem-barcode">
+                                <div class="row">
+                                    <div class="row col-8 p-0 m-0">
+                                        <div class="col-12 p-0 m-0 mb-3">
+                                            <label class="float-start">Full Name</label>
+                                            <input type="text" name="fullname" placeholder="Full Name"
+                                            class="form-control" required readonly disabled value="${data.data.name}">
+                                        </div>
+                                        <div class="col-12 p-0 m-0 mb-3">
+                                            <label class="float-start">Category</label>
+                                            <input type="text" name="category" placeholder="Full Name" class="form-control" required readonly value="${data.data.kategory}" disabled>
+                                        </div>
+                                        <div class="col-12 p-0 m-0 mb-3">
+                                            <label class="float-start">QR Code Wristband</label>
+                                            <input type="text" name="barcode_no" id="barcode_no" placeholder="QR Code Wristband" class="form-control" autofocus required>
+                                        </div>
+                                        <div class="col-12 p-0 m-0 mb-3">
+                                            <label class="float-start">Seat Number</label>
+                                            <input type="text" name="seat_number" id="seat_number" placeholder="Seat Number" class="form-control" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="qrcode">
+                                            QR Code E-Voucher
+                                        </div>
+                                        <div>
+                                            ${data.data.barcode_image}
+                                        </div>
+                                        <div class="no_qrcode">
+                                            ${data.data.kode}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="wrapper-button-swal">
+                                    <button class="btn btn-done swal2-success swal2-styled btn-primary">Confirm</button>
+                                    <button onclick="onBtnClose()" type="button" class="btn btn-done swal2-deny swal2-styled btn-outline-danger">Cancel</button>
+                                </div>
+                            </form>
+                        <div>
 
-            `,
+                    `,
                     showCancelButton: false,
                     showConfirmButton: false,
                     cancelButtonColor: '#d33',
@@ -496,11 +500,10 @@
 
                 $('#form-redeem-barcode').on('submit', function(e) {
                     e.preventDefault();
-                    // alert('oke');
 
                     Swal.close();
                     var result = getJSON(
-                        "{{ route('redeem_voucher.redeem_voucher_update_barcode') }}", {
+                        "{{ route('redeem_voucher.redeem_voucher_inject_ticket') }}", {
                             _token: '{{ csrf_token() }}',
                             id: data.data.id,
                             barcode_no: $('#barcode_no').val(),
