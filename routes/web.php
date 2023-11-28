@@ -142,8 +142,11 @@ Route::group(['middleware' => ['auth', 'is_admin'], 'prefix' => 'admin'], functi
         Route::get('/', [RedeemVoucherController::class, 'index'])->name('redeem_voucher.index');
         Route::get('/checkin_desktop', [RedeemVoucherController::class, 'checkin_desktop'])->name('checkin_desktop');
         Route::get('/choose', [RedeemVoucherController::class, 'choose'])->name('redeem_voucher.choose');
+        Route::get('/choose_event_category/{type}', [RedeemVoucherController::class, 'choose_event_category'])->name('redeem_voucher.choose_event_category');
         Route::get('/barcode', [RedeemVoucherController::class, 'barcode'])->name('redeem_voucher.barcode');
+        Route::get('/inject', [RedeemVoucherController::class, 'inject'])->name('redeem_voucher.inject');
         Route::get('/v2', [RedeemVoucherController::class, 'index_v2'])->name('redeem_voucher.index_v2');
+        Route::get('/category_select', [RedeemVoucherController::class, 'category_select'])->name('redeem_voucher.category_select');
 
         Route::get('/ticket', [RedeemVoucherController::class, 'ticket'])->name('redeem_voucher.ticket');
         Route::get('/cetak_ticket/{id}', [RedeemVoucherController::class, 'cetak_ticket'])->name('redeem_voucher.cetak_ticket');
@@ -158,6 +161,7 @@ Route::group(['middleware' => ['auth', 'is_admin'], 'prefix' => 'admin'], functi
     Route::post('/redeem_voucher_update_v2', [RedeemVoucherController::class, 'redeem_voucher_update_v2'])->name('redeem_voucher.redeem_voucher_update_v2');
     Route::post('/redeem_voucher_update_ticket', [RedeemVoucherController::class, 'redeem_voucher_update_ticket'])->name('redeem_voucher.redeem_voucher_update_ticket');
     Route::post('/redeem_voucher_update_barcode', [RedeemVoucherController::class, 'redeem_voucher_update_barcode'])->name('redeem_voucher.redeem_voucher_update_barcode');
+    Route::post('/redeem_voucher_inject_ticket', [RedeemVoucherController::class, 'redeem_voucher_inject_ticket'])->name('redeem_voucher.redeem_voucher_inject_ticket');
     Route::post('/cek_redeem_vouceher', [RedeemVoucherController::class, 'cek_redeem_voucher'])->name('redeem_voucher.cek_redeem_voucher');
     Route::resource('event', EventController::class);
     Route::resource('ticket', TicketController::class);

@@ -51,3 +51,12 @@ function formatter_number($value)
 {
     return number_format(floatval($value));
 }
+function type_array_redeem()
+{
+    return ['redeem_only' => 'Redeem E-Voucher Only', 'redeem_with_voucher' => 'Redeem E-voucher With Print Ticket', 'redeem_with_inject' => 'Redeem E-voucher With Inject Ticket'];
+}
+
+function type_route_array_redeem($event, $category)
+{
+    return ['redeem_only' => route('redeem_voucher.barcode', ['event' => $event, 'category' => $category]), 'redeem_with_voucher' => route('redeem_voucher.ticket',  ['event' => $event, 'category' => $category]), 'redeem_with_inject' => route('redeem_voucher.inject',  ['event' => $event, 'category' => $category])];
+}

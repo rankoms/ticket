@@ -111,8 +111,8 @@
 <body>
     <div>
         <div class="row p-0 m-0" id="dashboard_new">
-            <div class="col-xl-6 col-sm-12 p-2 m-0 position-relative full">
-                <a href="{{ route('redeem_voucher.barcode') }}">
+            <div class="col-xl-4 col-sm-12 p-2 m-0 position-relative full">
+                <a href="{{ route('redeem_voucher.choose_event_category', ['type' => 'redeem_only']) }}">
                     <div class="bg-yellow full wrapper">
                         <div>
                             <img src="{{ asset('images/home/ticket.svg') }}" alt="POS" width="123px"
@@ -122,13 +122,24 @@
                     </div>
                 </a>
             </div>
-            <div class="col-xl-6 col-sm-12 p-2 m-0 position-relative full">
-                <a href="{{ route('redeem_voucher.ticket') }}">
+            <div class="col-xl-4 col-sm-12 p-2 m-0 position-relative full">
+                <a href="{{ route('redeem_voucher.choose_event_category', ['type' => 'redeem_with_voucher']) }}">
                     <div class="bg-blue full wrapper">
                         <div>
                             <img src="{{ asset('images/home/printer.svg') }}" alt="POS" width="123px"
                                 height="123px">
                             <span>Redeem E-voucher With Print Ticket</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-xl-4 col-sm-12 p-2 m-0 position-relative full">
+                <a href="{{ route('redeem_voucher.choose_event_category', ['type' => 'redeem_with_inject']) }}">
+                    <div class="bg-yellow full wrapper">
+                        <div>
+                            <img src="{{ asset('images/home/ticket.svg') }}" alt="POS" width="123px"
+                                height="123px">
+                            <span>Redeem E-voucher With Inject Ticket</span>
                         </div>
                     </div>
                 </a>
