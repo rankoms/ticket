@@ -35,7 +35,7 @@
                         </div>
                         <div class="row mb-4">
                             <div class="col-lg-12 col-12 position-relative">
-                                <select name="event" id="event" class="form-control">
+                                <select name="event" id="event" class="form-control" required>
                                     <option value="">Pilih Event</option>
                                     @foreach ($event as $key => $value)
                                         <option value="{{ $value->event }}">
