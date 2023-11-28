@@ -44,7 +44,7 @@ class RedeemVoucherController extends Controller
             return redirect($type_route);
         }
 
-        $event = Ticket::groupBy('event')->select('event')->orderBy('event')->get();
+        $event = RedeemVoucher::groupBy('event')->select('event')->orderBy('event')->get();
         return view('redeem_voucher_choose_event_category', compact('event', 'type'));
     }
     public function barcode(Request $request)
