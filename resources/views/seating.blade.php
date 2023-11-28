@@ -59,8 +59,8 @@
 
     .seat {
         background-color: #777;
-        width: 35px;
-        height: 24px;
+        width: 50px;
+        height: 25px;
         line-height: 24px;
         margin: 10px;
         border-top-left-radius: 10px;
@@ -142,7 +142,7 @@
 
 <body>
     <div class="movie-container">
-        <h2>Event Bersama</h2>
+        <h2>Layout Seating</h2>
         <label>Pilih Event:</label>
         <select id="event" name="event">
             <option value="">Pilih Event</option>
@@ -252,13 +252,13 @@
         $(document).on('click', '.seat-click', function() {
             id = $(this).data('id');
             Swal.fire({
-                title: 'Anda yakin untuk memasukan data seating?',
-                text: "Anda tidak dapat membalikan seating kembali!",
-                icon: 'warning',
+                title: 'Pilih Kursi Ini ?',
+                text: "( Anda tidak dapat membalikan kursi kembali ! )",
+                icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya masukan data seating!'
+                confirmButtonText: 'Pilih Kursi!'
             }).then((result) => {
                 if (result.isConfirmed) {
                     data = getJSON('{{ route('seating.update_seating_by_id') }}', {
