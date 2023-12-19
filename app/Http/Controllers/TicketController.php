@@ -20,6 +20,18 @@ class TicketController extends Controller
 
     public function dashboard_ticket(Request $request)
     {
+
+        request()->validate([
+            'user_id' => ['numeric', 'nullable'],
+            'start_date' => ['date_format:Y-m-d', 'nullable'],
+            'end_date' => ['date_format:Y-m-d', 'nullable']
+        ]);
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+        $date_range = '';
+        if ($start_date && $end_date) {
+            $date_range = $start_date . ' s/d ' . $end_date;
+        }
         $get_ticket = $this->get_ticket($request);
         $ticket = $get_ticket['ticket'];
         $ticket_not_valid = $get_ticket['ticket_not_valid'];
@@ -46,13 +58,19 @@ class TicketController extends Controller
 
         $tanggal = format_hari_tanggal(date('Y-m-d H:i:s'));
 
-        return view('admin.dashboard_ticket', compact('kategory_aset', 'jumlah_pending', 'jumlah_checkin', 'jumlah_checkout', 'ticket', 'event', 'request', 'ticket_not_valid', 'data_ticket_history', 'label_ticket_history', 'tanggal', 'gate_aset', 'jenis_tiket'));
+        return view('admin.dashboard_ticket', compact('kategory_aset', 'jumlah_pending', 'jumlah_checkin', 'jumlah_checkout', 'ticket', 'event', 'request', 'ticket_not_valid', 'data_ticket_history', 'label_ticket_history', 'tanggal', 'gate_aset', 'jenis_tiket', 'request', 'start_date', 'end_date', 'date_range'));
     }
 
     public function dashboard_ticket_current(Request $request)
     {
         $percent_report_current = config('scanner.percent_report_current');
         $is_current = true;
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+        $date_range = '';
+        if ($start_date && $end_date) {
+            $date_range = $start_date . ' s/d ' . $end_date;
+        }
         $get_ticket = $this->get_ticket($request);
         $ticket = $get_ticket['ticket'];
         $ticket_not_valid = $get_ticket['ticket_not_valid'];
@@ -100,7 +118,8 @@ class TicketController extends Controller
         $jumlah_checkin = (int) floor($jumlah_checkin * $percent_report_current / 100);
         $jumlah_checkout = (int) floor($jumlah_checkout * $percent_report_current / 100);
 
-        return view('admin.dashboard_ticket', compact('kategory_aset', 'jumlah_pending', 'jumlah_checkin', 'jumlah_checkout', 'ticket', 'event', 'request', 'ticket_not_valid', 'data_ticket_history', 'label_ticket_history', 'tanggal', 'is_current', 'gate_aset', 'jenis_tiket', 'percent_report_current'));
+
+        return view('admin.dashboard_ticket', compact('kategory_aset', 'jumlah_pending', 'jumlah_checkin', 'jumlah_checkout', 'ticket', 'event', 'request', 'ticket_not_valid', 'data_ticket_history', 'label_ticket_history', 'tanggal', 'is_current', 'gate_aset', 'jenis_tiket', 'percent_report_current', 'request', 'start_date', 'end_date', 'date_range'));
     }
 
     public function table_kategori_aset(Request $request)
@@ -182,6 +201,11 @@ class TicketController extends Controller
             $ticket = $ticket->where('event', $request->event);
             $ticket_not_valid = TicketHistory::where('event', $request->event)->where('is_valid', 0)->get();
             $ticket_not_valid = count($ticket_not_valid);
+        }
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+        if ($request->start_date && $request->end_date) {
+            $ticket = $ticket->whereBetween('updated_at', [$start_date, $end_date]);
         }
         $ticket = $ticket->get();
         return ['ticket' => $ticket, 'ticket_not_valid' => $ticket_not_valid];

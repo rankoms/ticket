@@ -33,6 +33,11 @@ class TicketExport implements FromView
             $ticket_not_valid = TicketHistory::where('event', $request->event)->where('is_valid', 0)->get();
             $ticket_not_valid = count($ticket_not_valid);
         }
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+        if ($request->start_date && $request->end_date) {
+            $ticket = $ticket->whereBetween('updated_at', [$start_date, $end_date]);
+        }
         $ticket = $ticket->get();
         $event = Ticket::groupBy('event')->select('event')->orderBy('event')->get();
         $jumlah_pending = 0;

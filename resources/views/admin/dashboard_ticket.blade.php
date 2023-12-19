@@ -11,6 +11,7 @@
 
     <link rel="stylesheet" href="{{ url('css/jquery.dataTables.min.css') }}">
     <link rel="stylesheet" href="{{ url('css') }}/custom-admin.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 </head>
 
 <body>
@@ -33,6 +34,21 @@
         </div>
         <section class="content">
             <div class="container-fluid">
+                <div class="row mb-4">
+                    <div class="col-sm-5 p-0">
+                        <input type="text" name="dates" id="dates" class="form-control"
+                            value="{{ $date_range }}">
+                    </div>
+                    <div class="col-sm-3">
+                        @if (isset($is_current))
+                            <a href="{{ route('excel_ticket_current', ['event' => $request->event]) }}"
+                                class="btn btn-success">Export Excel</a>
+                        @else
+                            <a href="{{ route('excel_ticket', ['event' => $request->event, 'start_date' => $request->start_date, 'end_date' => $request->end_date]) }}"
+                                class="btn btn-success">Export Excel</a>
+                        @endif
+                    </div>
+                </div>
                 <div class="row">
                     <div class="align-items-center col-lg-3 col-sm-12 d-flex justify-content-center wrapper-chart p-0">
                         <div id="chart">
@@ -183,6 +199,8 @@
 
     <script src="{{ url('js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ url('js/apexcharts.js') }}"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 
     <script>
         var options = {
@@ -207,12 +225,32 @@
             }]
         };
 
+        function redirect_reload(event, start_date = "", end_date = "") {
+            url =
+                "{{ route('post_dashboard_ticket', ['start_date' => 'val_start_date', 'end_date' => 'val_end_date', 'event' => 'val_event']) }}";
+            url = url.replace('amp;start_date', 'start_date');
+            url = url.replace('amp;end_date', 'end_date');
+            url = url.replace('amp;event', 'event');
+            url = url.replace('val_start_date', start_date);
+            url = url.replace('val_end_date', end_date);
+            url = url.replace('val_event', event);
+            // console.log(url)
+            window.location.href = url;
+        }
+        $('input[name="dates"]').daterangepicker({
+            opens: 'left',
+            autoUpdateInput: false,
+            locale: {
+                cancelLabel: 'Clear'
+            }
+        }, function(start, end, label) {
+            $('#dates').val(start.format('YYYY-MM-DD') + ' s/d ' + end.format('YYYY-MM-DD'))
+            redirect_reload('{{ $request->event }}', start.format('YYYY-MM-DD'), end
+                .format('YYYY-MM-DD'));
+        });
+
         var piechart = new ApexCharts(document.querySelector("#chart"), options);
         piechart.render();
-
-
-
-
 
         var options = {
             series: [{
