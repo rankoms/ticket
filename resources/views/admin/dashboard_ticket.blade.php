@@ -121,7 +121,7 @@
                             <thead>
                                 <tr>
                                     <th>Kategory</th>
-                                    <th>Pending</th>
+                                    <!-- <th>Pending</th> -->
                                     <th>Check-in</th>
                                     <th>Check-out</th>
                                 </tr>
@@ -130,7 +130,7 @@
                                 @foreach ($kategory_aset as $key => $value)
                                     <tr>
                                         <th>{{ $key }}</th>
-                                        <th>{{ isset($value['pending']) ? $value['pending'] : 0 }}</th>
+                                        <!-- <th>{{ isset($value['pending']) ? $value['pending'] : 0 }}</th> -->
                                         <th>{{ isset($value['checkin']) ? $value['checkin'] : 0 }}</th>
                                         <th>{{ isset($value['checkout']) ? $value['checkout'] : 0 }}</th>
                                     </tr>
@@ -159,7 +159,7 @@
                             <thead>
                                 <tr>
                                     <th>Jenis Tiket</th>
-                                    <th>Pending</th>
+                                    <!-- <th>Pending</th> -->
                                     <th>Check-in</th>
                                     <th>Check-out</th>
                                 </tr>
@@ -168,7 +168,7 @@
                                 @foreach ($jenis_tiket as $key => $value)
                                     <tr>
                                         <th>{{ $key }}</th>
-                                        <th>{{ isset($value['pending']) ? $value['pending'] : 0 }}</th>
+                                        <!-- <th>{{ isset($value['pending']) ? $value['pending'] : 0 }}</th> -->
                                         <th>{{ isset($value['checkin']) ? $value['checkin'] : 0 }}</th>
                                         <th>{{ isset($value['checkout']) ? $value['checkout'] : 0 }}</th>
                                     </tr>
