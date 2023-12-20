@@ -67,7 +67,7 @@
                                     </div>
                                 </div>
                             </div> -->
-                            <div class="col-lg-3 col-sm-12 pl-2 pr-1">
+                            <div class="col-lg-4 col-sm-12 pl-2 pr-1">
                                 <div class="small-box bg-ijo text-center">
                                     <div class="inner text-center pt-3">
                                         <p>Total Scan Ticket</p>
@@ -75,7 +75,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-3 col-sm-12 pl-2 pr-1">
+                            <div class="col-lg-4 col-sm-12 pl-2 pr-1">
                                 <div class="small-box bg-teal justify-content-between d-flex">
                                     <div class="icon">
                                         <i class="fa fa-sign-in-alt"></i>
@@ -86,7 +86,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-3 col-sm-12 pl-2">
+                            <div class="col-lg-4 col-sm-12 pl-2">
                                 <div class="small-box bg-kuning justify-content-between d-flex">
                                     <div class="icon">
                                         <i class="fa fa-sign-out-alt"></i>
