@@ -56,7 +56,7 @@
                     </div>
                     <div class="col-lg-9 col-sm-12">
                         <div class="row gx-1">
-                            <div class="col-lg-3 col-sm-12 pr-1">
+                            <!-- <div class="col-lg-3 col-sm-12 pr-1">
                                 <div class="small-box bg-biru justify-content-between d-flex">
                                     <div class="icon">
                                         <i class="fa fa-clipboard-list"></i>
@@ -66,7 +66,7 @@
                                         <h3 id="jumlah_pending">{{ $jumlah_pending }}</h3>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="col-lg-3 col-sm-12 pl-2 pr-1">
                                 <div class="small-box bg-ijo text-center">
                                     <div class="inner text-center pt-3">

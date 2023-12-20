@@ -374,15 +374,19 @@
                             <label class="float-start">Category</label>
                             <input type="text" name="category" placeholder="Full Name" class="form-control" required readonly value="${data.data.kategory}" disabled>
                         </div>
+                        <div class="col-12 p-0 m-0 mb-3" style="display: none;">
+                                <label class="float-start">Package Name</label>
+                                <input type="text" name="category_detail" placeholder="category_detail" class="form-control" required readonly value="${data.data.nama_perusahaan}" disabled>
+                            </div>
                         
-                        <div class="col-12 p-0 m-0 mb-3">
+                        <div class="col-12 p-0 m-0 mb-3" style="display: none;">
                             <label class="float-start">QR Code Wristband</label>
                             <input type="text" name="barcode_no" id="barcode_no" placeholder="QR Code Wristband" class="form-control" required readonly value="${data.data.barcode_no}" disabled>
                         </div>
 
-                        <div class="col-12 p-0 m-0 mb-3">
+                        <div class="col-12 p-0 m-0 mb-3" style="display: none;">
                             <label class="float-start">Seat Number</label>
-                            <input type="text" name="seat_number" id="seat_number" placeholder="Seat Number" class="form-control" required readonly value="${data.data.seat_number}" disabled>
+                            <input type="text" name="seat_number" id="seat_number" placeholder="Seat Number" class="form-control" required readonly value="${data.data.seat}" disabled>
                         </div>
                     </div>
                     <div class="col-4">
@@ -445,13 +449,18 @@
                                 <label class="float-start">Category</label>
                                 <input type="text" name="category" placeholder="Full Name" class="form-control" required readonly value="${data.data.kategory}" disabled>
                             </div>
-                            <div class="col-12 p-0 m-0 mb-3">
+                            <div class="col-12 p-0 m-0 mb-3" style="display: none;">
+                                <label class="float-start">Package Name</label>
+                                <input type="text" name="category_detail" placeholder="category_detail" class="form-control" required readonly value="${data.data.nama_perusahaan}" disabled>
+                            </div>
+                            <div class="col-12 p-0 m-0 mb-3" style="display: none;">
                                 <label class="float-start">QR Code Wristband</label>
                                 <input type="text" name="barcode_no" id="barcode_no" placeholder="QR Code Wristband" class="form-control" disabled>
                             </div>
-                            <div class="col-12 p-0 m-0 mb-3">
+                            <div class="col-12 p-0 m-0 mb-3" style="display: none;">
                                 <label class="float-start">Seat Number</label>
-                                <input type="text" name="seat_number" id="seat_number" placeholder="Seat Number" class="form-control" disabled>
+                                <input type="text" name="seat_number" placeholder="Seat Number"
+                                class="form-control" required readonly disabled value="${data.data.seat}">
                             </div>
                         </div>
                         <div class="col-4">
