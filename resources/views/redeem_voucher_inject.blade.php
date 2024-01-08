@@ -43,6 +43,7 @@
     <link rel="stylesheet" href="{{ url('css/prism.css') }}">
     <link rel="stylesheet" href="{{ url('adminlte') }}/plugins/fontawesome-free/css/all.min.css">
     <link href="{{ url('css/examples.css') }}" rel="stylesheet">
+    <link href="{{ url('css/customs/redeem_voucher.css') }}" rel="stylesheet">
     <style>
         @font-face {
             font-family: 'Sofia Pro Bold';
@@ -240,6 +241,7 @@
             margin-top: 7px;
         }
     </style>
+    <link href="{{ url('css/customs/redeem_voucher.css') }}" rel="stylesheet">
 </head>
 
 <!-- <body style="background-image:url('images/bg.png');"> -->
@@ -267,8 +269,8 @@
                                 <div class="text-scanner">Please scan the barcode or enter your e-ticket number.</div>
                             </div>
                         </div>
-                        <input class="form-control mb-3" id="voucher" name="voucher" type="text" placeholder=""
-                            autofocus autocomplete="off">
+                        <input class="form-control mb-3" id="voucher" name="voucher" type="text"
+                            placeholder="" autofocus autocomplete="off">
                         <button class="btn " style="width:100%" type="submit" id="btn-submit"
                             autofocus="false">Submit</button>
                     </div>
@@ -353,7 +355,7 @@
 
                 Swal.fire({
                     imageUrl: '{{ asset('images/redeem/already.png') }}',
-                    customClass: 'swal-wide',
+                    customClass: 'swal-wide custom-swal',
                     imageAlt: 'Custom image',
                     imageWidth: 200,
                     allowOutsideClick: false,
@@ -427,7 +429,7 @@
                 $('#barcode_no').focus();
                 Swal.fire({
                     imageUrl: '{{ asset('images/redeem/confirm.png') }}',
-                    customClass: 'swal-wide',
+                    customClass: 'swal-wide custom-swal',
                     imageAlt: 'Custom image',
                     imageWidth: 200,
                     allowOutsideClick: false,

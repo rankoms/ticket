@@ -240,6 +240,7 @@
             margin-top: 7px;
         }
     </style>
+    <link href="{{ url('css/customs/redeem_voucher.css') }}" rel="stylesheet">
 </head>
 
 <!-- <body style="background-image:url('images/bg.png');"> -->
@@ -352,7 +353,7 @@
 
                 Swal.fire({
                     imageUrl: '{{ asset('images/redeem/already.png') }}',
-                    customClass: 'swal-wide',
+                    customClass: 'swal-wide custom-swal',
                     imageAlt: 'Custom image',
                     imageWidth: 200,
                     allowOutsideClick: false,
@@ -427,7 +428,7 @@
             } else {
                 Swal.fire({
                     imageUrl: '{{ asset('images/redeem/confirm.png') }}',
-                    customClass: 'swal-wide',
+                    customClass: 'swal-wide custom-swal',
                     imageAlt: 'Custom image',
                     imageWidth: 200,
                     allowOutsideClick: false,

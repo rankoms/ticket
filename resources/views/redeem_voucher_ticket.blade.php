@@ -241,6 +241,7 @@
             margin-top: 7px;
         }
     </style>
+    <link href="{{ url('css/customs/redeem_voucher.css') }}" rel="stylesheet">
 </head>
 
 <!-- <body style="background-image:url('images/bg.png');"> -->

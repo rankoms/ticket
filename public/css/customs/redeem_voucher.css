@@ -1,0 +1,105 @@
+.col img {
+    height: 85px;
+}
+
+.logo-text {
+    font-size: 26px;
+}
+
+.wrapping-scanner h1 {
+    font-size: 26px;
+}
+.wrapping-scanner .text-scanner {
+    font-size: 14px;
+}
+
+#btn-submit {
+    font-size: 16px;
+}
+
+/* X-Small devices (portrait phones, less than 576px) */
+/* No media query for `xs` since this is the default in Bootstrap */
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+    /*  */
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+    /*  */
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+    /*  */
+}
+
+/* X-Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+    .col img {
+        height: 91px;
+    }
+
+    .logo-text {
+        font-size: 40px;
+    }
+
+    .wrapping-scanner h1 {
+        font-size: 40px;
+    }
+    .wrapping-scanner .text-scanner {
+        font-size: 17px;
+    }
+
+    #btn-submit {
+        font-size: 22px;
+    }
+}
+
+/* XX-Large devices (larger desktops, 1400px and up) */
+@media (min-width: 1400px) {
+    /*  */
+}
+
+@media (max-height: 800px) {
+    #form-voucher .min-vh-100 {
+        align-items: start !important;
+    }
+    #form-voucher .wrapping-logo {
+        margin-top: 15px;
+        margin-bottom: 45px;
+    }
+
+    .custom-swal .swal2-image {
+        width: 87px !important;
+    }
+    .custom-swal .transaction-success {
+        font-size: 13px;
+    }
+    .custom-swal .please-check {
+        font-size: 11px;
+    }
+    .custom-swal.swal-wide label,
+    .custom-swal.swal-small label {
+        font-size: 10px !important;
+    }
+    .custom-swal.swal-wide input,
+    .custom-swal.swal-small input {
+        font-size: 10px;
+    }
+    .custom-swal.swal-wide label,
+    .custom-swal.swal-small label {
+        margin-bottom: 4px;
+    }
+    .custom-swal .col-12.mb-3 {
+        margin-bottom: 11px !important;
+    }
+    .custom-swal .qrcode {
+        font-size: 13px;
+    }
+    .customs-swal .swal-wide .btn-primary,
+    .customs-swal .swal-small .btn-primary {
+        font-size: 12px;
+    }
+}
