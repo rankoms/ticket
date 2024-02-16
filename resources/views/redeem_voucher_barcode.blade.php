@@ -371,10 +371,19 @@
                             <input type="text" name="fullname" placeholder="Full Name"
                             class="form-control" required readonly disabled value="${data.data.name}">
                         </div>
+
+                        
+                        <div class="col-12 p-0 m-0 mb-3"">
+                                <label class="float-start">Email</label>
+                                <input type="text" name="email" placeholder="email" class="form-control" required readonly value="${data.data.email}" disabled>
+                            </div>
+
                         <div class="col-12 p-0 m-0 mb-3">
                             <label class="float-start">Category</label>
                             <input type="text" name="category" placeholder="Full Name" class="form-control" required readonly value="${data.data.kategory}" disabled>
                         </div>
+
+
                         <div class="col-12 p-0 m-0 mb-3" style="display: none;">
                                 <label class="float-start">Package Name</label>
                                 <input type="text" name="category_detail" placeholder="category_detail" class="form-control" required readonly value="${data.data.nama_perusahaan}" disabled>
@@ -445,6 +454,11 @@
                                 <label class="float-start">Full Name</label>
                                 <input type="text" name="fullname" placeholder="Full Name"
                                 class="form-control" required readonly disabled value="${data.data.name}">
+                            </div>
+
+                            <div class="col-12 p-0 m-0 mb-3"">
+                                <label class="float-start">Email</label>
+                                <input type="text" name="email" placeholder="email" class="form-control" required readonly value="${data.data.email}" disabled>
                             </div>
                             <div class="col-12 p-0 m-0 mb-3">
                                 <label class="float-start">Category</label>
