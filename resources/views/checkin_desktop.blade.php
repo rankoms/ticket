@@ -101,7 +101,7 @@
         body {
             width: 100%;
             height: 100%;
-            background: url('../../images/bg.png');
+            background: url('../../images/panel.png');
             center top no-repeat;
             background-size: cover;
             position: relative;

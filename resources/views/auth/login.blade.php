@@ -12,10 +12,10 @@
                     <div class="d-table-cell align-middle">
                         <div class="d-flex align-items-center justify-content-center mb-4">
                             {{-- <a href="{{ route('index') }}" class="logo"> --}}
-                            <a href="#" class="logo">
+                            <!-- <a href="#" class="logo">
                                 <img src="{{ asset('images/logo.png') }}" alt="TiketBersama's Logo"
                                     class="app-logo img-fluid">
-                            </a>
+                            </a> -->
                         </div>
                         <div class="card">
                             <div class="card-body">
