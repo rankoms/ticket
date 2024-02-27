@@ -291,7 +291,7 @@
 <script>
     setInterval(() => {
         if (Swal.getPopup()) {
-            // document.getElementById("barcode_no").focus();
+            document.getElementById("barcode_no").focus();
 
         } else {
 
