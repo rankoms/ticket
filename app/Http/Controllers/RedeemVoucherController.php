@@ -108,8 +108,8 @@ class RedeemVoucherController extends Controller
             $date_range = $start_date . ' s/d ' . $end_date;
         }
         if ($date_range) {
-            $redeem_voucher = $redeem_voucher->whereBetween('updated_at', [$start_date, $end_date]);
-            $redeem_not_valid = $redeem_not_valid->whereBetween('updated_at', [$start_date, $end_date]);
+            $redeem_voucher = $redeem_voucher->whereBetween('updated_at', [$start_date . " 00:00:00", $end_date . " 23:59:59"]);
+            $redeem_not_valid = $redeem_not_valid->whereBetween('updated_at', [$start_date . " 00:00:00", $end_date . " 23:59:59"]);
         }
 
         $redeem_not_valid = $redeem_not_valid->get()->count();
