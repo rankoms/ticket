@@ -11,6 +11,7 @@
 
     <link rel="stylesheet" href="{{ url('css/jquery.dataTables.min.css') }}">
     <link rel="stylesheet" href="{{ url('css') }}/custom-admin.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 </head>
 
 <body>
@@ -28,6 +29,12 @@
         </div>
         <section class="content">
             <div class="container-fluid">
+                <div class="row mb-4">
+                    <div class="col-sm-5 p-0">
+                        <input type="text" name="dates" id="dates" class="form-control"
+                            value="{{ $date_range }}">
+                    </div>
+                </div>
                 <div class="row">
                     <div class="align-items-center col-lg-3 col-sm-12 d-flex justify-content-center wrapper-chart">
                         <div id="chart">
@@ -94,7 +101,8 @@
                 </div>
                 <div class="row mt-4">
                     <div class="col-12 text-center">
-                        <a href="{{ route('excel_redeem') }}" class="btn btn-success">Export Excel</a>
+                        <a href="{{ route('excel_redeem', ['start_date' => $request->start_date, 'end_date' => $request->end_date]) }}"
+                            class="btn btn-success">Export Excel</a>
                     </div>
                 </div>
             </div>
@@ -102,14 +110,16 @@
     </div>
     <script src="{{ asset('js/jquery.slim.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
-    {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" --}}
-    {{-- integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"> --}}
-    {{-- // </script> --}}
+    <script src="{{ url('mobile/js/jquery.min.js') }}"></script>
 
 
 
     <script src="{{ url('js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ url('js/apexcharts.js') }}"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+
+
 
     <script>
         var options = {
@@ -140,6 +150,31 @@
     <script>
         $(document).ready(function() {
 
+            $('input[name="dates"]').daterangepicker({
+                opens: 'left',
+                autoUpdateInput: false,
+                locale: {
+                    cancelLabel: 'Clear'
+                }
+            }, function(start, end, label) {
+                $('#dates').val(start.format('YYYY-MM-DD') + ' s/d ' + end.format('YYYY-MM-DD'))
+                redirect_reload('{{ $request->event }}', start.format('YYYY-MM-DD'), end
+                    .format('YYYY-MM-DD'));
+            });
+
+
+            function redirect_reload(event, start_date = "", end_date = "") {
+                url =
+                    "{{ route('redeem_voucher.dashboard', ['start_date' => 'val_start_date', 'end_date' => 'val_end_date', 'event' => 'val_event']) }}";
+                url = url.replace('amp;start_date', 'start_date');
+                url = url.replace('amp;end_date', 'end_date');
+                url = url.replace('amp;event', 'event');
+                url = url.replace('val_start_date', start_date);
+                url = url.replace('val_end_date', end_date);
+                url = url.replace('val_event', event);
+                // console.log(url)
+                window.location.href = url;
+            }
             $('#example').DataTable({
                 order: [
                     [0, 'desc']

@@ -95,12 +95,25 @@ class RedeemVoucherController extends Controller
 
     public function dashboard_redeem(Request $request)
     {
-        $redeem_voucher = RedeemVoucher::orderBy('kategory', 'asc')->get();
+        $redeem_voucher = RedeemVoucher::orderBy('kategory', 'asc');
 
-        $redeem_not_valid = RedeemHistory::where('is_valid', 0)->get()->count();
+        $redeem_not_valid = RedeemHistory::where('is_valid', 0);
         $jumlah_belum = 0;
         $jumlah_sudah = 0;
         $kategory_aset = [];
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+        $date_range = '';
+        if ($start_date && $end_date) {
+            $date_range = $start_date . ' s/d ' . $end_date;
+        }
+        if ($date_range) {
+            $redeem_voucher = $redeem_voucher->whereBetween('updated_at', [$start_date, $end_date]);
+            $redeem_not_valid = $redeem_not_valid->whereBetween('updated_at', [$start_date, $end_date]);
+        }
+
+        $redeem_not_valid = $redeem_not_valid->get()->count();
+        $redeem_voucher = $redeem_voucher->get();
         foreach ($redeem_voucher as $key => $value) :
             if ($value->status == 0) :
                 $jumlah_belum++;
@@ -110,7 +123,7 @@ class RedeemVoucherController extends Controller
                 isset($kategory_aset[$value->kategory]['sudah']) ? $kategory_aset[$value->kategory]['sudah']++ : $kategory_aset[$value->kategory]['sudah'] = 1;
             endif;
         endforeach;
-        return view('admin.dashboard_redeem', compact('kategory_aset', 'jumlah_belum', 'jumlah_sudah', 'redeem_voucher', 'redeem_not_valid'));
+        return view('admin.dashboard_redeem', compact('kategory_aset', 'jumlah_belum', 'jumlah_sudah', 'redeem_voucher', 'redeem_not_valid', 'start_date', 'end_date', 'date_range', 'request'));
     }
     public function dashboard_redeem_list(Request $request)
     {
