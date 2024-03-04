@@ -28,9 +28,22 @@ class VoucherRedeemExport implements FromView
     public function view(): View
     {
         $request = $this->request;
-        $redeem_voucher = RedeemVoucher::orderBy('kategory', 'asc')->get();
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+        $date_range = '';
+        if ($start_date && $end_date) {
+            $date_range = $start_date . ' s/d ' . $end_date;
+        }
+        $redeem_voucher = RedeemVoucher::orderBy('kategory', 'asc');
 
-        $redeem_not_valid = RedeemHistory::where('is_valid', 0)->get()->count();
+        $redeem_not_valid = RedeemHistory::where('is_valid', 0);
+        if ($date_range) {
+            $redeem_voucher = $redeem_voucher->whereBetween('updated_at', [$start_date . " 00:00:00", $end_date . " 23:59:59"]);
+            $redeem_not_valid = $redeem_not_valid->whereBetween('updated_at', [$start_date . " 00:00:00", $end_date . " 23:59:59"]);
+        }
+
+        $redeem_not_valid = $redeem_not_valid->get()->count();
+        $redeem_voucher = $redeem_voucher->get();
         $jumlah_belum = 0;
         $jumlah_sudah = 0;
         $kategory_aset = [];
